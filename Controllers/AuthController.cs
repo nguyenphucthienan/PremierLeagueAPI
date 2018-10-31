@@ -1,13 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using PremierLeagueAPI.Dtos;
 using PremierLeagueAPI.Models;
 
@@ -39,15 +44,58 @@ namespace PremierLeagueAPI.Controllers
         {
             var registerUser = _mapper.Map<User>(registerUserDto);
             var result = await _userManager.CreateAsync(registerUser, registerUserDto.Password);
-            var returnUser = _mapper.Map<DetailUserDto>(registerUser);
 
-            if (result.Succeeded)
+            if (!result.Succeeded)
+                return BadRequest(result.Errors);
+
+            var user = await _userManager.FindByNameAsync(registerUser.UserName);
+            await _userManager.AddToRolesAsync(user, new[] {"Member"});
+
+            return Ok(new {token = await GenerateJwtToken(user)});
+        }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login(LoginUserDto loginUserDto)
+        {
+            var user = await _userManager.FindByNameAsync(loginUserDto.UserName);
+            var result = await _signInManager.CheckPasswordSignInAsync(user, loginUserDto.Password, false);
+
+            if (!result.Succeeded)
+                return Unauthorized();
+
+            return Ok(new {token = await GenerateJwtToken(user)});
+        }
+
+        private async Task<string> GenerateJwtToken(User user)
+        {
+            var claims = new List<Claim>
             {
-                // return CreatedAtRoute();
-                return Ok(returnUser);
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Name, user.UserName)
+            };
+
+            var roles = await _userManager.GetRolesAsync(user);
+            foreach (var role in roles)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, role));
             }
 
-            return BadRequest(result.Errors);
+            var key = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:SecretKey").Value));
+
+            var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(claims),
+                Expires = DateTime.Now.AddDays(1),
+                SigningCredentials = credentials,
+            };
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+
+            return tokenHandler.WriteToken(token);
         }
     }
 }
