@@ -72,18 +72,20 @@ namespace PremierLeagueAPI
             });
 
             services.AddMvc(options =>
-            {
-                var policy = new AuthorizationPolicyBuilder()
-                    .RequireAuthenticatedUser()
-                    .Build();
+                {
+                    var policy = new AuthorizationPolicyBuilder()
+                        .RequireAuthenticatedUser()
+                        .Build();
 
-                options.Filters.Add(new AuthorizeFilter(policy));
-            })
+                    options.Filters.Add(new AuthorizeFilter(policy));
+                })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            services.AddTransient<Seed>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, Seed seed)
         {
             if (env.IsDevelopment())
             {
@@ -95,6 +97,7 @@ namespace PremierLeagueAPI
             }
 
             // app.UseHttpsRedirection();
+            // seed.SeedRolesAndAdminUser();
             app.UseAuthentication();
             app.UseMvc();
         }
