@@ -10,6 +10,8 @@ namespace PremierLeagueAPI.Persistence
         IdentityUserClaim<int>, UserRole, IdentityUserLogin<int>,
         IdentityRoleClaim<int>, IdentityUserToken<int>>
     {
+        public DbSet<Club> Clubs { get; set; }
+
         public PremierLeagueDbContext(DbContextOptions options) : base(options)
         {
         }
@@ -19,6 +21,7 @@ namespace PremierLeagueAPI.Persistence
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.ApplyConfiguration(new UserRoleConfiguration());
+            modelBuilder.ApplyConfiguration(new ClubConfiguration());
         }
     }
 }
