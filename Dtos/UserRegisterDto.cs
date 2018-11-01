@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PremierLeagueAPI.Dtos
 {
-    public class RegisterUserDto
+    public class UserRegisterDto
     {
         [Required] public string UserName { get; set; }
 
@@ -16,7 +16,7 @@ namespace PremierLeagueAPI.Dtos
 
         public DateTime LastActive { get; set; }
 
-        public RegisterUserDto()
+        public UserRegisterDto()
         {
             Created = DateTime.Now;
             LastActive = DateTime.Now;

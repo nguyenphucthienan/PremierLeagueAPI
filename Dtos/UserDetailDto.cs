@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace PremierLeagueAPI.Dtos
 {
-    public class DetailUserDto
+    public class UserDetailDto
     {
         public int Id { get; set; }
         public string UserName { get; set; }

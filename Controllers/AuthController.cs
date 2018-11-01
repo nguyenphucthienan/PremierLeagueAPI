@@ -40,10 +40,10 @@ namespace PremierLeagueAPI.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register(RegisterUserDto registerUserDto)
+        public async Task<IActionResult> Register(UserRegisterDto userRegisterDto)
         {
-            var registerUser = _mapper.Map<User>(registerUserDto);
-            var result = await _userManager.CreateAsync(registerUser, registerUserDto.Password);
+            var registerUser = _mapper.Map<User>(userRegisterDto);
+            var result = await _userManager.CreateAsync(registerUser, userRegisterDto.Password);
 
             if (!result.Succeeded)
                 return BadRequest(result.Errors);
@@ -55,10 +55,14 @@ namespace PremierLeagueAPI.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login(LoginUserDto loginUserDto)
+        public async Task<IActionResult> Login(UserLoginDto userLoginDto)
         {
-            var user = await _userManager.FindByNameAsync(loginUserDto.UserName);
-            var result = await _signInManager.CheckPasswordSignInAsync(user, loginUserDto.Password, false);
+            var user = await _userManager.FindByNameAsync(userLoginDto.UserName);
+
+            if (user == null)
+                return Unauthorized();
+
+            var result = await _signInManager.CheckPasswordSignInAsync(user, userLoginDto.Password, false);
 
             if (!result.Succeeded)
                 return Unauthorized();

@@ -12,9 +12,9 @@ namespace PremierLeagueAPI.Helpers
     {
         public AutoMapperProfiles()
         {
-            CreateMap<RegisterUserDto, User>();
-            CreateMap<LoginUserDto, User>();
-            CreateMap<User, DetailUserDto>();
+            CreateMap<UserRegisterDto, User>();
+            CreateMap<UserLoginDto, User>();
+            CreateMap<User, UserDetailDto>();
         }
     }
 }
