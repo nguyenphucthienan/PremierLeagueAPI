@@ -11,6 +11,7 @@ namespace PremierLeagueAPI.Models
         public Player()
         {
             Goals = new Collection<Goal>();
+            Cards = new Collection<Card>();
         }
 
         public int Id { get; set; }
@@ -24,5 +25,6 @@ namespace PremierLeagueAPI.Models
         public int ClubId { get; set; }
         public Club Club { get; set; }
         public ICollection<Goal> Goals { get; set; }
+        public ICollection<Card> Cards { get; set; }
     }
 }

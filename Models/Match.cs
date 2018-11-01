@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -9,7 +10,8 @@ namespace PremierLeagueAPI.Models
     {
         public Match()
         {
-            Goals = new HashSet<Goal>();
+            Goals = new Collection<Goal>();
+            Cards = new Collection<Card>();
         }
 
         public int Id { get; set; }
@@ -23,5 +25,6 @@ namespace PremierLeagueAPI.Models
         public DateTime MatchTime { get; set; }
         public bool IsPlayed { get; set; }
         public ICollection<Goal> Goals { get; set; }
+        public ICollection<Card> Cards { get; set; }
     }
 }
