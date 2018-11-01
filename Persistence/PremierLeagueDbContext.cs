@@ -12,6 +12,7 @@ namespace PremierLeagueAPI.Persistence
     {
         public DbSet<Club> Clubs { get; set; }
         public DbSet<Player> Players { get; set; }
+        public DbSet<Match> Matches { get; set; }
 
         public PremierLeagueDbContext(DbContextOptions options) : base(options)
         {
@@ -24,6 +25,7 @@ namespace PremierLeagueAPI.Persistence
             modelBuilder.ApplyConfiguration(new UserRoleConfiguration());
             modelBuilder.ApplyConfiguration(new ClubConfiguration());
             modelBuilder.ApplyConfiguration(new PlayerConfiguration());
+            modelBuilder.ApplyConfiguration(new MatchConfiguration());
         }
     }
 }
