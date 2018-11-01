@@ -24,6 +24,7 @@ namespace PremierLeagueAPI.Models
         public int Weight { get; set; }
         public int ClubId { get; set; }
         public Club Club { get; set; }
+        public string PhotoUrl { get; set; }
         public ICollection<Goal> Goals { get; set; }
         public ICollection<Card> Cards { get; set; }
     }
