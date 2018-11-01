@@ -7,6 +7,11 @@ namespace PremierLeagueAPI.Models
 {
     public class Match
     {
+        public Match()
+        {
+            Goals = new HashSet<Goal>();
+        }
+
         public int Id { get; set; }
         public int Round { get; set; }
         public int HomeClubId { get; set; }
@@ -17,5 +22,6 @@ namespace PremierLeagueAPI.Models
         public int AwayScore { get; set; }
         public DateTime MatchTime { get; set; }
         public bool IsPlayed { get; set; }
+        public ICollection<Goal> Goals { get; set; }
     }
 }

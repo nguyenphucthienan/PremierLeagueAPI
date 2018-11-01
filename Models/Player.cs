@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -7,6 +8,11 @@ namespace PremierLeagueAPI.Models
 {
     public class Player
     {
+        public Player()
+        {
+            Goals = new Collection<Goal>();
+        }
+
         public int Id { get; set; }
         public string Name { get; set; }
         public int Number { get; set; }
@@ -17,5 +23,6 @@ namespace PremierLeagueAPI.Models
         public int Weight { get; set; }
         public int ClubId { get; set; }
         public Club Club { get; set; }
+        public ICollection<Goal> Goals { get; set; }
     }
 }

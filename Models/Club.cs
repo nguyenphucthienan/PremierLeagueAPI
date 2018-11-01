@@ -13,6 +13,7 @@ namespace PremierLeagueAPI.Models
             Players = new Collection<Player>();
             HomeMatches = new Collection<Match>();
             AwayMatches = new Collection<Match>();
+            Goals = new Collection<Goal>();
         }
 
         public int Id { get; set; }
@@ -24,5 +25,6 @@ namespace PremierLeagueAPI.Models
         public ICollection<Player> Players { get; set; }
         public ICollection<Match> HomeMatches { get; set; }
         public ICollection<Match> AwayMatches { get; set; }
+        public ICollection<Goal> Goals { get; set; }
     }
 }
