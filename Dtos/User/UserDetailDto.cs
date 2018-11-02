@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace PremierLeagueAPI.Dtos
+namespace PremierLeagueAPI.Dtos.User
 {
     public class UserDetailDto
     {

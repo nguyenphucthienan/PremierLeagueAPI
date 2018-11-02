@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using PremierLeagueAPI.Dtos;
+using PremierLeagueAPI.Dtos.User;
 using PremierLeagueAPI.Models;
 
 namespace PremierLeagueAPI.Helpers
