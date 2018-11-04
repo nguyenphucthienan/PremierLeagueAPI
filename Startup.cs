@@ -99,7 +99,7 @@ namespace PremierLeagueAPI
             }
 
             // app.UseHttpsRedirection();
-            // seed.SeedRolesAndAdminUser();
+            // seed.SeedData();
             app.UseAuthentication();
             app.UseMvc();
         }

@@ -1,6 +1,8 @@
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Microsoft.AspNetCore.Identity;
+using Newtonsoft.Json;
 using PremierLeagueAPI.Models;
 
 namespace PremierLeagueAPI.Persistence
@@ -16,7 +18,13 @@ namespace PremierLeagueAPI.Persistence
             _roleManager = roleManager;
         }
 
-        public void SeedRolesAndAdminUser()
+        public void SeedData()
+        {
+            SeedRolesAndAdminUser();
+            SeedClubs();
+        }
+
+        private void SeedRolesAndAdminUser()
         {
             if (_userManager.Users.Any())
                 return;
@@ -46,6 +54,17 @@ namespace PremierLeagueAPI.Persistence
 
             var admin = _userManager.FindByNameAsync("admin").Result;
             _userManager.AddToRolesAsync(admin, new[] {"Admin", "Moderator"}).Wait();
+        }
+
+        private void SeedClubs()
+        {
+            var clubsData = File.ReadAllText("Persistence/Data/Clubs.json");
+            var clubs = JsonConvert.DeserializeObject<List<Club>>(clubsData);
+
+            foreach (var club in clubs)
+            {
+                // TODO: Add club to database
+            }
         }
     }
 }
