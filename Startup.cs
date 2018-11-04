@@ -90,6 +90,7 @@ namespace PremierLeagueAPI
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            services.AddScoped<IClubRepository, ClubRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

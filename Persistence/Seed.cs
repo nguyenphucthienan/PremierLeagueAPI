@@ -3,7 +3,9 @@ using System.IO;
 using System.Linq;
 using Microsoft.AspNetCore.Identity;
 using Newtonsoft.Json;
+using PremierLeagueAPI.Core;
 using PremierLeagueAPI.Core.Models;
+using PremierLeagueAPI.Core.Repositories;
 
 namespace PremierLeagueAPI.Persistence
 {
@@ -11,11 +13,18 @@ namespace PremierLeagueAPI.Persistence
     {
         private readonly UserManager<User> _userManager;
         private readonly RoleManager<Role> _roleManager;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IClubRepository _clubRepository;
 
-        public Seed(UserManager<User> userManager, RoleManager<Role> roleManager)
+        public Seed(UserManager<User> userManager,
+            RoleManager<Role> roleManager,
+            IUnitOfWork unitOfWork,
+            IClubRepository clubRepository)
         {
             _userManager = userManager;
             _roleManager = roleManager;
+            _unitOfWork = unitOfWork;
+            _clubRepository = clubRepository;
         }
 
         public void SeedData()
@@ -61,10 +70,8 @@ namespace PremierLeagueAPI.Persistence
             var clubsData = File.ReadAllText("Persistence/Data/Clubs.json");
             var clubs = JsonConvert.DeserializeObject<List<Club>>(clubsData);
 
-            foreach (var club in clubs)
-            {
-                // TODO: Add club to database
-            }
+            _clubRepository.AddRange(clubs);
+            _unitOfWork.CompleteAsync();
         }
     }
 }
