@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using PremierLeagueAPI.Core.Models;
 using PremierLeagueAPI.Dtos.User;
-using PremierLeagueAPI.Models;
 
 namespace PremierLeagueAPI.Helpers
 {

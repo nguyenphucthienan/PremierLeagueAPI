@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 
-namespace PremierLeagueAPI.Models
+namespace PremierLeagueAPI.Core.Models
 {
     public class UserRole : IdentityUserRole<int>
     {

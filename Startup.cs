@@ -18,7 +18,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using PremierLeagueAPI.Models;
+using PremierLeagueAPI.Core.Models;
 using PremierLeagueAPI.Persistence;
 
 namespace PremierLeagueAPI

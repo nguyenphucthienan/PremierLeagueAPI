@@ -13,8 +13,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using PremierLeagueAPI.Core.Models;
 using PremierLeagueAPI.Dtos.User;
-using PremierLeagueAPI.Models;
 
 namespace PremierLeagueAPI.Controllers
 {

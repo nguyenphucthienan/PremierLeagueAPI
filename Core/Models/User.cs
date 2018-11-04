@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Identity;
 
-namespace PremierLeagueAPI.Models
+namespace PremierLeagueAPI.Core.Models
 {
     public class User : IdentityUser<int>
     {

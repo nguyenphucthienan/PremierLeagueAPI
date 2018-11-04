@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Identity;
 
-namespace PremierLeagueAPI.Models
+namespace PremierLeagueAPI.Core.Models
 {
     public class Role : IdentityRole<int>
     {

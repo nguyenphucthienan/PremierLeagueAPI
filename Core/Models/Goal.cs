@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace PremierLeagueAPI.Models
+namespace PremierLeagueAPI.Core.Models
 {
     public class Goal
     {

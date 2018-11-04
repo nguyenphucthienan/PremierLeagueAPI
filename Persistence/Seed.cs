@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using Microsoft.AspNetCore.Identity;
 using Newtonsoft.Json;
-using PremierLeagueAPI.Models;
+using PremierLeagueAPI.Core.Models;
 
 namespace PremierLeagueAPI.Persistence
 {
