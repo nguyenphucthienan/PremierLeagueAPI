@@ -18,8 +18,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using PremierLeagueAPI.Core;
 using PremierLeagueAPI.Core.Models;
+using PremierLeagueAPI.Core.Repositories;
 using PremierLeagueAPI.Persistence;
+using PremierLeagueAPI.Persistence.Repositories;
 
 namespace PremierLeagueAPI
 {
@@ -84,6 +87,9 @@ namespace PremierLeagueAPI
 
             services.AddAutoMapper();
             services.AddTransient<Seed>();
+
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
