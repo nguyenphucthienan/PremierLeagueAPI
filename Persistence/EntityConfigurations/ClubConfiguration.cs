@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PremierLeagueAPI.Core.Models;
 
-namespace PremierLeagueAPI.Configurations
+namespace PremierLeagueAPI.Persistence.EntityConfigurations
 {
     public class ClubConfiguration : IEntityTypeConfiguration<Club>
     {

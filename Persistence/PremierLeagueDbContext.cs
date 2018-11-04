@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using PremierLeagueAPI.Configurations;
 using PremierLeagueAPI.Core.Models;
+using PremierLeagueAPI.Persistence.EntityConfigurations;
 
 namespace PremierLeagueAPI.Persistence
 {
