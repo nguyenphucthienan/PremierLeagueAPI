@@ -21,8 +21,10 @@ using Microsoft.IdentityModel.Tokens;
 using PremierLeagueAPI.Core;
 using PremierLeagueAPI.Core.Models;
 using PremierLeagueAPI.Core.Repositories;
+using PremierLeagueAPI.Core.Services;
 using PremierLeagueAPI.Persistence;
 using PremierLeagueAPI.Persistence.Repositories;
+using PremierLeagueAPI.Services;
 
 namespace PremierLeagueAPI
 {
@@ -91,6 +93,8 @@ namespace PremierLeagueAPI
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IClubRepository, ClubRepository>();
+
+            services.AddTransient<IClubService, ClubService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
