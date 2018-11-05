@@ -3,9 +3,9 @@ using PremierLeagueAPI.Core.Models;
 using PremierLeagueAPI.Core.Queries;
 using PremierLeagueAPI.Helpers;
 
-namespace PremierLeagueAPI.Core.Repositories
+namespace PremierLeagueAPI.Core.Services
 {
-    public interface IPlayerRepository : IRepository<Player>
+    public interface IPlayerService
     {
         Task<PaginatedList<Player>> GetByClubIdAsync(int clubId, PlayerQuery playerQuery);
     }

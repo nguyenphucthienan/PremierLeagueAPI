@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -88,9 +87,9 @@ namespace PremierLeagueAPI.Persistence
             foreach (var playerToken in players)
             {
                 var code = playerToken["code"].ToString();
-                var player = playerToken.ToObject<Player>();
-
                 var club = _clubRepository.SingleOrDefaultAsync(c => c.Code == code);
+
+                var player = playerToken.ToObject<Player>();
                 player.ClubId = club.Id;
 
                 _playerRepository.Add(player);
