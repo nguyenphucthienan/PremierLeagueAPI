@@ -1,8 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Microsoft.AspNetCore.Identity;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using PremierLeagueAPI.Core;
 using PremierLeagueAPI.Core.Models;
 using PremierLeagueAPI.Core.Repositories;
@@ -15,22 +17,26 @@ namespace PremierLeagueAPI.Persistence
         private readonly RoleManager<Role> _roleManager;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IClubRepository _clubRepository;
+        private readonly IPlayerRepository _playerRepository;
 
         public Seed(UserManager<User> userManager,
             RoleManager<Role> roleManager,
             IUnitOfWork unitOfWork,
-            IClubRepository clubRepository)
+            IClubRepository clubRepository,
+            IPlayerRepository playerRepository)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _unitOfWork = unitOfWork;
             _clubRepository = clubRepository;
+            _playerRepository = playerRepository;
         }
 
         public void SeedData()
         {
             SeedRolesAndAdminUser();
             SeedClubs();
+            SeedPlayers();
         }
 
         private void SeedRolesAndAdminUser()
@@ -71,7 +77,26 @@ namespace PremierLeagueAPI.Persistence
             var clubs = JsonConvert.DeserializeObject<List<Club>>(clubsData);
 
             _clubRepository.AddRange(clubs);
-            _unitOfWork.CompleteAsync();
+            _unitOfWork.CompleteAsync().Wait();
+        }
+
+        private void SeedPlayers()
+        {
+            var playersData = File.ReadAllText("Persistence/Data/Players.json");
+            var players = JsonConvert.DeserializeObject<JArray>(playersData);
+
+            foreach (var playerToken in players)
+            {
+                var code = playerToken["code"].ToString();
+                var player = playerToken.ToObject<Player>();
+
+                var club = _clubRepository.SingleOrDefaultAsync(c => c.Code == code);
+                player.ClubId = club.Id;
+
+                _playerRepository.Add(player);
+            }
+
+            _unitOfWork.CompleteAsync().Wait();
         }
     }
 }

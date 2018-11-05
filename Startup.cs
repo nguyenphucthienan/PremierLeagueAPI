@@ -87,6 +87,7 @@ namespace PremierLeagueAPI
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IClubRepository, ClubRepository>();
+            services.AddScoped<IPlayerRepository, PlayerRepository>();
 
             services.AddTransient<IClubService, ClubService>();
         }
