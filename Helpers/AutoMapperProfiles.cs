@@ -16,6 +16,7 @@ namespace PremierLeagueAPI.Helpers
             CreateMap<PaginatedList<Club>, PaginatedList<ClubListDto>>();
             CreateMap<Club, ClubDetailDto>();
             CreateMap<ClubCreateDto, Club>();
+            CreateMap<ClubUpdateDto, Club>();
         }
     }
 }

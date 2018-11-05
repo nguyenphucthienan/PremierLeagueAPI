@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -61,6 +60,40 @@ namespace PremierLeagueAPI.Controllers
             var returnClub = _mapper.Map<ClubDetailDto>(club);
 
             return Ok(returnClub);
+        }
+
+        [HttpPut("{id}")]
+        [Authorize(Policies.RequiredAdminRole)]
+        public async Task<IActionResult> UpdateClub(int id, [FromBody] ClubUpdateDto clubUpdateDto)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var club = await _clubService.GetByIdAsync(id);
+
+            if (club == null)
+                return NotFound();
+
+            _mapper.Map(clubUpdateDto, club);
+
+            var updatedClub = await _clubService.UpdateClub(club);
+            var returnClub = _mapper.Map<ClubDetailDto>(updatedClub);
+
+            return Ok(returnClub);
+        }
+
+        [HttpDelete("{id}")]
+        [Authorize(Policies.RequiredAdminRole)]
+        public async Task<IActionResult> DeleteClub(int id)
+        {
+            var club = await _clubService.GetByIdAsync(id);
+
+            if (club == null)
+                return NotFound();
+
+            await _clubService.DeleteClub(club);
+
+            return Ok(id);
         }
     }
 }
