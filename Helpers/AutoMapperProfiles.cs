@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using AutoMapper;
 using PremierLeagueAPI.Core.Models;
+using PremierLeagueAPI.Dtos.Club;
 using PremierLeagueAPI.Dtos.User;
 
 namespace PremierLeagueAPI.Helpers
@@ -15,6 +13,8 @@ namespace PremierLeagueAPI.Helpers
             CreateMap<UserRegisterDto, User>();
             CreateMap<UserLoginDto, User>();
             CreateMap<User, UserDetailDto>();
+
+            CreateMap<PaginatedList<Club>, PaginatedList<ClubListDto>>();
         }
     }
 }
