@@ -1,6 +1,4 @@
-﻿using PremierLeagueAPI.Helpers;
-
-namespace PremierLeagueAPI.Core.Queries
+﻿namespace PremierLeagueAPI.Core.Queries
 {
     public class ClubQuery : IQueryObject
     {
@@ -21,7 +19,7 @@ namespace PremierLeagueAPI.Core.Queries
             set => _pageSize = (value < MaxPageSize) ? value : MaxPageSize;
         }
 
-        public string SortBy { get; set; } = "Name";
+        public string SortBy { get; set; } = "name";
         public bool IsSortAscending { get; set; }
     }
 }
