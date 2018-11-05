@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using PremierLeagueAPI.Core.Models;
 using PremierLeagueAPI.Dtos.Club;
+using PremierLeagueAPI.Dtos.Player;
 using PremierLeagueAPI.Dtos.User;
 
 namespace PremierLeagueAPI.Helpers
@@ -17,6 +18,9 @@ namespace PremierLeagueAPI.Helpers
             CreateMap<Club, ClubDetailDto>();
             CreateMap<ClubCreateDto, Club>();
             CreateMap<ClubUpdateDto, Club>();
+
+            CreateMap<PaginatedList<Player>, PaginatedList<PlayerListDto>>();
+            CreateMap<Player, PlayerListDto>();
         }
     }
 }
