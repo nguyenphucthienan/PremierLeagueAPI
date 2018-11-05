@@ -8,5 +8,7 @@ namespace PremierLeagueAPI.Core.Services
     public interface IClubService
     {
         Task<PaginatedList<Club>> GetAsync(ClubQuery clubQuery);
+        Task<Club> GetByIdAsync(int id);
+        Task<Club> CreateClub(Club club);
     }
 }

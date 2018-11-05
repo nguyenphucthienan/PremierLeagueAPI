@@ -1,23 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using PremierLeagueAPI.Constants;
 using PremierLeagueAPI.Core;
 using PremierLeagueAPI.Core.Models;
 using PremierLeagueAPI.Core.Repositories;
@@ -73,8 +67,8 @@ namespace PremierLeagueAPI
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("RequiredAdminRole", policy => policy.RequireRole("Admin"));
-                options.AddPolicy("RequiredModeratorRole", policy => policy.RequireRole("Moderator"));
+                options.AddPolicy(Policies.RequiredAdminRole, policy => policy.RequireRole("Admin"));
+                options.AddPolicy(Policies.RequiredModeratorRole, policy => policy.RequireRole("Moderator"));
             });
 
             services.AddMvc(options =>
