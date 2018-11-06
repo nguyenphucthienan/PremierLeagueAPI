@@ -58,7 +58,7 @@ namespace PremierLeagueAPI.Controllers
             var playerToCreate = _mapper.Map<Player>(playerCreateDto);
             playerToCreate.ClubId = clubId;
 
-            await _playerService.CreatePlayer(playerToCreate);
+            await _playerService.CreateAsync(playerToCreate);
 
             var player = await _playerService.GetDetailByIdAsync(playerToCreate.Id);
             var returnPlayer = _mapper.Map<PlayerDetailDto>(player);
@@ -79,7 +79,7 @@ namespace PremierLeagueAPI.Controllers
                 return NotFound();
 
             _mapper.Map(playerUpdateDto, player);
-            await _playerService.UpdatePlayer(player);
+            await _playerService.UpdateAsync(player);
 
             var updatedPlayer = await _playerService.GetDetailByIdAsync(id);
             var returnPlayer = _mapper.Map<PlayerDetailDto>(updatedPlayer);
@@ -99,7 +99,7 @@ namespace PremierLeagueAPI.Controllers
             if (player.ClubId != clubId)
                 return BadRequest();
 
-            await _playerService.DeletePlayer(player);
+            await _playerService.DeleteAsync(player);
 
             return Ok(id);
         }

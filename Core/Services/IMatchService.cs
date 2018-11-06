@@ -10,8 +10,8 @@ namespace PremierLeagueAPI.Core.Services
         Task<PaginatedList<Match>> GetAsync(MatchQuery matchQuery);
         Task<Match> GetByIdAsync(int id);
         Task<Match> GetDetailByIdAsync(int id);
-        Task GenerateMatchesAsync();
-        Task UpdateMatch(Match match);
-        Task DeleteMatchAsync(Match match);
+        Task GenerateAsync();
+        Task UpdateAsync(Match match);
+        Task DeleteAsync(Match match);
     }
 }

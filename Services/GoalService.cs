@@ -32,7 +32,7 @@ namespace PremierLeagueAPI.Services
             return await _goalRepository.GetDetailByIdAsync(id);
         }
 
-        public async Task CreateGoal(Goal goal)
+        public async Task CreateAsync(Goal goal)
         {
             _goalRepository.Add(goal);
 

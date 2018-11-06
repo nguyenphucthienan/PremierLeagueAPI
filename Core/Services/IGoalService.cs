@@ -8,6 +8,6 @@ namespace PremierLeagueAPI.Core.Services
     {
         Task<IEnumerable<Goal>> GetByMatchIdAsync(int matchId);
         Task<Goal> GetDetailByIdAsync(int id);
-        Task CreateGoal(Goal goal);
+        Task CreateAsync(Goal goal);
     }
 }

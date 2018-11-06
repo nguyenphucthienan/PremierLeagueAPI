@@ -56,7 +56,7 @@ namespace PremierLeagueAPI.Controllers
                 return BadRequest(ModelState);
 
             var clubToCreate = _mapper.Map<Club>(clubCreateDto);
-            await _clubService.CreateClub(clubToCreate);
+            await _clubService.CreateAsync(clubToCreate);
 
             var club = await _clubService.GetByIdAsync(clubToCreate.Id);
             var returnClub = _mapper.Map<ClubDetailDto>(club);
@@ -77,7 +77,7 @@ namespace PremierLeagueAPI.Controllers
                 return NotFound();
 
             _mapper.Map(clubUpdateDto, club);
-            await _clubService.UpdateClub(club);
+            await _clubService.UpdateAsync(club);
 
             var updatedClub = await _clubService.GetByIdAsync(id);
             var returnClub = _mapper.Map<ClubDetailDto>(updatedClub);
@@ -94,7 +94,7 @@ namespace PremierLeagueAPI.Controllers
             if (club == null)
                 return NotFound();
 
-            await _clubService.DeleteClub(club);
+            await _clubService.DeleteAsync(club);
 
             return Ok(id);
         }

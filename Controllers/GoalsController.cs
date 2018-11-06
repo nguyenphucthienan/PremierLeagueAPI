@@ -78,7 +78,7 @@ namespace PremierLeagueAPI.Controllers
             if (player.ClubId != goalCreateDto.ClubId)
                 goalToCreate.IsOwnGoal = true;
 
-            await _goalService.CreateGoal(goalToCreate);
+            await _goalService.CreateAsync(goalToCreate);
 
             var goal = await _goalService.GetDetailByIdAsync(goalToCreate.Id);
             var returnGoal = _mapper.Map<GoalDetailDto>(goal);

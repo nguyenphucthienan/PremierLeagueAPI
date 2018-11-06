@@ -51,7 +51,7 @@ namespace PremierLeagueAPI.Controllers
         [Authorize(Policies.RequiredAdminRole)]
         public async Task<IActionResult> GenerateMatches()
         {
-            await _matchService.GenerateMatchesAsync();
+            await _matchService.GenerateAsync();
             return Ok();
         }
 
@@ -68,7 +68,7 @@ namespace PremierLeagueAPI.Controllers
                 return NotFound();
 
             _mapper.Map(matchUpdateDto, match);
-            await _matchService.UpdateMatch(match);
+            await _matchService.UpdateAsync(match);
 
             var updatedMatch = await _matchService.GetDetailByIdAsync(id);
             var returnMatch = _mapper.Map<MatchDetailDto>(updatedMatch);
@@ -85,7 +85,7 @@ namespace PremierLeagueAPI.Controllers
             if (match == null)
                 return BadRequest();
 
-            await _matchService.DeleteMatchAsync(match);
+            await _matchService.DeleteAsync(match);
 
             return Ok(id);
         }

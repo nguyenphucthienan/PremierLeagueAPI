@@ -44,7 +44,7 @@ namespace PremierLeagueAPI.Services
             return await _matchRepository.GetDetailByIdAsync(id);
         }
 
-        public async Task GenerateMatchesAsync()
+        public async Task GenerateAsync()
         {
             var clubs = await _clubRepository.GetBriefListAsync();
             var clubCount = clubs.Count;
@@ -95,7 +95,7 @@ namespace PremierLeagueAPI.Services
             await _unitOfWork.CompleteAsync();
         }
 
-        public async Task UpdateMatch(Match match)
+        public async Task UpdateAsync(Match match)
         {
             if (match.IsPlayed == false)
             {
@@ -105,7 +105,7 @@ namespace PremierLeagueAPI.Services
             await _unitOfWork.CompleteAsync();
         }
 
-        public async Task DeleteMatchAsync(Match match)
+        public async Task DeleteAsync(Match match)
         {
             _matchRepository.Remove(match);
             await _unitOfWork.CompleteAsync();

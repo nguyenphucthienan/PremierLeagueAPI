@@ -35,18 +35,18 @@ namespace PremierLeagueAPI.Services
             return await _playerRepository.GetDetailAsync(id);
         }
 
-        public async Task CreatePlayer(Player player)
+        public async Task CreateAsync(Player player)
         {
             _playerRepository.Add(player);
             await _unitOfWork.CompleteAsync();
         }
 
-        public async Task UpdatePlayer(Player player)
+        public async Task UpdateAsync(Player player)
         {
             await _unitOfWork.CompleteAsync();
         }
 
-        public async Task DeletePlayer(Player player)
+        public async Task DeleteAsync(Player player)
         {
             _playerRepository.Remove(player);
             await _unitOfWork.CompleteAsync();
