@@ -2,6 +2,8 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PremierLeagueAPI.Constants;
+using PremierLeagueAPI.Core.Models;
 using PremierLeagueAPI.Core.Queries;
 using PremierLeagueAPI.Core.Services;
 using PremierLeagueAPI.Dtos.Player;
@@ -43,6 +45,22 @@ namespace PremierLeagueAPI.Controllers
                 return NotFound();
 
             var returnPlayer = _mapper.Map<PlayerDetailDto>(player);
+            return Ok(returnPlayer);
+        }
+
+        [HttpPost]
+        [Authorize(Policies.RequiredAdminRole)]
+        public async Task<IActionResult> CreatePlayer(int clubId, [FromBody] PlayerCreateDto playerCreateDto)
+        {
+            playerCreateDto.ClubId = clubId;
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var playerToCreate = _mapper.Map<Player>(playerCreateDto);
+            var player = await _playerService.CreatePlayer(playerToCreate);
+            var returnPlayer = _mapper.Map<PlayerDetailDto>(player);
+
             return Ok(returnPlayer);
         }
     }
