@@ -58,7 +58,9 @@ namespace PremierLeagueAPI.Controllers
                 return BadRequest(ModelState);
 
             var playerToCreate = _mapper.Map<Player>(playerCreateDto);
-            var player = await _playerService.CreatePlayer(playerToCreate);
+            await _playerService.CreatePlayer(playerToCreate);
+
+            var player = await _playerService.GetDetailByIdAsync(playerToCreate.Id);
             var returnPlayer = _mapper.Map<PlayerDetailDto>(player);
 
             return Ok(returnPlayer);
