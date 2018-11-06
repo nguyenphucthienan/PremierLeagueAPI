@@ -25,12 +25,25 @@ namespace PremierLeagueAPI.Controllers
 
         [AllowAnonymous]
         [HttpGet]
-        public async Task<IActionResult> GetClubs(int clubId, [FromQuery] PlayerQuery playerQuery)
+        public async Task<IActionResult> GetPlayers(int clubId, [FromQuery] PlayerQuery playerQuery)
         {
             var players = await _playerService.GetByClubIdAsync(clubId, playerQuery);
             var returnPlayers = _mapper.Map<PaginatedList<PlayerListDto>>(players);
 
             return Ok(returnPlayers);
+        }
+
+        [AllowAnonymous]
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetPlayer(int id)
+        {
+            var player = await _playerService.GetByIdAsync(id);
+
+            if (player == null)
+                return NotFound();
+
+            var returnPlayer = _mapper.Map<PlayerDetailDto>(player);
+            return Ok(returnPlayer);
         }
     }
 }

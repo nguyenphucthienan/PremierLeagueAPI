@@ -8,5 +8,6 @@ namespace PremierLeagueAPI.Core.Services
     public interface IPlayerService
     {
         Task<PaginatedList<Player>> GetByClubIdAsync(int clubId, PlayerQuery playerQuery);
+        Task<Player> GetByIdAsync(int id);
     }
 }

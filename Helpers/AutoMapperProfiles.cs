@@ -20,7 +20,9 @@ namespace PremierLeagueAPI.Helpers
             CreateMap<ClubUpdateDto, Club>();
 
             CreateMap<PaginatedList<Player>, PaginatedList<PlayerListDto>>();
-            CreateMap<Player, PlayerListDto>();
+
+            CreateMap<Player, PlayerDetailDto>()
+                .ForMember(pd => pd.ClubName, opt => opt.MapFrom(p => p.Club.Name));
         }
     }
 }

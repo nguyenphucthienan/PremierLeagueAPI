@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using PremierLeagueAPI.Dtos.Player;
-
-namespace PremierLeagueAPI.Dtos.Club
+﻿namespace PremierLeagueAPI.Dtos.Club
 {
     public class ClubDetailDto
     {
@@ -11,6 +8,5 @@ namespace PremierLeagueAPI.Dtos.Club
         public int EstablishedYear { get; set; }
         public string HomeField { get; set; }
         public string PhotoUrl { get; set; }
-        public ICollection<PlayerListDto> Players { get; set; }
     }
 }
