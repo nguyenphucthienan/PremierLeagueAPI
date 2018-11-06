@@ -39,5 +39,13 @@ namespace PremierLeagueAPI.Persistence.Repositories
 
             return await PaginatedList<Match>.CreateAsync(query, matchQuery.PageNumber, matchQuery.PageSize);
         }
+
+        public async Task<Match> GetDetailByIdAsync(int id)
+        {
+            return await Context.Matches
+                .Include(m => m.HomeClub)
+                .Include(m => m.AwayClub)
+                .SingleOrDefaultAsync(m => m.Id == id);
+        }
     }
 }

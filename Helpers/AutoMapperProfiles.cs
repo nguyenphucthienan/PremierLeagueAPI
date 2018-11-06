@@ -29,6 +29,8 @@ namespace PremierLeagueAPI.Helpers
             CreateMap<PlayerUpdateDto, Player>();
 
             CreateMap<PaginatedList<Match>, PaginatedList<MatchListDto>>();
+
+            CreateMap<Match, MatchDetailDto>();
         }
     }
 }

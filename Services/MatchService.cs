@@ -30,6 +30,11 @@ namespace PremierLeagueAPI.Services
             return await _matchRepository.GetAsync(matchQuery);
         }
 
+        public async Task<Match> GetDetailByIdAsync(int id)
+        {
+            return await _matchRepository.GetDetailByIdAsync(id);
+        }
+
         public async Task GenerateMatchesAsync()
         {
             var clubs = await _clubRepository.GetBriefListAsync();

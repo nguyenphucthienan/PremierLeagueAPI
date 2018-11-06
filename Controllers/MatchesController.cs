@@ -34,6 +34,19 @@ namespace PremierLeagueAPI.Controllers
             return Ok(returnMatches);
         }
 
+        [HttpGet("{id}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetMatch(int id)
+        {
+            var match = await _matchService.GetDetailByIdAsync(id);
+
+            if (match == null)
+                return NotFound();
+
+            var returnMatch = _mapper.Map<MatchDetailDto>(match);
+            return Ok(returnMatch);
+        }
+
         [HttpPost]
         [Authorize(Policies.RequiredAdminRole)]
         public async Task<IActionResult> GenerateMatches()

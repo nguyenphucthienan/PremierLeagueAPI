@@ -8,5 +8,6 @@ namespace PremierLeagueAPI.Core.Repositories
     public interface IMatchRepository : IRepository<Match>
     {
         Task<PaginatedList<Match>> GetAsync(MatchQuery matchQuery);
+        Task<Match> GetDetailByIdAsync(int id);
     }
 }
