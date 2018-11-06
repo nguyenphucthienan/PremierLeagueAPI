@@ -29,18 +29,15 @@ namespace PremierLeagueAPI.Services
             return await _clubRepository.GetAsync(id);
         }
 
-        public async Task<Club> CreateClub(Club club)
+        public async Task CreateClub(Club club)
         {
             _clubRepository.Add(club);
             await _unitOfWork.CompleteAsync();
-
-            return await _clubRepository.GetAsync(club.Id);
         }
 
-        public async Task<Club> UpdateClub(Club club)
+        public async Task UpdateClub(Club club)
         {
             await _unitOfWork.CompleteAsync();
-            return await _clubRepository.GetAsync(club.Id);
         }
 
         public async Task DeleteClub(Club club)
