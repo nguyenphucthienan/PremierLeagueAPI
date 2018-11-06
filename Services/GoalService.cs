@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using PremierLeagueAPI.Core;
 using PremierLeagueAPI.Core.Models;
 using PremierLeagueAPI.Core.Repositories;
@@ -16,6 +17,11 @@ namespace PremierLeagueAPI.Services
         {
             _unitOfWork = unitOfWork;
             _goalRepository = goalRepository;
+        }
+
+        public async Task<IEnumerable<Goal>> GetByMatchIdAsync(int matchId)
+        {
+            return await _goalRepository.GetByMatchIdAsync(matchId);
         }
 
         public async Task<Goal> GetDetailByIdAsync(int id)

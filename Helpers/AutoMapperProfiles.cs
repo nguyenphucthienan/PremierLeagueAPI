@@ -35,6 +35,7 @@ namespace PremierLeagueAPI.Helpers
             CreateMap<MatchUpdateDto, Match>();
 
             CreateMap<GoalCreateDto, Goal>();
+            CreateMap<Goal, GoalListDto>();
             CreateMap<Goal, GoalDetailDto>();
         }
     }
