@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using PremierLeagueAPI.Core.Models;
 using PremierLeagueAPI.Core.Queries;
 using PremierLeagueAPI.Core.Repositories;
@@ -31,6 +32,20 @@ namespace PremierLeagueAPI.Persistence.Repositories
             query = query.Sort(clubQuery, columnsMap);
 
             return await PaginatedList<Club>.CreateAsync(query, clubQuery.PageNumber, clubQuery.PageSize);
+        }
+
+        public async Task<List<Club>> GetBriefListAsync()
+        {
+            return await Context.Clubs
+                .AsQueryable()
+                .OrderBy(c => c.Name)
+                .Select(c => new Club
+                {
+                    Id = c.Id,
+                    Code = c.Code,
+                    Name = c.Name
+                })
+                .ToListAsync();
         }
     }
 }
