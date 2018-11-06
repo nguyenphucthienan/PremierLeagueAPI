@@ -52,12 +52,12 @@ namespace PremierLeagueAPI.Controllers
         [Authorize(Policies.RequiredAdminRole)]
         public async Task<IActionResult> CreatePlayer(int clubId, [FromBody] PlayerCreateDto playerCreateDto)
         {
-            playerCreateDto.ClubId = clubId;
-
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
             var playerToCreate = _mapper.Map<Player>(playerCreateDto);
+            playerToCreate.ClubId = clubId;
+
             await _playerService.CreatePlayer(playerToCreate);
 
             var player = await _playerService.GetDetailByIdAsync(playerToCreate.Id);

@@ -11,7 +11,6 @@ namespace PremierLeagueAPI.Dtos.Player
         public DateTime Birthdate { get; set; }
         public int Height { get; set; }
         public int Weight { get; set; }
-        public int ClubId { get; set; }
         public string PhotoUrl { get; set; }
     }
 }
