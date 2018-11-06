@@ -9,6 +9,8 @@ namespace PremierLeagueAPI.Core.Services
     {
         Task<PaginatedList<Player>> GetByClubIdAsync(int clubId, PlayerQuery playerQuery);
         Task<Player> GetByIdAsync(int id);
+        Task<Player> GetDetailByIdAsync(int id);
         Task<Player> CreatePlayer(Player player);
+        Task DeletePlayer(Player player);
     }
 }

@@ -39,7 +39,7 @@ namespace PremierLeagueAPI.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetPlayer(int id)
         {
-            var player = await _playerService.GetByIdAsync(id);
+            var player = await _playerService.GetDetailByIdAsync(id);
 
             if (player == null)
                 return NotFound();
@@ -62,6 +62,23 @@ namespace PremierLeagueAPI.Controllers
             var returnPlayer = _mapper.Map<PlayerDetailDto>(player);
 
             return Ok(returnPlayer);
+        }
+
+        [HttpDelete("{id}")]
+        [Authorize(Policies.RequiredAdminRole)]
+        public async Task<IActionResult> DeletePlayer(int clubId, int id)
+        {
+            var player = await _playerService.GetByIdAsync(id);
+
+            if (player == null)
+                return NotFound();
+
+            if (player.ClubId != clubId)
+                return BadRequest();
+
+            await _playerService.DeletePlayer(player);
+
+            return Ok(id);
         }
     }
 }
