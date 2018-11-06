@@ -74,14 +74,39 @@ namespace PremierLeagueAPI.Controllers
 
             var goalToCreate = _mapper.Map<Goal>(goalCreateDto);
             goalToCreate.MatchId = matchId;
-
-            if (player.ClubId != goalCreateDto.ClubId)
-                goalToCreate.IsOwnGoal = true;
+            goalToCreate.IsOwnGoal = player.ClubId != goalCreateDto.ClubId;
 
             await _goalService.CreateAsync(goalToCreate);
 
             var goal = await _goalService.GetDetailByIdAsync(goalToCreate.Id);
             var returnGoal = _mapper.Map<GoalDetailDto>(goal);
+
+            return Ok(returnGoal);
+        }
+
+        [HttpPut("{id}")]
+        [Authorize(Policies.RequiredAdminRole)]
+        public async Task<IActionResult> UpdatePlayer(int matchId, int id, [FromBody] GoalUpdateDto goalUpdateDto)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var goal = await _goalService.GetByIdAsync(id);
+            var player = await _playerService.GetByIdAsync(goalUpdateDto.PlayerId);
+
+            if (goal == null || player == null)
+                return NotFound();
+
+            if (goal.MatchId != matchId)
+                return BadRequest();
+
+            _mapper.Map(goalUpdateDto, goal);
+            goal.IsOwnGoal = player.ClubId != goalUpdateDto.ClubId;
+
+            await _goalService.UpdateAsync(goal);
+
+            var updatedGoal = await _goalService.GetDetailByIdAsync(id);
+            var returnGoal = _mapper.Map<GoalDetailDto>(updatedGoal);
 
             return Ok(returnGoal);
         }

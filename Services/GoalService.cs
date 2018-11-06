@@ -47,6 +47,11 @@ namespace PremierLeagueAPI.Services
             await _unitOfWork.CompleteAsync();
         }
 
+        public async Task UpdateAsync(Goal goal)
+        {
+            await _unitOfWork.CompleteAsync();
+        }
+
         public async Task DeleteAsync(Goal goal)
         {
             _goalRepository.Remove(goal);

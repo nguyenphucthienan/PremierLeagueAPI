@@ -10,6 +10,7 @@ namespace PremierLeagueAPI.Core.Services
         Task<Goal> GetByIdAsync(int id);
         Task<Goal> GetDetailByIdAsync(int id);
         Task CreateAsync(Goal goal);
+        Task UpdateAsync(Goal goal);
         Task DeleteAsync(Goal goal);
     }
 }
