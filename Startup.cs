@@ -89,10 +89,12 @@ namespace PremierLeagueAPI
             services.AddScoped<IClubRepository, ClubRepository>();
             services.AddScoped<IPlayerRepository, PlayerRepository>();
             services.AddScoped<IMatchRepository, MatchRepository>();
+            services.AddScoped<IGoalRepository, GoalRepository>();
 
             services.AddTransient<IClubService, ClubService>();
             services.AddTransient<IPlayerService, PlayerService>();
             services.AddTransient<IMatchService, MatchService>();
+            services.AddTransient<IGoalService, GoalService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
