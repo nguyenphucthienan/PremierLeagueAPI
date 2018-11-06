@@ -25,6 +25,7 @@ namespace PremierLeagueAPI.Helpers
                 .ForMember(pd => pd.ClubName, opt => opt.MapFrom(p => p.Club.Name));
 
             CreateMap<PlayerCreateDto, Player>();
+            CreateMap<PlayerUpdateDto, Player>();
         }
     }
 }

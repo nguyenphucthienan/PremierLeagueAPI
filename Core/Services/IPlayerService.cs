@@ -11,6 +11,7 @@ namespace PremierLeagueAPI.Core.Services
         Task<Player> GetByIdAsync(int id);
         Task<Player> GetDetailByIdAsync(int id);
         Task CreatePlayer(Player player);
+        Task UpdatePlayer(Player player);
         Task DeletePlayer(Player player);
     }
 }
