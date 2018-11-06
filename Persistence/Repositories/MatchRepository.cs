@@ -1,5 +1,14 @@
-﻿using PremierLeagueAPI.Core.Models;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using PremierLeagueAPI.Core.Models;
+using PremierLeagueAPI.Core.Queries;
 using PremierLeagueAPI.Core.Repositories;
+using PremierLeagueAPI.Extensions;
+using PremierLeagueAPI.Helpers;
 
 namespace PremierLeagueAPI.Persistence.Repositories
 {
@@ -7,6 +16,28 @@ namespace PremierLeagueAPI.Persistence.Repositories
     {
         public MatchRepository(PremierLeagueDbContext context) : base(context)
         {
+        }
+
+        public async Task<PaginatedList<Match>> GetAsync(MatchQuery matchQuery)
+        {
+            var query = Context.Matches
+                .Include(m => m.HomeClub)
+                .Include(m => m.AwayClub)
+                .AsQueryable();
+
+            if (matchQuery.Round.HasValue)
+                query = query.Where(m => m.Round == matchQuery.Round);
+
+            var columnsMap = new Dictionary<string, Expression<Func<Match, object>>>()
+            {
+                ["id"] = c => c.Id,
+                ["round"] = c => c.Round,
+                ["matchTime"] = c => c.MatchTime
+            };
+
+            query = query.Sort(matchQuery, columnsMap);
+
+            return await PaginatedList<Match>.CreateAsync(query, matchQuery.PageNumber, matchQuery.PageSize);
         }
     }
 }

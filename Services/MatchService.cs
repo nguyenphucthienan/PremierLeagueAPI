@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using PremierLeagueAPI.Core;
 using PremierLeagueAPI.Core.Models;
+using PremierLeagueAPI.Core.Queries;
 using PremierLeagueAPI.Core.Repositories;
 using PremierLeagueAPI.Core.Services;
+using PremierLeagueAPI.Helpers;
 
 namespace PremierLeagueAPI.Services
 {
@@ -21,6 +23,11 @@ namespace PremierLeagueAPI.Services
             _unitOfWork = unitOfWork;
             _clubRepository = clubRepository;
             _matchRepository = matchRepository;
+        }
+
+        public async Task<PaginatedList<Match>> GetAsync(MatchQuery matchQuery)
+        {
+            return await _matchRepository.GetAsync(matchQuery);
         }
 
         public async Task GenerateMatchesAsync()
