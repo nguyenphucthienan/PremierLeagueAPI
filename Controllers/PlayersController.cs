@@ -25,8 +25,8 @@ namespace PremierLeagueAPI.Controllers
             _playerService = playerService;
         }
 
-        [AllowAnonymous]
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> GetPlayers(int clubId, [FromQuery] PlayerQuery playerQuery)
         {
             var players = await _playerService.GetByClubIdAsync(clubId, playerQuery);
@@ -35,8 +35,8 @@ namespace PremierLeagueAPI.Controllers
             return Ok(returnPlayers);
         }
 
-        [AllowAnonymous]
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetPlayer(int id)
         {
             var player = await _playerService.GetDetailByIdAsync(id);

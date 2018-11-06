@@ -25,8 +25,8 @@ namespace PremierLeagueAPI.Controllers
             _clubService = clubService;
         }
 
-        [AllowAnonymous]
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> GetClubs([FromQuery] ClubQuery clubQuery)
         {
             var clubs = await _clubService.GetAsync(clubQuery);
@@ -35,8 +35,8 @@ namespace PremierLeagueAPI.Controllers
             return Ok(returnClubs);
         }
 
-        [AllowAnonymous]
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetClub(int id)
         {
             var club = await _clubService.GetByIdAsync(id);
