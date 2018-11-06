@@ -91,6 +91,11 @@ namespace PremierLeagueAPI.Services
             await _unitOfWork.CompleteAsync();
         }
 
+        public async Task UpdateMatch(Match match)
+        {
+            await _unitOfWork.CompleteAsync();
+        }
+
         public async Task DeleteMatchAsync(Match match)
         {
             _matchRepository.Remove(match);

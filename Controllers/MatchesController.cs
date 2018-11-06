@@ -55,6 +55,27 @@ namespace PremierLeagueAPI.Controllers
             return Ok();
         }
 
+        [HttpPut("{id}")]
+        [Authorize(Policies.RequiredAdminRole)]
+        public async Task<IActionResult> UpdateMatch(int id, [FromBody] MatchUpdateDto matchUpdateDto)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var match = await _matchService.GetByIdAsync(id);
+
+            if (match == null)
+                return NotFound();
+
+            _mapper.Map(matchUpdateDto, match);
+            await _matchService.UpdateMatch(match);
+
+            var updatedMatch = await _matchService.GetDetailByIdAsync(id);
+            var returnMatch = _mapper.Map<MatchDetailDto>(updatedMatch);
+
+            return Ok(returnMatch);
+        }
+
         [HttpDelete("{id}")]
         [Authorize(Policies.RequiredAdminRole)]
         public async Task<IActionResult> DeleteMatch(int id)
