@@ -15,12 +15,18 @@ namespace PremierLeagueAPI.Controllers
     public class GoalsController : ControllerBase
     {
         private readonly IMapper _mapper;
+        private readonly IPlayerService _playerService;
+        private readonly IMatchService _matchService;
         private readonly IGoalService _goalService;
 
         public GoalsController(IMapper mapper,
+            IPlayerService playerService,
+            IMatchService matchService,
             IGoalService goalService)
         {
             _mapper = mapper;
+            _playerService = playerService;
+            _matchService = matchService;
             _goalService = goalService;
         }
 
@@ -51,12 +57,27 @@ namespace PremierLeagueAPI.Controllers
         [Authorize(Policies.RequiredAdminRole)]
         public async Task<IActionResult> CreateGoal(int matchId, [FromBody] GoalCreateDto goalCreateDto)
         {
-            goalCreateDto.MatchId = matchId;
-
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
+            var match = await _matchService.GetByIdAsync(matchId);
+            var player = await _playerService.GetByIdAsync(goalCreateDto.PlayerId);
+
+            if (match == null || player == null)
+                return BadRequest();
+
+            if (goalCreateDto.ClubId != match.HomeClubId && goalCreateDto.ClubId != match.AwayClubId)
+                return BadRequest();
+
+            if (player.ClubId != match.HomeClubId && player.ClubId != match.AwayClubId)
+                return BadRequest();
+
             var goalToCreate = _mapper.Map<Goal>(goalCreateDto);
+            goalToCreate.MatchId = matchId;
+
+            if (player.ClubId != goalCreateDto.ClubId)
+                goalToCreate.IsOwnGoal = true;
+
             await _goalService.CreateGoal(goalToCreate);
 
             var goal = await _goalService.GetDetailByIdAsync(goalToCreate.Id);
