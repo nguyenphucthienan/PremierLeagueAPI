@@ -85,5 +85,22 @@ namespace PremierLeagueAPI.Controllers
 
             return Ok(returnGoal);
         }
+
+        [HttpDelete("{id}")]
+        [Authorize(Policies.RequiredAdminRole)]
+        public async Task<IActionResult> DeleteGoal(int matchId, int id)
+        {
+            var goal = await _goalService.GetByIdAsync(id);
+
+            if (goal == null)
+                return NotFound();
+
+            if (goal.MatchId != matchId)
+                return BadRequest();
+
+            await _goalService.DeleteAsync(goal);
+
+            return Ok(id);
+        }
     }
 }

@@ -27,6 +27,11 @@ namespace PremierLeagueAPI.Services
             return await _goalRepository.GetByMatchIdAsync(matchId);
         }
 
+        public async Task<Goal> GetByIdAsync(int id)
+        {
+            return await _goalRepository.GetAsync(id);
+        }
+
         public async Task<Goal> GetDetailByIdAsync(int id)
         {
             return await _goalRepository.GetDetailByIdAsync(id);
@@ -39,6 +44,12 @@ namespace PremierLeagueAPI.Services
             var match = await _matchRepository.GetAsync(goal.MatchId);
             match.IsPlayed = true;
 
+            await _unitOfWork.CompleteAsync();
+        }
+
+        public async Task DeleteAsync(Goal goal)
+        {
+            _goalRepository.Remove(goal);
             await _unitOfWork.CompleteAsync();
         }
     }
