@@ -10,12 +10,15 @@ namespace PremierLeagueAPI.Services
     public class GoalService : IGoalService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMatchRepository _matchRepository;
         private readonly IGoalRepository _goalRepository;
 
         public GoalService(IUnitOfWork unitOfWork,
+            IMatchRepository matchRepository,
             IGoalRepository goalRepository)
         {
             _unitOfWork = unitOfWork;
+            _matchRepository = matchRepository;
             _goalRepository = goalRepository;
         }
 
@@ -32,6 +35,10 @@ namespace PremierLeagueAPI.Services
         public async Task CreateGoal(Goal goal)
         {
             _goalRepository.Add(goal);
+
+            var match = await _matchRepository.GetAsync(goal.MatchId);
+            match.IsPlayed = true;
+
             await _unitOfWork.CompleteAsync();
         }
     }

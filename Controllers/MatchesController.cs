@@ -62,7 +62,7 @@ namespace PremierLeagueAPI.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var match = await _matchService.GetByIdAsync(id);
+            var match = await _matchService.GetDetailByIdAsync(id);
 
             if (match == null)
                 return NotFound();

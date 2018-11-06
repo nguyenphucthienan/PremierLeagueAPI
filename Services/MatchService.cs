@@ -15,14 +15,18 @@ namespace PremierLeagueAPI.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IClubRepository _clubRepository;
         private readonly IMatchRepository _matchRepository;
+        private readonly IGoalRepository _goalRepository;
 
         public MatchService(IUnitOfWork unitOfWork,
             IClubRepository clubRepository,
-            IMatchRepository matchRepository)
+            IMatchRepository matchRepository,
+            IGoalRepository goalRepository
+        )
         {
             _unitOfWork = unitOfWork;
             _clubRepository = clubRepository;
             _matchRepository = matchRepository;
+            _goalRepository = goalRepository;
         }
 
         public async Task<PaginatedList<Match>> GetAsync(MatchQuery matchQuery)
@@ -93,6 +97,11 @@ namespace PremierLeagueAPI.Services
 
         public async Task UpdateMatch(Match match)
         {
+            if (match.IsPlayed == false)
+            {
+                _goalRepository.RemoveRange(match.Goals);
+            }
+
             await _unitOfWork.CompleteAsync();
         }
 
