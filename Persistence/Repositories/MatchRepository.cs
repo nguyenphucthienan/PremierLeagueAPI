@@ -45,6 +45,7 @@ namespace PremierLeagueAPI.Persistence.Repositories
             return await Context.Matches
                 .Include(m => m.HomeClub)
                 .Include(m => m.AwayClub)
+                .Include(m => m.Goals)
                 .SingleOrDefaultAsync(m => m.Id == id);
         }
     }

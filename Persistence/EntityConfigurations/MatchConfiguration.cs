@@ -19,6 +19,9 @@ namespace PremierLeagueAPI.Persistence.EntityConfigurations
                 .WithMany(c => c.AwayMatches)
                 .HasForeignKey(m => m.AwayClubId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
+
+            builder.Ignore(m => m.HomeScore);
+            builder.Ignore(m => m.AwayScore);
         }
     }
 }
