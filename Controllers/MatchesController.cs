@@ -54,5 +54,19 @@ namespace PremierLeagueAPI.Controllers
             await _matchService.GenerateMatchesAsync();
             return Ok();
         }
+
+        [HttpDelete("{id}")]
+        [Authorize(Policies.RequiredAdminRole)]
+        public async Task<IActionResult> DeleteMatch(int id)
+        {
+            var match = await _matchService.GetByIdAsync(id);
+
+            if (match == null)
+                return BadRequest();
+
+            await _matchService.DeleteMatchAsync(match);
+
+            return Ok(id);
+        }
     }
 }

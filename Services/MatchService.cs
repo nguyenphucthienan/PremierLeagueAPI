@@ -30,6 +30,11 @@ namespace PremierLeagueAPI.Services
             return await _matchRepository.GetAsync(matchQuery);
         }
 
+        public async Task<Match> GetByIdAsync(int id)
+        {
+            return await _matchRepository.GetAsync(id);
+        }
+
         public async Task<Match> GetDetailByIdAsync(int id)
         {
             return await _matchRepository.GetDetailByIdAsync(id);
@@ -83,6 +88,12 @@ namespace PremierLeagueAPI.Services
             }
 
             _matchRepository.AddRange(matches);
+            await _unitOfWork.CompleteAsync();
+        }
+
+        public async Task DeleteMatchAsync(Match match)
+        {
+            _matchRepository.Remove(match);
             await _unitOfWork.CompleteAsync();
         }
     }
