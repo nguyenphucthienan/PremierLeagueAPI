@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -59,6 +60,8 @@ namespace PremierLeagueAPI.Persistence
             var adminUser = new User
             {
                 UserName = "admin",
+                Created = DateTime.Now,
+                LastActive =  DateTime.Now
             };
 
             var result = _userManager.CreateAsync(adminUser, "password").Result;
@@ -81,16 +84,28 @@ namespace PremierLeagueAPI.Persistence
 
         private void SeedPlayers()
         {
+            var settings = new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+                MissingMemberHandling = MissingMemberHandling.Ignore
+            };
+
             var playersData = File.ReadAllText("Persistence/Data/Players.json");
             var players = JsonConvert.DeserializeObject<JArray>(playersData);
 
             foreach (var playerToken in players)
             {
-                var code = playerToken["code"].ToString();
-                var club = _clubRepository.SingleOrDefaultAsync(c => c.Code == code);
+                var clubName = playerToken["clubName"].ToString();
+                var birthdate = (long) playerToken["birthdateTimestamp"];
+                var club = _clubRepository.SingleOrDefaultAsync(c => c.Name == clubName);
 
-                var player = playerToken.ToObject<Player>();
+                if (club == null)
+                    continue;
+
+                var player = JsonConvert.DeserializeObject<Player>(playerToken.ToString(), settings);
                 player.ClubId = club.Id;
+                player.Birthdate = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
+                    .AddSeconds(birthdate); ;
 
                 _playerRepository.Add(player);
             }

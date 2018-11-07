@@ -18,8 +18,8 @@ namespace PremierLeagueAPI.Core.Models
         public string Position { get; set; }
         public string Nationality { get; set; }
         public DateTime Birthdate { get; set; }
-        public int Height { get; set; }
-        public int Weight { get; set; }
+        public int? Height { get; set; }
+        public int? Weight { get; set; }
         public int ClubId { get; set; }
         public Club Club { get; set; }
         public string PhotoUrl { get; set; }
