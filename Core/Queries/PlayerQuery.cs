@@ -21,5 +21,6 @@
 
         public string SortBy { get; set; } = "name";
         public bool IsSortAscending { get; set; }
+        public int? ClubId { get; set; }
     }
 }

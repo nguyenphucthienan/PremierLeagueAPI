@@ -20,9 +20,9 @@ namespace PremierLeagueAPI.Services
             _playerRepository = playerRepository;
         }
 
-        public async Task<PaginatedList<Player>> GetByClubIdAsync(int clubId, PlayerQuery playerQuery)
+        public async Task<PaginatedList<Player>> GetAsync(PlayerQuery playerQuery)
         {
-            return await _playerRepository.GetByClubIdAsync(clubId, playerQuery);
+            return await _playerRepository.GetAsync(playerQuery);
         }
 
         public async Task<Player> GetByIdAsync(int id)

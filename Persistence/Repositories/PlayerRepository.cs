@@ -18,11 +18,13 @@ namespace PremierLeagueAPI.Persistence.Repositories
         {
         }
 
-        public async Task<PaginatedList<Player>> GetByClubIdAsync(int clubId, PlayerQuery playerQuery)
+        public async Task<PaginatedList<Player>> GetAsync(PlayerQuery playerQuery)
         {
             var query = Context.Players
-                .AsQueryable()
-                .Where(p => p.ClubId == clubId);
+                .AsQueryable();
+
+            if (playerQuery.ClubId.HasValue)
+                query = query.Where(p => p.ClubId == playerQuery.ClubId);
 
             var columnsMap = new Dictionary<string, Expression<Func<Player, object>>>()
             {

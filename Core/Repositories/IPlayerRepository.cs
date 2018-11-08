@@ -7,7 +7,7 @@ namespace PremierLeagueAPI.Core.Repositories
 {
     public interface IPlayerRepository : IRepository<Player>
     {
-        Task<PaginatedList<Player>> GetByClubIdAsync(int clubId, PlayerQuery playerQuery);
+        Task<PaginatedList<Player>> GetAsync(PlayerQuery playerQuery);
         Task<Player> GetDetailAsync(int id);
     }
 }

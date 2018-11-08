@@ -11,7 +11,7 @@ using PremierLeagueAPI.Helpers;
 
 namespace PremierLeagueAPI.Controllers
 {
-    [Route("api/clubs/{clubId}/[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class PlayersController : ControllerBase
     {
@@ -27,9 +27,9 @@ namespace PremierLeagueAPI.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> GetPlayers(int clubId, [FromQuery] PlayerQuery playerQuery)
+        public async Task<IActionResult> GetPlayers([FromQuery] PlayerQuery playerQuery)
         {
-            var players = await _playerService.GetByClubIdAsync(clubId, playerQuery);
+            var players = await _playerService.GetAsync(playerQuery);
             var returnPlayers = _mapper.Map<PaginatedList<PlayerListDto>>(players);
 
             return Ok(returnPlayers);
@@ -50,13 +50,12 @@ namespace PremierLeagueAPI.Controllers
 
         [HttpPost]
         [Authorize(Policies.RequiredAdminRole)]
-        public async Task<IActionResult> CreatePlayer(int clubId, [FromBody] PlayerCreateDto playerCreateDto)
+        public async Task<IActionResult> CreatePlayer([FromBody] PlayerCreateDto playerCreateDto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
             var playerToCreate = _mapper.Map<Player>(playerCreateDto);
-            playerToCreate.ClubId = clubId;
 
             await _playerService.CreateAsync(playerToCreate);
 
@@ -89,15 +88,12 @@ namespace PremierLeagueAPI.Controllers
 
         [HttpDelete("{id}")]
         [Authorize(Policies.RequiredAdminRole)]
-        public async Task<IActionResult> DeletePlayer(int clubId, int id)
+        public async Task<IActionResult> DeletePlayer(int id)
         {
             var player = await _playerService.GetByIdAsync(id);
 
             if (player == null)
                 return NotFound();
-
-            if (player.ClubId != clubId)
-                return BadRequest();
 
             await _playerService.DeleteAsync(player);
 
