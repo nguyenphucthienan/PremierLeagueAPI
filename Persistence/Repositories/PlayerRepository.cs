@@ -21,6 +21,7 @@ namespace PremierLeagueAPI.Persistence.Repositories
         public async Task<PaginatedList<Player>> GetAsync(PlayerQuery playerQuery)
         {
             var query = Context.Players
+                .Include(p => p.Club)
                 .AsQueryable();
 
             if (playerQuery.ClubId.HasValue)
