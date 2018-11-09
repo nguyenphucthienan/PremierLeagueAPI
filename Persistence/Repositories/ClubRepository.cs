@@ -34,7 +34,7 @@ namespace PremierLeagueAPI.Persistence.Repositories
             return await PaginatedList<Club>.CreateAsync(query, clubQuery.PageNumber, clubQuery.PageSize);
         }
 
-        public async Task<List<Club>> GetBriefListAsync()
+        public async Task<IEnumerable<Club>> GetBriefListAsync()
         {
             return await Context.Clubs
                 .AsQueryable()

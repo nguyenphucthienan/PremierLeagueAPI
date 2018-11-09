@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using PremierLeagueAPI.Core;
 using PremierLeagueAPI.Core.Models;
@@ -47,7 +48,8 @@ namespace PremierLeagueAPI.Services
         public async Task GenerateAsync()
         {
             var clubs = await _clubRepository.GetBriefListAsync();
-            var clubCount = clubs.Count;
+            var clubList = clubs.ToList();
+            var clubCount = clubList.Count;
             var roundCount = clubCount - 1;
             var matchesPerRound = clubCount / 2;
 
@@ -72,8 +74,8 @@ namespace PremierLeagueAPI.Services
                     matches.Add(new Match
                     {
                         Round = round + 1,
-                        HomeClubId = clubs[home].Id,
-                        AwayClubId = clubs[away].Id,
+                        HomeClubId = clubList[home].Id,
+                        AwayClubId = clubList[away].Id,
                         MatchTime = matchTime,
                         IsPlayed = false
                     });
@@ -81,8 +83,8 @@ namespace PremierLeagueAPI.Services
                     matches.Add(new Match
                     {
                         Round = round + 1 + roundCount,
-                        HomeClubId = clubs[away].Id,
-                        AwayClubId = clubs[home].Id,
+                        HomeClubId = clubList[away].Id,
+                        AwayClubId = clubList[home].Id,
                         MatchTime = matchTime.AddDays(roundCount * 7),
                         IsPlayed = false
                     });

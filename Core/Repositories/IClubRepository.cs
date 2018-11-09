@@ -9,6 +9,6 @@ namespace PremierLeagueAPI.Core.Repositories
     public interface IClubRepository : IRepository<Club>
     {
         Task<PaginatedList<Club>> GetAsync(ClubQuery clubQuery);
-        Task<List<Club>> GetBriefListAsync();
+        Task<IEnumerable<Club>> GetBriefListAsync();
     }
 }

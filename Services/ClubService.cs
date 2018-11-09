@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using PremierLeagueAPI.Core;
 using PremierLeagueAPI.Core.Models;
 using PremierLeagueAPI.Core.Queries;
@@ -22,6 +23,11 @@ namespace PremierLeagueAPI.Services
         public async Task<PaginatedList<Club>> GetAsync(ClubQuery clubQuery)
         {
             return await _clubRepository.GetAsync(clubQuery);
+        }
+
+        public async Task<IEnumerable<Club>> GetBriefListAsync()
+        {
+            return await _clubRepository.GetBriefListAsync();
         }
 
         public async Task<Club> GetByIdAsync(int id)

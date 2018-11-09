@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Collections.Generic;
+using AutoMapper;
 using PremierLeagueAPI.Core.Models;
 using PremierLeagueAPI.Dtos.Club;
 using PremierLeagueAPI.Dtos.Goal;
@@ -17,6 +18,7 @@ namespace PremierLeagueAPI.Helpers
             CreateMap<User, UserDetailDto>();
 
             CreateMap<PaginatedList<Club>, PaginatedList<ClubListDto>>();
+            CreateMap<Club, ClubBriefListDto>();
             CreateMap<Club, ClubDetailDto>();
             CreateMap<ClubCreateDto, Club>();
             CreateMap<ClubUpdateDto, Club>();

@@ -28,6 +28,9 @@ namespace PremierLeagueAPI.Persistence.Repositories
             if (matchQuery.Round.HasValue)
                 query = query.Where(m => m.Round == matchQuery.Round);
 
+            if (matchQuery.IsPlayed.HasValue)
+                query = query.Where(m => m.IsPlayed == matchQuery.IsPlayed);
+
             var columnsMap = new Dictionary<string, Expression<Func<Match, object>>>()
             {
                 ["id"] = m => m.Id,

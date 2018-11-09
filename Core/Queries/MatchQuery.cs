@@ -22,5 +22,6 @@
         public string SortBy { get; set; } = "matchTime";
         public bool IsSortAscending { get; set; }
         public int? Round { get; set; }
+        public bool? IsPlayed { get; set; }
     }
 }
