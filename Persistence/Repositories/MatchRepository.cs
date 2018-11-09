@@ -30,9 +30,9 @@ namespace PremierLeagueAPI.Persistence.Repositories
 
             var columnsMap = new Dictionary<string, Expression<Func<Match, object>>>()
             {
-                ["id"] = c => c.Id,
-                ["round"] = c => c.Round,
-                ["matchTime"] = c => c.MatchTime
+                ["id"] = m => m.Id,
+                ["round"] = m => m.Round,
+                ["matchTime"] = m => m.MatchTime
             };
 
             query = query.Sort(matchQuery, columnsMap);

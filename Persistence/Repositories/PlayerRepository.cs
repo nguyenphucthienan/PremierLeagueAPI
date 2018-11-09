@@ -29,8 +29,9 @@ namespace PremierLeagueAPI.Persistence.Repositories
 
             var columnsMap = new Dictionary<string, Expression<Func<Player, object>>>()
             {
-                ["id"] = c => c.Id,
-                ["name"] = c => c.Name
+                ["id"] = p => p.Id,
+                ["name"] = p => p.Name,
+                ["number"] = p => p.Number
             };
 
             query = query.Sort(playerQuery, columnsMap);

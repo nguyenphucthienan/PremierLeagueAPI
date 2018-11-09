@@ -2,7 +2,7 @@
 {
     public class PlayerQuery : IQueryObject
     {
-        private const int MaxPageSize = 10;
+        private const int MaxPageSize = 20;
 
         private int _pageNumber = 1;
         private int _pageSize = MaxPageSize;
