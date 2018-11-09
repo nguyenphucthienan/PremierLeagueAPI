@@ -49,6 +49,7 @@ namespace PremierLeagueAPI.Persistence.Repositories
                 .Include(m => m.HomeClub)
                 .Include(m => m.AwayClub)
                 .Include(m => m.Goals)
+                .ThenInclude(g => g.Player)
                 .SingleOrDefaultAsync(m => m.Id == id);
         }
     }

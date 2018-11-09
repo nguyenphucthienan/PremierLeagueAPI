@@ -27,6 +27,9 @@ namespace PremierLeagueAPI.Persistence.Repositories
             if (playerQuery.ClubId.HasValue)
                 query = query.Where(p => p.ClubId == playerQuery.ClubId);
 
+            if (playerQuery.Position != null)
+                query = query.Where(p => p.Position.ToLower() == playerQuery.Position);
+
             var columnsMap = new Dictionary<string, Expression<Func<Player, object>>>()
             {
                 ["id"] = p => p.Id,
