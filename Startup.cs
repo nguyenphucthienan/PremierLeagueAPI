@@ -90,6 +90,7 @@ namespace PremierLeagueAPI
             services.AddScoped<IPlayerRepository, PlayerRepository>();
             services.AddScoped<IMatchRepository, MatchRepository>();
             services.AddScoped<IGoalRepository, GoalRepository>();
+            services.AddScoped<ICardRepository, CardRepository>();
 
             services.AddTransient<IClubService, ClubService>();
             services.AddTransient<IPlayerService, PlayerService>();
