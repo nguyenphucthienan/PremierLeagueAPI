@@ -14,6 +14,8 @@ namespace PremierLeagueAPI.Core.Models
         }
 
         public int Id { get; set; }
+        public int SeasonId { get; set; }
+        public Season Season { get; set; }
         public int Round { get; set; }
         public int HomeClubId { get; set; }
         public Club HomeClub { get; set; }
