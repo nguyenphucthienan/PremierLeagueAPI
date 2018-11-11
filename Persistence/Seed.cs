@@ -154,9 +154,14 @@ namespace PremierLeagueAPI.Persistence
             var playersData = File.ReadAllText("Persistence/Data/Players.json");
             var players = JsonConvert.DeserializeObject<JArray>(playersData);
 
+            var seasonTask = _seasonRepository.SingleOrDefaultAsync(s => s.Name == "2018/2019");
+            seasonTask.Wait();
+            var season = seasonTask.Result;
+
             foreach (var playerToken in players)
             {
                 var clubName = playerToken["clubName"].ToString();
+                var number = (int) playerToken["number"];
                 var birthdate = (long) playerToken["birthdateTimestamp"];
 
                 var clubsTask = _clubRepository.SingleOrDefaultAsync(c => c.Name == clubName);
@@ -182,7 +187,8 @@ namespace PremierLeagueAPI.Persistence
                 player.SquadPlayers.Add(new SquadPlayer
                 {
                     Squad = squad,
-                    Player = player
+                    Player = player,
+                    Number = number
                 });
             }
 
