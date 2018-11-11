@@ -25,9 +25,9 @@ namespace PremierLeagueAPI.Services
             return await _clubRepository.GetAsync(clubQuery);
         }
 
-        public async Task<IEnumerable<Club>> GetBriefListAsync()
+        public async Task<IEnumerable<Club>> GetBriefListAsync(int? seasonId)
         {
-            return await _clubRepository.GetBriefListAsync();
+            return await _clubRepository.GetBriefListAsync(seasonId);
         }
 
         public async Task<Club> GetByIdAsync(int id)

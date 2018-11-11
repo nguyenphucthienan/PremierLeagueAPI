@@ -38,9 +38,9 @@ namespace PremierLeagueAPI.Controllers
 
         [HttpGet("brief-list")]
         [AllowAnonymous]
-        public async Task<IActionResult> GetBriefListClubs()
+        public async Task<IActionResult> GetBriefListClubs([FromQuery] int? seasonId)
         {
-            var clubs = await _clubService.GetBriefListAsync();
+            var clubs = await _clubService.GetBriefListAsync(seasonId);
             var returnClubs = _mapper.Map<IEnumerable<ClubBriefListDto>>(clubs);
 
             return Ok(returnClubs);

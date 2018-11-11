@@ -9,7 +9,7 @@ namespace PremierLeagueAPI.Core.Services
     public interface IClubService
     {
         Task<PaginatedList<Club>> GetAsync(ClubQuery clubQuery);
-        Task<IEnumerable<Club>> GetBriefListAsync();
+        Task<IEnumerable<Club>> GetBriefListAsync(int? seasonId);
         Task<Club> GetByIdAsync(int id);
         Task<Club> GetDetailByIdAsync(int id);
         Task CreateAsync(Club club);

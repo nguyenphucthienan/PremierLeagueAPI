@@ -49,9 +49,9 @@ namespace PremierLeagueAPI.Controllers
 
         [HttpPost]
         [Authorize(Policies.RequiredAdminRole)]
-        public async Task<IActionResult> GenerateMatches()
+        public async Task<IActionResult> GenerateMatches([FromQuery] int seasonId)
         {
-            await _matchService.GenerateAsync();
+            await _matchService.GenerateAsync(seasonId);
             return Ok();
         }
 

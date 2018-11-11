@@ -40,10 +40,17 @@ namespace PremierLeagueAPI.Persistence.Repositories
             return await PaginatedList<Club>.CreateAsync(query, clubQuery.PageNumber, clubQuery.PageSize);
         }
 
-        public async Task<IEnumerable<Club>> GetBriefListAsync()
+        public async Task<IEnumerable<Club>> GetBriefListAsync(int? seasonId)
         {
-            return await Context.Clubs
-                .AsQueryable()
+            var query = Context.Clubs.AsQueryable();
+
+            if (seasonId.HasValue)
+            {
+                query = query.Where(c => c.SeasonClubs
+                    .Any(sc => sc.SeasonId == seasonId));
+            }
+
+            return await query
                 .OrderBy(c => c.Name)
                 .Select(c => new Club
                 {

@@ -45,9 +45,9 @@ namespace PremierLeagueAPI.Services
             return await _matchRepository.GetDetailByIdAsync(id);
         }
 
-        public async Task GenerateAsync()
+        public async Task GenerateAsync(int seasonId)
         {
-            var clubs = await _clubRepository.GetBriefListAsync();
+            var clubs = await _clubRepository.GetBriefListAsync(seasonId);
             var clubList = clubs.ToList();
             var clubCount = clubList.Count;
             var roundCount = clubCount - 1;
@@ -73,6 +73,7 @@ namespace PremierLeagueAPI.Services
 
                     matches.Add(new Match
                     {
+                        SeasonId = seasonId,
                         Round = round + 1,
                         HomeClubId = clubList[home].Id,
                         AwayClubId = clubList[away].Id,
@@ -82,6 +83,7 @@ namespace PremierLeagueAPI.Services
 
                     matches.Add(new Match
                     {
+                        SeasonId = seasonId,
                         Round = round + 1 + roundCount,
                         HomeClubId = clubList[away].Id,
                         AwayClubId = clubList[home].Id,
