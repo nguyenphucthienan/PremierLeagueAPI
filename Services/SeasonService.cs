@@ -30,9 +30,9 @@ namespace PremierLeagueAPI.Services
             return await _seasonRepository.GetAsync(id);
         }
 
-        public Task<Season> GetDetailByIdAsync(int id)
+        public async Task<Season> GetDetailByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _seasonRepository.GetDetailAsync(id);
         }
 
         public async Task CreateAsync(Season season)

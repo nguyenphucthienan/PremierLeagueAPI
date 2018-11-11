@@ -10,6 +10,7 @@ namespace PremierLeagueAPI.Persistence
         IdentityUserClaim<int>, UserRole, IdentityUserLogin<int>,
         IdentityRoleClaim<int>, IdentityUserToken<int>>
     {
+        public DbSet<Season> Seasons { get; set; }
         public DbSet<Club> Clubs { get; set; }
         public DbSet<Player> Players { get; set; }
         public DbSet<Match> Matches { get; set; }

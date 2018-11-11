@@ -38,7 +38,7 @@ namespace PremierLeagueAPI.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> GetSeason(int id)
         {
-            var season = await _seasonService.GetByIdAsync(id);
+            var season = await _seasonService.GetDetailByIdAsync(id);
 
             if (season == null)
                 return NotFound();
