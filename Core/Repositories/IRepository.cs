@@ -10,7 +10,7 @@ namespace PremierLeagueAPI.Core.Repositories
         Task<IEnumerable<TEntity>> GetAllAsync();
         Task<TEntity> GetAsync(int id);
         Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate);
-        TEntity SingleOrDefaultAsync(Expression<Func<TEntity, bool>> predicate);
+        Task<TEntity> SingleOrDefaultAsync(Expression<Func<TEntity, bool>> predicate);
 
         void Add(TEntity entity);
         void AddRange(IEnumerable<TEntity> entities);

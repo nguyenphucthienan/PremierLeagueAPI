@@ -32,9 +32,9 @@ namespace PremierLeagueAPI.Persistence.Repositories
             return await Context.Set<TEntity>().Where(predicate).ToListAsync();
         }
 
-        public TEntity SingleOrDefaultAsync(Expression<Func<TEntity, bool>> predicate)
+        public async Task<TEntity> SingleOrDefaultAsync(Expression<Func<TEntity, bool>> predicate)
         {
-            return Context.Set<TEntity>().SingleOrDefault(predicate);
+            return await Context.Set<TEntity>().SingleOrDefaultAsync(predicate);
         }
 
         public void Add(TEntity entity)

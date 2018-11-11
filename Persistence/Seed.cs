@@ -101,11 +101,14 @@ namespace PremierLeagueAPI.Persistence
 
         private void SeedSeasonClubs()
         {
-            var season = _seasonRepository.SingleOrDefaultAsync(s => s.Name == "2018/2019");
-            var clubs = _clubRepository.GetAllAsync();
-            clubs.Wait();
+            var seasonTask = _seasonRepository.SingleOrDefaultAsync(s => s.Name == "2018/2019");
+            seasonTask.Wait();
+            var season = seasonTask.Result;
 
-            foreach (var club in clubs.Result)
+            var clubsTask = _clubRepository.GetAllAsync();
+            clubsTask.Wait();
+
+            foreach (var club in clubsTask.Result)
             {
                 season.SeasonClubs.Add(new SeasonClub
                 {
@@ -119,11 +122,14 @@ namespace PremierLeagueAPI.Persistence
 
         private void SeedSquads()
         {
-            var season = _seasonRepository.SingleOrDefaultAsync(s => s.Name == "2018/2019");
-            var clubs = _clubRepository.GetAllAsync();
-            clubs.Wait();
+            var seasonTask = _seasonRepository.SingleOrDefaultAsync(s => s.Name == "2018/2019");
+            seasonTask.Wait();
+            var season = seasonTask.Result;
 
-            foreach (var club in clubs.Result)
+            var clubsTask = _clubRepository.GetAllAsync();
+            clubsTask.Wait();
+
+            foreach (var club in clubsTask.Result)
             {
                 var squad = new Squad
                 {
@@ -153,7 +159,10 @@ namespace PremierLeagueAPI.Persistence
                 var clubName = playerToken["clubName"].ToString();
                 var birthdate = (long) playerToken["birthdateTimestamp"];
 
-                var club = _clubRepository.SingleOrDefaultAsync(c => c.Name == clubName);
+                var clubsTask = _clubRepository.SingleOrDefaultAsync(c => c.Name == clubName);
+                clubsTask.Wait();
+
+                var club = clubsTask.Result;
                 if (club == null)
                     continue;
 
@@ -163,7 +172,10 @@ namespace PremierLeagueAPI.Persistence
 
                 _playerRepository.Add(player);
 
-                var squad = _squadRepository.SingleOrDefaultAsync(s => s.ClubId == club.Id);
+                var squadTask = _squadRepository.SingleOrDefaultAsync(s => s.ClubId == club.Id);
+                squadTask.Wait();
+
+                var squad = squadTask.Result;
                 if (squad == null)
                     continue;
 
