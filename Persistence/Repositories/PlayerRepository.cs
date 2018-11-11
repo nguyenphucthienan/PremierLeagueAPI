@@ -21,11 +21,11 @@ namespace PremierLeagueAPI.Persistence.Repositories
         public async Task<PaginatedList<Player>> GetAsync(PlayerQuery playerQuery)
         {
             var query = Context.Players
-                .Include(p => p.Club)
+                // .Include(p => p.Club)
                 .AsQueryable();
 
-            if (playerQuery.ClubId.HasValue)
-                query = query.Where(p => p.ClubId == playerQuery.ClubId);
+            // if (playerQuery.ClubId.HasValue)
+            //     query = query.Where(p => p.ClubId == playerQuery.ClubId);
 
             if (playerQuery.Position != null)
                 query = query.Where(p => p.Position.ToLower() == playerQuery.Position);
@@ -45,7 +45,7 @@ namespace PremierLeagueAPI.Persistence.Repositories
         public async Task<Player> GetDetailAsync(int id)
         {
             return await Context.Players
-                .Include(p => p.Club)
+                // .Include(p => p.Club)
                 .SingleOrDefaultAsync(p => p.Id == id);
         }
     }

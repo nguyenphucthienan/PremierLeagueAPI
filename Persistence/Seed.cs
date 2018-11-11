@@ -103,7 +103,7 @@ namespace PremierLeagueAPI.Persistence
                     continue;
 
                 var player = JsonConvert.DeserializeObject<Player>(playerToken.ToString(), settings);
-                player.ClubId = club.Id;
+                // player.ClubId = club.Id;
                 player.Birthdate = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
                     .AddSeconds(birthdate); ;
 

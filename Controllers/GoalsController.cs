@@ -69,12 +69,9 @@ namespace PremierLeagueAPI.Controllers
             if (goalCreateDto.ClubId != match.HomeClubId && goalCreateDto.ClubId != match.AwayClubId)
                 return BadRequest();
 
-            if (player.ClubId != match.HomeClubId && player.ClubId != match.AwayClubId)
-                return BadRequest();
-
             var goalToCreate = _mapper.Map<Goal>(goalCreateDto);
             goalToCreate.MatchId = matchId;
-            goalToCreate.IsOwnGoal = player.ClubId != goalCreateDto.ClubId;
+            // goalToCreate.IsOwnGoal = player.ClubId != goalCreateDto.ClubId;
 
             await _goalService.CreateAsync(goalToCreate);
 
@@ -101,7 +98,7 @@ namespace PremierLeagueAPI.Controllers
                 return BadRequest();
 
             _mapper.Map(goalUpdateDto, goal);
-            goal.IsOwnGoal = player.ClubId != goalUpdateDto.ClubId;
+            // goal.IsOwnGoal = player.ClubId != goalUpdateDto.ClubId;
 
             await _goalService.UpdateAsync(goal);
 
