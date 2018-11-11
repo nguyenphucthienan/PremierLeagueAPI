@@ -4,6 +4,7 @@ using PremierLeagueAPI.Dtos.Club;
 using PremierLeagueAPI.Dtos.Goal;
 using PremierLeagueAPI.Dtos.Match;
 using PremierLeagueAPI.Dtos.Player;
+using PremierLeagueAPI.Dtos.Squad;
 using PremierLeagueAPI.Dtos.User;
 
 namespace PremierLeagueAPI.Helpers
@@ -21,6 +22,8 @@ namespace PremierLeagueAPI.Helpers
             CreateMap<Club, ClubDetailDto>();
             CreateMap<ClubCreateDto, Club>();
             CreateMap<ClubUpdateDto, Club>();
+
+            CreateMap<Squad, SquadListDto>();
 
             CreateMap<PaginatedList<Player>, PaginatedList<PlayerListDto>>();
 

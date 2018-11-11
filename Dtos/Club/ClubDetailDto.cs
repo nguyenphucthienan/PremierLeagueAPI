@@ -1,4 +1,7 @@
-﻿namespace PremierLeagueAPI.Dtos.Club
+﻿using System.Collections.Generic;
+using PremierLeagueAPI.Dtos.Squad;
+
+namespace PremierLeagueAPI.Dtos.Club
 {
     public class ClubDetailDto
     {
@@ -8,5 +11,6 @@
         public int EstablishedYear { get; set; }
         public string HomeField { get; set; }
         public string PhotoUrl { get; set; }
+        public IEnumerable<SquadListDto> Squads { get; set; }
     }
 }

@@ -50,7 +50,7 @@ namespace PremierLeagueAPI.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> GetClub(int id)
         {
-            var club = await _clubService.GetByIdAsync(id);
+            var club = await _clubService.GetDetailByIdAsync(id);
 
             if (club == null)
                 return NotFound();
