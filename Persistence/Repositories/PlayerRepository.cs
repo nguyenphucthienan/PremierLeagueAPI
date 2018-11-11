@@ -9,6 +9,7 @@ using PremierLeagueAPI.Core.Queries;
 using PremierLeagueAPI.Core.Repositories;
 using PremierLeagueAPI.Extensions;
 using PremierLeagueAPI.Helpers;
+using Remotion.Linq.Parsing.Structure.IntermediateModel;
 
 namespace PremierLeagueAPI.Persistence.Repositories
 {
@@ -53,7 +54,12 @@ namespace PremierLeagueAPI.Persistence.Repositories
         public async Task<Player> GetDetailAsync(int id)
         {
             return await Context.Players
-                // .Include(p => p.Club)
+                .Include(p => p.SquadPlayers)
+                .ThenInclude(sp => sp.Squad)
+                .ThenInclude(s => s.Season)
+                .Include(p => p.SquadPlayers)
+                .ThenInclude(sp => sp.Squad)
+                .ThenInclude(s => s.Club)
                 .SingleOrDefaultAsync(p => p.Id == id);
         }
     }

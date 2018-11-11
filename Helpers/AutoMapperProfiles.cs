@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Linq;
+using AutoMapper;
 using PremierLeagueAPI.Core.Models;
 using PremierLeagueAPI.Dtos.Club;
 using PremierLeagueAPI.Dtos.Goal;
@@ -27,7 +28,10 @@ namespace PremierLeagueAPI.Helpers
 
             CreateMap<PaginatedList<Player>, PaginatedList<PlayerListDto>>();
 
-            CreateMap<Player, PlayerDetailDto>();
+            CreateMap<Player, PlayerDetailDto>()
+                .ForMember(pdd => pdd.Squads, opt => opt
+                    .MapFrom(p => p.SquadPlayers
+                        .Select(sp => sp.Squad).ToList()));
 
             CreateMap<PlayerCreateDto, Player>();
             CreateMap<PlayerUpdateDto, Player>();

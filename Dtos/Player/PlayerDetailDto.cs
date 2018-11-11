@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using PremierLeagueAPI.Dtos.Squad;
 
 namespace PremierLeagueAPI.Dtos.Player
 {
@@ -12,7 +14,7 @@ namespace PremierLeagueAPI.Dtos.Player
         public DateTime Birthdate { get; set; }
         public int? Height { get; set; }
         public int? Weight { get; set; }
-        public string ClubName { get; set; }
         public string PhotoUrl { get; set; }
+        public IEnumerable<SquadListDto> Squads { get; set; }
     }
 }
