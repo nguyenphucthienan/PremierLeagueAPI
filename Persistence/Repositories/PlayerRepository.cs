@@ -24,8 +24,16 @@ namespace PremierLeagueAPI.Persistence.Repositories
                 .AsQueryable();
 
             if (playerQuery.SquadId.HasValue)
+            {
                 query = query.Where(p => p.SquadPlayers
                     .Any(sp => sp.SquadId == playerQuery.SquadId));
+            }
+            else if (playerQuery.SeasonId.HasValue && playerQuery.ClubId.HasValue)
+            {
+                query = query.Where(p => p.SquadPlayers
+                    .Any(sp => sp.Squad.SeasonId == playerQuery.SeasonId
+                               && sp.Squad.ClubId == playerQuery.ClubId));
+            }
 
             if (playerQuery.Position != null)
                 query = query.Where(p => p.Position.ToLower() == playerQuery.Position);
