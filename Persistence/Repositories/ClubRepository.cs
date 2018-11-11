@@ -22,6 +22,12 @@ namespace PremierLeagueAPI.Persistence.Repositories
         {
             var query = Context.Clubs.AsQueryable();
 
+            if (clubQuery.SeasonId.HasValue)
+            {
+                query = query.Where(c => c.SeasonClubs
+                    .Any(sc => sc.SeasonId == clubQuery.SeasonId));
+            }
+
             var columnsMap = new Dictionary<string, Expression<Func<Club, object>>>()
             {
                 ["id"] = c => c.Id,
