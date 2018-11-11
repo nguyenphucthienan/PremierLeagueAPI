@@ -5,8 +5,7 @@ namespace PremierLeagueAPI.Dtos.Player
     public class PlayerListDto
     {
         public int Id { get; set; }
-        public int ClubId { get; set; }
-        public string ClubName { get; set; }
+        public int ClubName { get; set; }
         public string Name { get; set; }
         public int Number { get; set; }
         public string Position { get; set; }
