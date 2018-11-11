@@ -8,6 +8,7 @@ namespace PremierLeagueAPI.Core.Models
     {
         public Player()
         {
+            SquadPlayers = new Collection<SquadPlayer>();
             Goals = new Collection<Goal>();
             Cards = new Collection<Card>();
         }

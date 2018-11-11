@@ -16,26 +16,35 @@ namespace PremierLeagueAPI.Persistence
         private readonly UserManager<User> _userManager;
         private readonly RoleManager<Role> _roleManager;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly ISeasonRepository _seasonRepository;
         private readonly IClubRepository _clubRepository;
+        private readonly ISquadRepository _squadRepository;
         private readonly IPlayerRepository _playerRepository;
 
         public Seed(UserManager<User> userManager,
             RoleManager<Role> roleManager,
             IUnitOfWork unitOfWork,
+            ISeasonRepository seasonRepository,
             IClubRepository clubRepository,
+            ISquadRepository squadRepository,
             IPlayerRepository playerRepository)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _unitOfWork = unitOfWork;
+            _seasonRepository = seasonRepository;
             _clubRepository = clubRepository;
+            _squadRepository = squadRepository;
             _playerRepository = playerRepository;
         }
 
         public void SeedData()
         {
             SeedRolesAndAdminUser();
+            SeedSeasons();
             SeedClubs();
+            SeedSeasonClubs();
+            SeedSquads();
             SeedPlayers();
         }
 
@@ -61,7 +70,7 @@ namespace PremierLeagueAPI.Persistence
             {
                 UserName = "admin",
                 Created = DateTime.Now,
-                LastActive =  DateTime.Now
+                LastActive = DateTime.Now
             };
 
             var result = _userManager.CreateAsync(adminUser, "password").Result;
@@ -73,12 +82,58 @@ namespace PremierLeagueAPI.Persistence
             _userManager.AddToRolesAsync(admin, new[] {"Admin", "Moderator"}).Wait();
         }
 
+        private void SeedSeasons()
+        {
+            var season = new Season {Name = "2018/2019"};
+
+            _seasonRepository.Add(season);
+            _unitOfWork.CompleteAsync().Wait();
+        }
+
         private void SeedClubs()
         {
             var clubsData = File.ReadAllText("Persistence/Data/Clubs.json");
             var clubs = JsonConvert.DeserializeObject<List<Club>>(clubsData);
 
             _clubRepository.AddRange(clubs);
+            _unitOfWork.CompleteAsync().Wait();
+        }
+
+        private void SeedSeasonClubs()
+        {
+            var season = _seasonRepository.SingleOrDefaultAsync(s => s.Name == "2018/2019");
+            var clubs = _clubRepository.GetAllAsync();
+            clubs.Wait();
+
+            foreach (var club in clubs.Result)
+            {
+                season.SeasonClubs.Add(new SeasonClub
+                {
+                    Season = season,
+                    Club = club
+                });
+            }
+
+            _unitOfWork.CompleteAsync().Wait();
+        }
+
+        private void SeedSquads()
+        {
+            var season = _seasonRepository.SingleOrDefaultAsync(s => s.Name == "2018/2019");
+            var clubs = _clubRepository.GetAllAsync();
+            clubs.Wait();
+
+            foreach (var club in clubs.Result)
+            {
+                var squad = new Squad
+                {
+                    Season = season,
+                    Club = club
+                };
+
+                _squadRepository.Add(squad);
+            }
+
             _unitOfWork.CompleteAsync().Wait();
         }
 
@@ -97,17 +152,26 @@ namespace PremierLeagueAPI.Persistence
             {
                 var clubName = playerToken["clubName"].ToString();
                 var birthdate = (long) playerToken["birthdateTimestamp"];
-                var club = _clubRepository.SingleOrDefaultAsync(c => c.Name == clubName);
 
+                var club = _clubRepository.SingleOrDefaultAsync(c => c.Name == clubName);
                 if (club == null)
                     continue;
 
                 var player = JsonConvert.DeserializeObject<Player>(playerToken.ToString(), settings);
-                // player.ClubId = club.Id;
                 player.Birthdate = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
-                    .AddSeconds(birthdate); ;
+                    .AddSeconds(birthdate);
 
                 _playerRepository.Add(player);
+
+                var squad = _squadRepository.SingleOrDefaultAsync(s => s.ClubId == club.Id);
+                if (squad == null)
+                    continue;
+
+                player.SquadPlayers.Add(new SquadPlayer
+                {
+                    Squad = squad,
+                    Player = player
+                });
             }
 
             _unitOfWork.CompleteAsync().Wait();

@@ -86,7 +86,9 @@ namespace PremierLeagueAPI
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            services.AddScoped<ISeasonRepository, SeasonRepository>();
             services.AddScoped<IClubRepository, ClubRepository>();
+            services.AddScoped<ISquadRepository, SquadRepository>();
             services.AddScoped<IPlayerRepository, PlayerRepository>();
             services.AddScoped<IMatchRepository, MatchRepository>();
             services.AddScoped<IGoalRepository, GoalRepository>();
@@ -112,7 +114,7 @@ namespace PremierLeagueAPI
             }
 
             // app.UseHttpsRedirection();
-            // seed.SeedData();
+            seed.SeedData();
 
             app.UseCors(builder => builder
                 .WithOrigins(Configuration.GetSection("AppSettings:CorsWhitelist").Value)
