@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using PremierLeagueAPI.Dtos.Squad;
+using PremierLeagueAPI.Dtos.SquadPlayer;
 
 namespace PremierLeagueAPI.Dtos.Player
 {
@@ -14,6 +14,6 @@ namespace PremierLeagueAPI.Dtos.Player
         public int? Height { get; set; }
         public int? Weight { get; set; }
         public string PhotoUrl { get; set; }
-        public IEnumerable<SquadListDto> Squads { get; set; }
+        public IEnumerable<SquadPlayerListDto> SquadPlayers { get; set; }
     }
 }

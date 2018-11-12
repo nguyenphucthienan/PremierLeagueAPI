@@ -6,7 +6,7 @@ using PremierLeagueAPI.Dtos.Goal;
 using PremierLeagueAPI.Dtos.Match;
 using PremierLeagueAPI.Dtos.Player;
 using PremierLeagueAPI.Dtos.Season;
-using PremierLeagueAPI.Dtos.Squad;
+using PremierLeagueAPI.Dtos.SquadPlayer;
 using PremierLeagueAPI.Dtos.User;
 
 namespace PremierLeagueAPI.Helpers
@@ -35,20 +35,14 @@ namespace PremierLeagueAPI.Helpers
             CreateMap<ClubCreateDto, Club>();
             CreateMap<ClubUpdateDto, Club>();
 
-            CreateMap<Squad, SquadListDto>();
+            CreateMap<SquadPlayer, SquadPlayerListDto>();
 
             CreateMap<PaginatedList<Player>, PaginatedList<PlayerListDto>>();
-
-            CreateMap<Player, PlayerDetailDto>()
-                .ForMember(pdd => pdd.Squads, opt => opt
-                    .MapFrom(p => p.SquadPlayers
-                        .Select(sp => sp.Squad).ToList()));
-
+            CreateMap<Player, PlayerDetailDto>();
             CreateMap<PlayerCreateDto, Player>();
             CreateMap<PlayerUpdateDto, Player>();
 
             CreateMap<PaginatedList<Match>, PaginatedList<MatchListDto>>();
-
             CreateMap<Match, MatchDetailDto>();
             CreateMap<MatchUpdateDto, Match>();
 

@@ -9,7 +9,6 @@ using PremierLeagueAPI.Core.Queries;
 using PremierLeagueAPI.Core.Repositories;
 using PremierLeagueAPI.Extensions;
 using PremierLeagueAPI.Helpers;
-using Remotion.Linq.Parsing.Structure.IntermediateModel;
 
 namespace PremierLeagueAPI.Persistence.Repositories
 {
@@ -22,6 +21,7 @@ namespace PremierLeagueAPI.Persistence.Repositories
         public async Task<PaginatedList<Player>> GetAsync(PlayerQuery playerQuery)
         {
             var query = Context.Players
+                .Include(p => p.SquadPlayers)
                 .AsQueryable();
 
             if (playerQuery.SquadId.HasValue)
