@@ -20,6 +20,7 @@ namespace PremierLeagueAPI.Helpers
             CreateMap<User, UserDetailDto>();
 
             CreateMap<Season, SeasonListDto>();
+            CreateMap<Season, SeasonBriefListDto>();
 
             CreateMap<Season, SeasonDetailDto>()
                 .ForMember(sdd => sdd.Clubs, opt => opt

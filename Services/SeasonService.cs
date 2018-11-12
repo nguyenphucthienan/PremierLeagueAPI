@@ -25,6 +25,11 @@ namespace PremierLeagueAPI.Services
             return await _seasonRepository.GetAllAsync();
         }
 
+        public async Task<IEnumerable<Season>> GetBriefListAsync()
+        {
+            return await _seasonRepository.GetBriefListAsync();
+        }
+
         public async Task<Season> GetByIdAsync(int id)
         {
             return await _seasonRepository.GetAsync(id);

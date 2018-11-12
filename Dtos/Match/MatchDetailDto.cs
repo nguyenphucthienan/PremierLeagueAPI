@@ -9,8 +9,8 @@ namespace PremierLeagueAPI.Dtos.Match
     {
         public int Id { get; set; }
         public int Round { get; set; }
-        public ClubDetailDto HomeClub { get; set; }
-        public ClubDetailDto AwayClub { get; set; }
+        public ClubListDto HomeClub { get; set; }
+        public ClubListDto AwayClub { get; set; }
         public int HomeScore { get; set; }
         public int AwayScore { get; set; }
         public DateTime MatchTime { get; set; }
