@@ -8,6 +8,7 @@ namespace PremierLeagueAPI.Persistence.EntityConfigurations
     {
         public void Configure(EntityTypeBuilder<SquadPlayer> builder)
         {
+            builder.ToTable("SquadPlayers");
             builder.HasKey(sp => new {sp.SquadId, sp.PlayerId});
 
             builder.HasOne(sp => sp.Squad)

@@ -188,7 +188,8 @@ namespace PremierLeagueAPI.Persistence
                 {
                     Squad = squad,
                     Player = player,
-                    Number = number
+                    Number = number,
+                    CreatedAt = DateTime.Now
                 });
             }
 

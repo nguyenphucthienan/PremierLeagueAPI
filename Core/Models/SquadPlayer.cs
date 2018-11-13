@@ -1,4 +1,6 @@
-﻿namespace PremierLeagueAPI.Core.Models
+﻿using System;
+
+namespace PremierLeagueAPI.Core.Models
 {
     public class SquadPlayer
     {
@@ -7,5 +9,6 @@
         public int PlayerId { get; set; }
         public Player Player { get; set; }
         public int Number { get; set; }
+        public DateTime CreatedAt { get; set; }
     }
 }
