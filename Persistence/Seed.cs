@@ -272,7 +272,7 @@ namespace PremierLeagueAPI.Persistence
                     Squad = squad,
                     Player = player,
                     Number = number,
-                    CreatedAt = DateTime.Now
+                    StartDate = DateTime.Now
                 });
             }
 

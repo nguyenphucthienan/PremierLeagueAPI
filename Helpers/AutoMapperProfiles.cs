@@ -60,7 +60,7 @@ namespace PremierLeagueAPI.Helpers
                     .ResolveUsing((src, dest, destMember, context) =>
                     {
                         var squad = src.SquadPlayers
-                            .SingleOrDefault(sp => sp.CreatedAt == src.SquadPlayers.Max(sps => sps.CreatedAt));
+                            .SingleOrDefault(sp => sp.StartDate == src.SquadPlayers.Max(sps => sps.StartDate));
 
                         return squad?.Squad.Club.Name;
                     }))
@@ -68,7 +68,7 @@ namespace PremierLeagueAPI.Helpers
                     .ResolveUsing((src, dest, destMember, context) =>
                     {
                         var squad = src.SquadPlayers
-                            .SingleOrDefault(sp => sp.CreatedAt == src.SquadPlayers.Max(sps => sps.CreatedAt));
+                            .SingleOrDefault(sp => sp.StartDate == src.SquadPlayers.Max(sps => sps.StartDate));
 
                         return squad?.Number;
                     }));

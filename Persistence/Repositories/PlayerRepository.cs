@@ -33,7 +33,8 @@ namespace PremierLeagueAPI.Persistence.Repositories
             {
                 query = query.Where(p => p.SquadPlayers
                     .Any(sp => sp.Squad.SeasonId == playerQuery.SeasonId
-                               && sp.Squad.ClubId == playerQuery.ClubId));
+                               && sp.Squad.ClubId == playerQuery.ClubId
+                               && (sp.EndDate == null || sp.EndDate >= DateTime.Now)));
             }
 
             if (playerQuery.Position != null)
