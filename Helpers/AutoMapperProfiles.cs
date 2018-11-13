@@ -31,7 +31,11 @@ namespace PremierLeagueAPI.Helpers
             CreateMap<SeasonCreateDto, Season>();
             CreateMap<SeasonUpdateDto, Season>();
 
+            CreateMap<PaginatedList<Stadium>, PaginatedList<StadiumListDto>>();
             CreateMap<Stadium, StadiumBriefListDto>();
+            CreateMap<Stadium, StadiumDetailDto>();
+            CreateMap<StadiumCreateDto, Stadium>();
+            CreateMap<StadiumUpdateDto, Stadium>();
 
             CreateMap<PaginatedList<Club>, PaginatedList<ClubListDto>>();
             CreateMap<Club, ClubBriefListDto>();
