@@ -20,7 +20,9 @@ namespace PremierLeagueAPI.Persistence.Repositories
 
         public async Task<PaginatedList<Club>> GetAsync(ClubQuery clubQuery)
         {
-            var query = Context.Clubs.AsQueryable();
+            var query = Context.Clubs
+                .Include(c => c.Stadium)
+                .AsQueryable();
 
             if (clubQuery.SeasonId.HasValue)
             {
@@ -64,6 +66,7 @@ namespace PremierLeagueAPI.Persistence.Repositories
         public async Task<Club> GetDetailByIdAsync(int id)
         {
             return await Context.Clubs
+                .Include(c => c.Stadium)
                 .Include(c => c.Squads)
                 .ThenInclude(s => s.Season)
                 .SingleOrDefaultAsync(c => c.Id == id);
