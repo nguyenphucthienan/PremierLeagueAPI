@@ -2,7 +2,7 @@
 
 namespace PremierLeagueAPI.Dtos.Player
 {
-    public class PlayerListDto
+    public class PlayerSquadListDto
     {
         public int Id { get; set; }
         public string Name { get; set; }

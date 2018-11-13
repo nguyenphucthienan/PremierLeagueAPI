@@ -39,20 +39,24 @@ namespace PremierLeagueAPI.Helpers
 
             CreateMap<SquadPlayer, SquadPlayerListDto>();
 
-            CreateMap<Player, PlayerListDto>()
+            CreateMap<PaginatedList<Player>, PaginatedList<PlayerListDto>>();
+            CreateMap<PaginatedList<Player>, PaginatedList<PlayerSquadListDto>>();
+            CreateMap<Player, PlayerListDto>();
+            CreateMap<Player, PlayerDetailDto>();
+
+            CreateMap<Player, PlayerSquadListDto>()
                 .ForMember(pld => pld.Number, opt => opt
-                    .ResolveUsing<int?>((src, dest, destMember, resContext) =>
+                    .ResolveUsing((src, dest, destMember, context) =>
                     {
-                        if (!resContext.Items.ContainsKey("squadId"))
+                        if (!context.Items.ContainsKey("squadId"))
                             return null;
 
-                        var squadId = (int) resContext.Items["squadId"];
+                        var squadId = (int) context.Items["squadId"];
                         var squad = src.SquadPlayers.SingleOrDefault(sp => sp.SquadId == squadId);
+
                         return squad?.Number;
                     }));
 
-            CreateMap<PaginatedList<Player>, PaginatedList<PlayerListDto>>();
-            CreateMap<Player, PlayerDetailDto>();
             CreateMap<PlayerCreateDto, Player>();
             CreateMap<PlayerUpdateDto, Player>();
 
