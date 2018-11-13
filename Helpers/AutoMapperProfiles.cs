@@ -19,7 +19,7 @@ namespace PremierLeagueAPI.Helpers
             CreateMap<UserLoginDto, User>();
             CreateMap<User, UserDetailDto>();
 
-            CreateMap<Season, SeasonListDto>();
+            CreateMap<PaginatedList<Season>, PaginatedList<SeasonListDto>>();
             CreateMap<Season, SeasonBriefListDto>();
 
             CreateMap<Season, SeasonDetailDto>()

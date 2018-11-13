@@ -5,8 +5,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PremierLeagueAPI.Constants;
 using PremierLeagueAPI.Core.Models;
+using PremierLeagueAPI.Core.Queries;
 using PremierLeagueAPI.Core.Services;
 using PremierLeagueAPI.Dtos.Season;
+using PremierLeagueAPI.Helpers;
 
 namespace PremierLeagueAPI.Controllers
 {
@@ -26,17 +28,17 @@ namespace PremierLeagueAPI.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> GetSeasons()
+        public async Task<IActionResult> GetSeasons([FromQuery] SeasonQuery seasonQuery)
         {
-            var seasons = await _seasonService.GetAllAsync();
-            var returnSeasons = _mapper.Map<IEnumerable<SeasonListDto>>(seasons);
+            var seasons = await _seasonService.GetAsync(seasonQuery);
+            var returnSeasons = _mapper.Map<PaginatedList<SeasonListDto>>(seasons);
 
             return Ok(returnSeasons);
         }
 
         [HttpGet("brief-list")]
         [AllowAnonymous]
-        public async Task<IActionResult> GetBriefListClubs([FromQuery] int? seasonId)
+        public async Task<IActionResult> GetBriefListSeasons([FromQuery] int? seasonId)
         {
             var seasons = await _seasonService.GetBriefListAsync();
             var returnSeasons = _mapper.Map<IEnumerable<SeasonBriefListDto>>(seasons);

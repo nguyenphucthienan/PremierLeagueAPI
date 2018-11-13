@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using PremierLeagueAPI.Core;
 using PremierLeagueAPI.Core.Models;
+using PremierLeagueAPI.Core.Queries;
 using PremierLeagueAPI.Core.Repositories;
 using PremierLeagueAPI.Core.Services;
+using PremierLeagueAPI.Helpers;
 
 namespace PremierLeagueAPI.Services
 {
@@ -20,9 +22,9 @@ namespace PremierLeagueAPI.Services
             _seasonRepository = seasonRepository;
         }
 
-        public async Task<IEnumerable<Season>> GetAllAsync()
+        public async Task<PaginatedList<Season>> GetAsync(SeasonQuery seasonQuery)
         {
-            return await _seasonRepository.GetAllAsync();
+            return await _seasonRepository.GetAsync(seasonQuery);
         }
 
         public async Task<IEnumerable<Season>> GetBriefListAsync()
