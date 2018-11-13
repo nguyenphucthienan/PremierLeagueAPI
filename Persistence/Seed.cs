@@ -17,6 +17,7 @@ namespace PremierLeagueAPI.Persistence
         private readonly RoleManager<Role> _roleManager;
         private readonly IUnitOfWork _unitOfWork;
         private readonly ISeasonRepository _seasonRepository;
+        private readonly IStadiumRepository _stadiumRepository;
         private readonly IClubRepository _clubRepository;
         private readonly ISquadRepository _squadRepository;
         private readonly IPlayerRepository _playerRepository;
@@ -25,6 +26,7 @@ namespace PremierLeagueAPI.Persistence
             RoleManager<Role> roleManager,
             IUnitOfWork unitOfWork,
             ISeasonRepository seasonRepository,
+            IStadiumRepository stadiumRepository,
             IClubRepository clubRepository,
             ISquadRepository squadRepository,
             IPlayerRepository playerRepository)
@@ -33,6 +35,7 @@ namespace PremierLeagueAPI.Persistence
             _roleManager = roleManager;
             _unitOfWork = unitOfWork;
             _seasonRepository = seasonRepository;
+            _stadiumRepository = stadiumRepository;
             _clubRepository = clubRepository;
             _squadRepository = squadRepository;
             _playerRepository = playerRepository;
@@ -42,6 +45,7 @@ namespace PremierLeagueAPI.Persistence
         {
             SeedRolesAndAdminUser();
             SeedSeasons();
+            SeedStadiums();
             SeedClubs();
             SeedSeasonClubs();
             SeedSquads();
@@ -90,12 +94,43 @@ namespace PremierLeagueAPI.Persistence
             _unitOfWork.CompleteAsync().Wait();
         }
 
+        private void SeedStadiums()
+        {
+            var stadiumsData = File.ReadAllText("Persistence/Data/Stadiums.json");
+            var stadiums = JsonConvert.DeserializeObject<List<Stadium>>(stadiumsData);
+
+            _stadiumRepository.AddRange(stadiums);
+            _unitOfWork.CompleteAsync().Wait();
+        }
+
         private void SeedClubs()
         {
-            var clubsData = File.ReadAllText("Persistence/Data/Clubs.json");
-            var clubs = JsonConvert.DeserializeObject<List<Club>>(clubsData);
+            var settings = new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+                MissingMemberHandling = MissingMemberHandling.Ignore
+            };
 
-            _clubRepository.AddRange(clubs);
+            var clubsData = File.ReadAllText("Persistence/Data/Clubs.json");
+            var clubs = JsonConvert.DeserializeObject<JArray>(clubsData);
+
+            foreach (var clubToken in clubs)
+            {
+                var homeField = clubToken["homeField"].ToString();
+
+                var stadiumTak = _stadiumRepository.SingleOrDefaultAsync(s => s.Name == homeField);
+                stadiumTak.Wait();
+
+                var stadium = stadiumTak.Result;
+                if (stadium == null)
+                    continue;
+
+                var club = JsonConvert.DeserializeObject<Club>(clubToken.ToString(), settings);
+                club.Stadium = stadium;
+
+                _clubRepository.Add(club);
+            }
+
             _unitOfWork.CompleteAsync().Wait();
         }
 
@@ -177,7 +212,8 @@ namespace PremierLeagueAPI.Persistence
 
                 _playerRepository.Add(player);
 
-                var squadTask = _squadRepository.SingleOrDefaultAsync(s => s.ClubId == club.Id);
+                var squadTask = _squadRepository
+                    .SingleOrDefaultAsync(s => s.SeasonId == season.Id && s.ClubId == club.Id);
                 squadTask.Wait();
 
                 var squad = squadTask.Result;
