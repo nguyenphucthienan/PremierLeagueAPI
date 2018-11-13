@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using AutoMapper;
 using PremierLeagueAPI.Core.Models;
 using PremierLeagueAPI.Dtos.Club;
@@ -37,6 +38,18 @@ namespace PremierLeagueAPI.Helpers
             CreateMap<ClubUpdateDto, Club>();
 
             CreateMap<SquadPlayer, SquadPlayerListDto>();
+
+            CreateMap<Player, PlayerListDto>()
+                .ForMember(pld => pld.Number, opt => opt
+                    .ResolveUsing<int?>((src, dest, destMember, resContext) =>
+                    {
+                        if (!resContext.Items.ContainsKey("squadId"))
+                            return null;
+
+                        var squadId = (int) resContext.Items["squadId"];
+                        var squad = src.SquadPlayers.SingleOrDefault(sp => sp.SquadId == squadId);
+                        return squad?.Number;
+                    }));
 
             CreateMap<PaginatedList<Player>, PaginatedList<PlayerListDto>>();
             CreateMap<Player, PlayerDetailDto>();
