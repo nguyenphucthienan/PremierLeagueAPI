@@ -3,9 +3,11 @@ using AutoMapper;
 using PremierLeagueAPI.Core.Models;
 using PremierLeagueAPI.Dtos.Club;
 using PremierLeagueAPI.Dtos.Goal;
+using PremierLeagueAPI.Dtos.Kit;
 using PremierLeagueAPI.Dtos.Match;
 using PremierLeagueAPI.Dtos.Player;
 using PremierLeagueAPI.Dtos.Season;
+using PremierLeagueAPI.Dtos.Squad;
 using PremierLeagueAPI.Dtos.SquadPlayer;
 using PremierLeagueAPI.Dtos.Stadium;
 using PremierLeagueAPI.Dtos.User;
@@ -43,7 +45,11 @@ namespace PremierLeagueAPI.Helpers
             CreateMap<ClubCreateDto, Club>();
             CreateMap<ClubUpdateDto, Club>();
 
+            CreateMap<Squad, SquadListDto>();
+            CreateMap<Squad, SquadDetailDto>();
             CreateMap<SquadPlayer, SquadPlayerListDto>();
+
+            CreateMap<Kit, KitListDto>();
 
             CreateMap<PaginatedList<Player>, PaginatedList<PlayerListDto>>();
             CreateMap<PaginatedList<Player>, PaginatedList<PlayerSquadListDto>>();
