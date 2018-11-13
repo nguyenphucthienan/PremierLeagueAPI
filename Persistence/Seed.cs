@@ -20,6 +20,7 @@ namespace PremierLeagueAPI.Persistence
         private readonly IStadiumRepository _stadiumRepository;
         private readonly IClubRepository _clubRepository;
         private readonly ISquadRepository _squadRepository;
+        private readonly IKitRepository _kitRepository;
         private readonly IPlayerRepository _playerRepository;
 
         public Seed(UserManager<User> userManager,
@@ -29,6 +30,7 @@ namespace PremierLeagueAPI.Persistence
             IStadiumRepository stadiumRepository,
             IClubRepository clubRepository,
             ISquadRepository squadRepository,
+            IKitRepository kitRepository,
             IPlayerRepository playerRepository)
         {
             _userManager = userManager;
@@ -38,6 +40,7 @@ namespace PremierLeagueAPI.Persistence
             _stadiumRepository = stadiumRepository;
             _clubRepository = clubRepository;
             _squadRepository = squadRepository;
+            _kitRepository = kitRepository;
             _playerRepository = playerRepository;
         }
 
@@ -49,6 +52,7 @@ namespace PremierLeagueAPI.Persistence
             SeedClubs();
             SeedSeasonClubs();
             SeedSquads();
+            SeedKits();
             SeedPlayers();
         }
 
@@ -118,10 +122,10 @@ namespace PremierLeagueAPI.Persistence
             {
                 var homeField = clubToken["homeField"].ToString();
 
-                var stadiumTak = _stadiumRepository.SingleOrDefaultAsync(s => s.Name == homeField);
-                stadiumTak.Wait();
+                var stadiumTask = _stadiumRepository.SingleOrDefaultAsync(s => s.Name == homeField);
+                stadiumTask.Wait();
 
-                var stadium = stadiumTak.Result;
+                var stadium = stadiumTask.Result;
                 if (stadium == null)
                     continue;
 
@@ -173,6 +177,49 @@ namespace PremierLeagueAPI.Persistence
                 };
 
                 _squadRepository.Add(squad);
+            }
+
+            _unitOfWork.CompleteAsync().Wait();
+        }
+
+        private void SeedKits()
+        {
+            var settings = new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+                MissingMemberHandling = MissingMemberHandling.Ignore
+            };
+
+            var seasonTask = _seasonRepository.SingleOrDefaultAsync(s => s.Name == "2018/2019");
+            seasonTask.Wait();
+            var season = seasonTask.Result;
+
+            var kitsData = File.ReadAllText("Persistence/Data/Kits.json");
+            var kits = JsonConvert.DeserializeObject<JArray>(kitsData);
+
+            foreach (var kitToken in kits)
+            {
+                var clubName = kitToken["clubName"].ToString();
+
+                var clubTask = _clubRepository.SingleOrDefaultAsync(c => c.Name == clubName);
+                clubTask.Wait();
+
+                var club = clubTask.Result;
+                if (club == null)
+                    continue;
+
+                var squadTask = _squadRepository
+                    .SingleOrDefaultAsync(s => s.SeasonId == season.Id && s.ClubId == club.Id);
+                squadTask.Wait();
+
+                var squad = squadTask.Result;
+                if (squad == null)
+                    continue;
+
+                var kit = JsonConvert.DeserializeObject<Kit>(kitToken.ToString(), settings);
+                kit.Squad = squad;
+
+                _kitRepository.Add(kit);
             }
 
             _unitOfWork.CompleteAsync().Wait();

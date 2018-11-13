@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using PremierLeagueAPI.Core;
 using PremierLeagueAPI.Core.Models;
 using PremierLeagueAPI.Persistence.EntityConfigurations;
 
@@ -14,6 +13,7 @@ namespace PremierLeagueAPI.Persistence
         public DbSet<Season> Seasons { get; set; }
         public DbSet<Stadium> Stadiums { get; set; }
         public DbSet<Club> Clubs { get; set; }
+        public DbSet<Kit> Kits { get; set; }
         public DbSet<Player> Players { get; set; }
         public DbSet<Match> Matches { get; set; }
         public DbSet<Goal> Goals { get; set; }
@@ -31,6 +31,7 @@ namespace PremierLeagueAPI.Persistence
             modelBuilder.ApplyConfiguration(new SeasonConfiguration());
             modelBuilder.ApplyConfiguration(new StadiumConfiguration());
             modelBuilder.ApplyConfiguration(new ClubConfiguration());
+            modelBuilder.ApplyConfiguration(new KitConfiguration());
             modelBuilder.ApplyConfiguration(new SeasonClubConfiguration());
             modelBuilder.ApplyConfiguration(new PlayerConfiguration());
             modelBuilder.ApplyConfiguration(new SquadConfiguration());
