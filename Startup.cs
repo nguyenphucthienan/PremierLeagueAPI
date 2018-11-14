@@ -99,6 +99,7 @@ namespace PremierLeagueAPI
             services.AddTransient<ISeasonService, SeasonService>();
             services.AddTransient<IStadiumService, StadiumService>();
             services.AddTransient<IClubService, ClubService>();
+            services.AddTransient<ISquadService, SquadService>();
             services.AddTransient<IKitService, KitService>();
             services.AddTransient<IPlayerService, PlayerService>();
             services.AddTransient<IMatchService, MatchService>();
