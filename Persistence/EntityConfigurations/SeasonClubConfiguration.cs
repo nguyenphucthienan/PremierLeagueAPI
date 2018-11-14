@@ -8,6 +8,7 @@ namespace PremierLeagueAPI.Persistence.EntityConfigurations
     {
         public void Configure(EntityTypeBuilder<SeasonClub> builder)
         {
+            builder.ToTable("SeasonClubs");
             builder.HasKey(sc => new {sc.SeasonId, sc.ClubId});
 
             builder.HasOne(sc => sc.Season)
