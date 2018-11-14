@@ -8,6 +8,7 @@ namespace PremierLeagueAPI.Core.Models
         public Stadium()
         {
             Clubs = new Collection<Club>();
+            Matches = new Collection<Match>();
         }
 
         public int Id { get; set; }
@@ -21,5 +22,6 @@ namespace PremierLeagueAPI.Core.Models
         public string PhotoUrl { get; set; }
         public string MapPhotoUrl { get; set; }
         public ICollection<Club> Clubs { get; set; }
+        public ICollection<Match> Matches { get; set; }
     }
 }
