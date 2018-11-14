@@ -243,8 +243,26 @@ namespace PremierLeagueAPI.Persistence
             foreach (var playerToken in players)
             {
                 var clubName = playerToken["clubName"].ToString();
+                var position = playerToken["position"].ToString();
                 var number = (int) playerToken["number"];
                 var birthdate = (long) playerToken["birthdateTimestamp"];
+
+                var positionType = PositionType.Goalkeeper;
+                switch (position)
+                {
+                    case "Goalkeeper":
+                        positionType = PositionType.Goalkeeper;
+                        break;
+                    case "Defender":
+                        positionType = PositionType.Defender;
+                        break;
+                    case "Midfielder":
+                        positionType = PositionType.Midfielder;
+                        break;
+                    case "Forward":
+                        positionType = PositionType.Forward;
+                        break;
+                }
 
                 var clubsTask = _clubRepository.SingleOrDefaultAsync(c => c.Name == clubName);
                 clubsTask.Wait();
@@ -256,6 +274,7 @@ namespace PremierLeagueAPI.Persistence
                 var player = JsonConvert.DeserializeObject<Player>(playerToken.ToString(), settings);
                 player.Birthdate = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
                     .AddSeconds(birthdate);
+                player.PositionType = positionType;
 
                 _playerRepository.Add(player);
 

@@ -118,7 +118,7 @@ namespace PremierLeagueAPI
             }
 
             // app.UseHttpsRedirection();
-            // seed.SeedData();
+            seed.SeedData();
 
             app.UseCors(builder => builder
                 .WithOrigins(Configuration.GetSection("AppSettings:CorsWhitelist").Value)

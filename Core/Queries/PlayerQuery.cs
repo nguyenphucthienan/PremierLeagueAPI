@@ -1,4 +1,6 @@
-﻿namespace PremierLeagueAPI.Core.Queries
+﻿using PremierLeagueAPI.Core.Models;
+
+namespace PremierLeagueAPI.Core.Queries
 {
     public class PlayerQuery : IQueryObject
     {
@@ -24,6 +26,6 @@
         public int? SquadId { get; set; }
         public int? SeasonId { get; set; }
         public int? ClubId { get; set; }
-        public string Position { get; set; }
+        public PositionType? PositionType { get; set; }
     }
 }

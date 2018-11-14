@@ -37,13 +37,14 @@ namespace PremierLeagueAPI.Persistence.Repositories
                                && (sp.EndDate == null || sp.EndDate >= DateTime.Now)));
             }
 
-            if (playerQuery.Position != null)
-                query = query.Where(p => p.Position.ToLower() == playerQuery.Position);
+            if (playerQuery.PositionType.HasValue)
+                query = query.Where(p => p.PositionType == playerQuery.PositionType);
 
             var columnsMap = new Dictionary<string, Expression<Func<Player, object>>>()
             {
                 ["id"] = p => p.Id,
-                ["name"] = p => p.Name
+                ["name"] = p => p.Name,
+                ["position"] = p => p.PositionType
             };
 
             query = query.Sort(playerQuery, columnsMap);

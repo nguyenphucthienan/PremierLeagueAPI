@@ -15,7 +15,7 @@ namespace PremierLeagueAPI.Core.Models
 
         public int Id { get; set; }
         public string Name { get; set; }
-        public string Position { get; set; }
+        public PositionType PositionType { get; set; }
         public string Nationality { get; set; }
         public DateTime Birthdate { get; set; }
         public int? Height { get; set; }
@@ -24,5 +24,13 @@ namespace PremierLeagueAPI.Core.Models
         public ICollection<SquadPlayer> SquadPlayers { get; set; }
         public ICollection<Goal> Goals { get; set; }
         public ICollection<Card> Cards { get; set; }
+    }
+
+    public enum PositionType
+    {
+        Goalkeeper,
+        Defender,
+        Midfielder,
+        Forward
     }
 }
