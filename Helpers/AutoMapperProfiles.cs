@@ -54,6 +54,9 @@ namespace PremierLeagueAPI.Helpers
             CreateMap<SquadPlayer, SquadPlayerListDto>();
 
             CreateMap<Kit, KitListDto>();
+            CreateMap<Kit, KitDetailDto>();
+            CreateMap<KitCreateDto, Kit>();
+            CreateMap<KitUpdateDto, Kit>();
 
             CreateMap<PaginatedList<Player>, PaginatedList<PlayerListDto>>();
             CreateMap<PaginatedList<Player>, PaginatedList<PlayerSquadListDto>>();
