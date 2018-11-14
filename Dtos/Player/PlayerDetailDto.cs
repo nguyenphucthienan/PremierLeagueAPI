@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using PremierLeagueAPI.Core.Models;
+using PremierLeagueAPI.Dtos.Club;
 using PremierLeagueAPI.Dtos.SquadPlayer;
 
 namespace PremierLeagueAPI.Dtos.Player
@@ -9,7 +10,7 @@ namespace PremierLeagueAPI.Dtos.Player
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public string ClubName { get; set; }
+        public ClubBriefListDto Club { get; set; }
         public int? Number { get; set; }
         public PositionType PositionType { get; set; }
         public string Nationality { get; set; }

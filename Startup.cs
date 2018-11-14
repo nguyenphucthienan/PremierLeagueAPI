@@ -99,6 +99,7 @@ namespace PremierLeagueAPI
             services.AddTransient<ISeasonService, SeasonService>();
             services.AddTransient<IStadiumService, StadiumService>();
             services.AddTransient<IClubService, ClubService>();
+            services.AddTransient<IKitService, KitService>();
             services.AddTransient<IPlayerService, PlayerService>();
             services.AddTransient<IMatchService, MatchService>();
             services.AddTransient<IGoalService, GoalService>();
@@ -118,7 +119,7 @@ namespace PremierLeagueAPI
             }
 
             // app.UseHttpsRedirection();
-            seed.SeedData();
+            // seed.SeedData();
 
             app.UseCors(builder => builder
                 .WithOrigins(Configuration.GetSection("AppSettings:CorsWhitelist").Value)

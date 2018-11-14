@@ -56,13 +56,13 @@ namespace PremierLeagueAPI.Helpers
             CreateMap<Player, PlayerListDto>();
 
             CreateMap<Player, PlayerDetailDto>()
-                .ForMember(pdd => pdd.ClubName, opt => opt
+                .ForMember(pdd => pdd.Club, opt => opt
                     .ResolveUsing((src, dest, destMember, context) =>
                     {
                         var squad = src.SquadPlayers
                             .SingleOrDefault(sp => sp.StartDate == src.SquadPlayers.Max(sps => sps.StartDate));
 
-                        return squad?.Squad.Club.Name;
+                        return squad?.Squad.Club;
                     }))
                 .ForMember(pdd => pdd.Number, opt => opt
                     .ResolveUsing((src, dest, destMember, context) =>
