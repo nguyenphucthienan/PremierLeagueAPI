@@ -21,6 +21,7 @@ namespace PremierLeagueAPI.Persistence.Repositories
         public async Task<PaginatedList<Match>> GetAsync(MatchQuery matchQuery)
         {
             var query = Context.Matches
+                .Include(m => m.Stadium)
                 .Include(m => m.HomeClub)
                 .Include(m => m.AwayClub)
                 .AsQueryable();
@@ -46,6 +47,7 @@ namespace PremierLeagueAPI.Persistence.Repositories
         public async Task<Match> GetDetailByIdAsync(int id)
         {
             return await Context.Matches
+                .Include(m => m.Stadium)
                 .Include(m => m.HomeClub)
                 .Include(m => m.AwayClub)
                 .Include(m => m.Goals)

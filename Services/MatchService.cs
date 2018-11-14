@@ -71,10 +71,14 @@ namespace PremierLeagueAPI.Services
                     if (match == 0)
                         away = clubCount - 1;
 
+                    var homeClub = await _clubRepository.GetAsync(clubList[home].Id);
+                    var awayClub = await _clubRepository.GetAsync(clubList[away].Id);
+
                     matches.Add(new Match
                     {
                         SeasonId = seasonId,
                         Round = round + 1,
+                        StadiumId = homeClub.StadiumId,
                         HomeClubId = clubList[home].Id,
                         AwayClubId = clubList[away].Id,
                         MatchTime = matchTime,
@@ -85,6 +89,7 @@ namespace PremierLeagueAPI.Services
                     {
                         SeasonId = seasonId,
                         Round = round + 1 + roundCount,
+                        StadiumId = awayClub.StadiumId,
                         HomeClubId = clubList[away].Id,
                         AwayClubId = clubList[home].Id,
                         MatchTime = matchTime.AddDays(roundCount * 7),
