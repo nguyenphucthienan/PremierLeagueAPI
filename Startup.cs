@@ -16,6 +16,7 @@ using PremierLeagueAPI.Core;
 using PremierLeagueAPI.Core.Models;
 using PremierLeagueAPI.Core.Repositories;
 using PremierLeagueAPI.Core.Services;
+using PremierLeagueAPI.Helpers;
 using PremierLeagueAPI.Persistence;
 using PremierLeagueAPI.Persistence.Repositories;
 using PremierLeagueAPI.Services;
@@ -82,6 +83,7 @@ namespace PremierLeagueAPI
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddAutoMapper();
+            services.Configure<CloudinarySettings>(Configuration.GetSection("CloudinarySettings"));
             services.AddTransient<Seed>();
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
