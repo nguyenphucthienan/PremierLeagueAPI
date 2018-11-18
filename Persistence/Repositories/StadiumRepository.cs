@@ -25,7 +25,13 @@ namespace PremierLeagueAPI.Persistence.Repositories
             var columnsMap = new Dictionary<string, Expression<Func<Stadium, object>>>()
             {
                 ["id"] = s => s.Id,
-                ["name"] = s => s.Name
+                ["name"] = s => s.Name,
+                ["capacity"] = s => s.Capacity,
+                ["builtYear"] = s => s.BuiltYear,
+                ["pitchSize"] = s => s.PitchSize,
+                ["address"] = s => s.Address,
+                ["phone"] = s => s.Phone,
+                ["description"] = s => s.Description
             };
 
             query = query.Sort(stadiumQuery, columnsMap);

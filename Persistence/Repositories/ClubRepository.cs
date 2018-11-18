@@ -35,7 +35,8 @@ namespace PremierLeagueAPI.Persistence.Repositories
                 ["id"] = c => c.Id,
                 ["code"] = c => c.Code,
                 ["name"] = c => c.Name,
-                ["establishedYear"] = c => c.EstablishedYear
+                ["establishedYear"] = c => c.EstablishedYear,
+                ["stadium"] = c => c.Stadium.Name
             };
 
             query = query.Sort(clubQuery, columnsMap);

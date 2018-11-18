@@ -11,7 +11,7 @@ namespace PremierLeagueAPI.Dtos.Club
         public string Name { get; set; }
         public int EstablishedYear { get; set; }
         public string PhotoUrl { get; set; }
-        public StadiumListDto Stadium { get; set; }
+        public StadiumBriefListDto Stadium { get; set; }
         public IEnumerable<SquadDetailDto> Squads { get; set; }
     }
 }

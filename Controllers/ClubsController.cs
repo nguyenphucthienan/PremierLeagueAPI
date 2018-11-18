@@ -90,7 +90,7 @@ namespace PremierLeagueAPI.Controllers
             _mapper.Map(clubUpdateDto, club);
             await _clubService.UpdateAsync(club);
 
-            var updatedClub = await _clubService.GetByIdAsync(id);
+            var updatedClub = await _clubService.GetDetailByIdAsync(id);
             var returnClub = _mapper.Map<ClubDetailDto>(updatedClub);
 
             return Ok(returnClub);
