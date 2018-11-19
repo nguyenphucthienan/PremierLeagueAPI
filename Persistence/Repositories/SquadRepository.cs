@@ -20,7 +20,10 @@ namespace PremierLeagueAPI.Persistence.Repositories
 
         public async Task<PaginatedList<Squad>> GetAsync(SquadQuery squadQuery)
         {
-            var query = Context.Squads.AsQueryable();
+            var query = Context.Squads
+                .Include(s => s.Season)
+                .Include(s => s.Club)
+                .AsQueryable();
 
             if (squadQuery.SeasonId.HasValue)
             {
@@ -29,7 +32,8 @@ namespace PremierLeagueAPI.Persistence.Repositories
 
             var columnsMap = new Dictionary<string, Expression<Func<Squad, object>>>()
             {
-                ["id"] = s => s.Id
+                ["id"] = s => s.Id,
+                ["club"] = s => s.Club.Name
             };
 
             query = query.Sort(squadQuery, columnsMap);
@@ -40,6 +44,7 @@ namespace PremierLeagueAPI.Persistence.Repositories
         public async Task<Squad> GetDetailAsync(int id)
         {
             return await Context.Squads
+                .Include(s => s.SquadPlayers)
                 .Include(s => s.Season)
                 .Include(s => s.Club)
                 .Include(s => s.Kits)

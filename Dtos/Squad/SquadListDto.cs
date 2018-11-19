@@ -1,11 +1,12 @@
-﻿namespace PremierLeagueAPI.Dtos.Squad
+﻿using PremierLeagueAPI.Dtos.Club;
+using PremierLeagueAPI.Dtos.Season;
+
+namespace PremierLeagueAPI.Dtos.Squad
 {
     public class SquadListDto
     {
         public int Id { get; set; }
-        public int ClubId { get; set; }
-        public string ClubName { get; set; }
-        public int SeasonId { get; set; }
-        public string SeasonName { get; set; }
+        public ClubBriefListDto Club{ get; set; }
+        public SeasonBriefListDto Season { get; set; }
     }
 }

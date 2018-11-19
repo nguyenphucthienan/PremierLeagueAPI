@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -17,12 +19,15 @@ namespace PremierLeagueAPI.Controllers
     {
         private readonly IMapper _mapper;
         private readonly ISquadService _squadService;
+        private readonly IPlayerService _playerService;
 
         public SquadsController(IMapper mapper,
-            ISquadService squadService)
+            ISquadService squadService,
+            IPlayerService playerService)
         {
             _mapper = mapper;
             _squadService = squadService;
+            _playerService = playerService;
         }
 
         [HttpGet]
@@ -98,6 +103,52 @@ namespace PremierLeagueAPI.Controllers
             await _squadService.DeleteAsync(squad);
 
             return Ok(id);
+        }
+
+        [HttpPost("{id}/players/{playerId}")]
+        [Authorize(Policies.RequiredAdminRole)]
+        public async Task<IActionResult> AddPlayerToSquad(int id, int playerId)
+        {
+            var squad = await _squadService.GetByIdAsync(id);
+
+            if (squad == null)
+                return NotFound();
+
+            var player = await _playerService.GetByIdAsync(playerId);
+
+            if (player == null)
+                return NotFound();
+
+            squad.SquadPlayers.Add(new SquadPlayer
+            {
+                Squad = squad,
+                Player = player,
+                StartDate = DateTime.Now
+            });
+
+            await _squadService.UpdateAsync(squad);
+            return Ok();
+        }
+
+        [HttpDelete("{id}/players/{playerId}")]
+        [Authorize(Policies.RequiredAdminRole)]
+        public async Task<IActionResult> DeletePlayerFromSquad(int id, int playerId)
+        {
+            var squad = await _squadService.GetDetailByIdAsync(id);
+
+            if (squad == null)
+                return NotFound();
+
+            var player = squad.SquadPlayers
+                .SingleOrDefault(sp => sp.PlayerId == playerId);
+
+            if (player == null)
+                return NotFound();
+
+            squad.SquadPlayers.Remove(player);
+            await _squadService.UpdateAsync(squad);
+
+            return Ok();
         }
     }
 }
