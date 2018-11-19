@@ -9,7 +9,6 @@ using PremierLeagueAPI.Core.Models;
 using PremierLeagueAPI.Core.Queries;
 using PremierLeagueAPI.Core.Services;
 using PremierLeagueAPI.Dtos.Kit;
-using PremierLeagueAPI.Dtos.Squad;
 using PremierLeagueAPI.Helpers;
 
 namespace PremierLeagueAPI.Controllers
@@ -90,7 +89,7 @@ namespace PremierLeagueAPI.Controllers
             await _kitService.CreateAsync(kitToCreate);
 
             var kit = await _kitService.GetDetailByIdAsync(kitToCreate.Id);
-            var returnKit = _mapper.Map<SquadDetailDto>(kit);
+            var returnKit = _mapper.Map<KitDetailDto>(kit);
 
             return Ok(returnKit);
         }
@@ -119,7 +118,7 @@ namespace PremierLeagueAPI.Controllers
             await _kitService.UpdateAsync(kit);
 
             var updatedKit = await _squadService.GetByIdAsync(id);
-            var returnKit = _mapper.Map<SquadDetailDto>(updatedKit);
+            var returnKit = _mapper.Map<KitDetailDto>(updatedKit);
 
             return Ok(returnKit);
         }
