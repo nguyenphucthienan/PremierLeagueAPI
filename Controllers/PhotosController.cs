@@ -1,8 +1,6 @@
-﻿using System.Threading.Tasks;
-using CloudinaryDotNet;
+﻿using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using PremierLeagueAPI.Constants;
@@ -33,7 +31,7 @@ namespace PremierLeagueAPI.Controllers
 
         [HttpPost("upload/cloudinary")]
         [Authorize(Policies.RequiredAdminRole)]
-        public async Task<IActionResult> UploadToCloudinary([FromForm] PhotoUploadDto photoUploadDto)
+        public IActionResult UploadToCloudinary([FromForm] PhotoUploadDto photoUploadDto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
