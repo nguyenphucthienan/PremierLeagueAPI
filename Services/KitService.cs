@@ -2,8 +2,10 @@
 using System.Threading.Tasks;
 using PremierLeagueAPI.Core;
 using PremierLeagueAPI.Core.Models;
+using PremierLeagueAPI.Core.Queries;
 using PremierLeagueAPI.Core.Repositories;
 using PremierLeagueAPI.Core.Services;
+using PremierLeagueAPI.Helpers;
 
 namespace PremierLeagueAPI.Services
 {
@@ -17,6 +19,10 @@ namespace PremierLeagueAPI.Services
         {
             _unitOfWork = unitOfWork;
             _kitRepository = kitRepository;
+        }
+        public async Task<PaginatedList<Kit>> GetAsync(KitQuery kitQuery)
+        {
+            return await _kitRepository.GetAsync(kitQuery);
         }
 
         public async Task<IEnumerable<Kit>> GetBySquadIdAsync(int squadId)

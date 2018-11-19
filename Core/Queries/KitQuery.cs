@@ -1,8 +1,6 @@
-﻿using PremierLeagueAPI.Core.Models;
-
-namespace PremierLeagueAPI.Core.Queries
+﻿namespace PremierLeagueAPI.Core.Queries
 {
-    public class PlayerQuery : IQueryObject
+    public class KitQuery : IQueryObject
     {
         private const int MaxPageSize = 20;
 
@@ -26,7 +24,5 @@ namespace PremierLeagueAPI.Core.Queries
         public int? SquadId { get; set; }
         public int? SeasonId { get; set; }
         public int? ClubId { get; set; }
-        public string Name { get; set; }
-        public PositionType? PositionType { get; set; }
     }
 }

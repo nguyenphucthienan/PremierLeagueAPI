@@ -6,9 +6,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PremierLeagueAPI.Constants;
 using PremierLeagueAPI.Core.Models;
+using PremierLeagueAPI.Core.Queries;
 using PremierLeagueAPI.Core.Services;
 using PremierLeagueAPI.Dtos.Kit;
 using PremierLeagueAPI.Dtos.Squad;
+using PremierLeagueAPI.Helpers;
 
 namespace PremierLeagueAPI.Controllers
 {
@@ -30,6 +32,20 @@ namespace PremierLeagueAPI.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetPlayers([FromQuery] KitQuery kitQuery)
+        {
+            var kits = await _kitService.GetAsync(kitQuery);
+            var returnKits = _mapper.Map<PaginatedList<KitListDto>>(kits, opt =>
+            {
+                if (kitQuery.SquadId.HasValue)
+                    opt.Items["squadId"] = kitQuery.SquadId;
+            });
+
+            return Ok(returnKits);
+        }
+
+        [HttpGet("list")]
         [AllowAnonymous]
         public async Task<IActionResult> GetKitsBySquadId(int squadId)
         {

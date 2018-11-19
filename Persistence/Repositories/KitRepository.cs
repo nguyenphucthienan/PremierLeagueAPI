@@ -1,9 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using PremierLeagueAPI.Core.Models;
+using PremierLeagueAPI.Core.Queries;
 using PremierLeagueAPI.Core.Repositories;
+using PremierLeagueAPI.Extensions;
+using PremierLeagueAPI.Helpers;
 
 namespace PremierLeagueAPI.Persistence.Repositories
 {
@@ -11,6 +16,32 @@ namespace PremierLeagueAPI.Persistence.Repositories
     {
         public KitRepository(PremierLeagueDbContext context) : base(context)
         {
+        }
+
+        public async Task<PaginatedList<Kit>> GetAsync(KitQuery kitQuery)
+        {
+            var query = Context.Kits
+                .Include(k => k.Squad)
+                .AsQueryable();
+
+            if (kitQuery.SquadId.HasValue)
+            {
+                query = query.Where(k => k.SquadId == kitQuery.SquadId);
+            }
+            else if (kitQuery.SeasonId.HasValue && kitQuery.ClubId.HasValue)
+            {
+                query = query.Where(k => k.Squad.SeasonId == kitQuery.SeasonId
+                                         && k.Squad.ClubId == kitQuery.ClubId);
+            }
+
+            var columnsMap = new Dictionary<string, Expression<Func<Kit, object>>>()
+            {
+                ["id"] = p => p.Id
+            };
+
+            query = query.Sort(kitQuery, columnsMap);
+
+            return await PaginatedList<Kit>.CreateAsync(query, kitQuery.PageNumber, kitQuery.PageSize);
         }
 
         public async Task<IEnumerable<Kit>> GetBySquadIdAsync(int squadId)

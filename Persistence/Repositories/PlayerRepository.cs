@@ -37,6 +37,9 @@ namespace PremierLeagueAPI.Persistence.Repositories
                                && (sp.EndDate == null || sp.EndDate >= DateTime.Now)));
             }
 
+            if (playerQuery.Name != null)
+                query = query.Where(p => p.Name.Contains(playerQuery.Name));
+
             if (playerQuery.PositionType.HasValue)
                 query = query.Where(p => p.PositionType == playerQuery.PositionType);
 
