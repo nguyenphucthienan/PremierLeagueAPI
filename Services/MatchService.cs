@@ -112,6 +112,12 @@ namespace PremierLeagueAPI.Services
             await _unitOfWork.CompleteAsync();
         }
 
+        public async Task CreateAsync(Match match)
+        {
+            _matchRepository.Add(match);
+            await _unitOfWork.CompleteAsync();
+        }
+
         public async Task UpdateAsync(Match match)
         {
             if (match.IsPlayed == false)
@@ -128,7 +134,7 @@ namespace PremierLeagueAPI.Services
             await _unitOfWork.CompleteAsync();
         }
 
-        public async Task<IEnumerable<int>> GetListRounds(int seasonId)
+        public async Task<IEnumerable<object>> GetListRounds(int seasonId)
         {
             return await _matchRepository.GetListRounds(seasonId);
         }

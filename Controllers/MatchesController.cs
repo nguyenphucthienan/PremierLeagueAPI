@@ -3,6 +3,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PremierLeagueAPI.Constants;
+using PremierLeagueAPI.Core.Models;
 using PremierLeagueAPI.Core.Queries;
 using PremierLeagueAPI.Core.Services;
 using PremierLeagueAPI.Dtos.Match;
@@ -47,13 +48,29 @@ namespace PremierLeagueAPI.Controllers
             return Ok(returnMatch);
         }
 
-        [HttpPost]
+        [HttpPost("generate")]
         [Authorize(Policies.RequiredAdminRole)]
         public async Task<IActionResult> GenerateMatches([FromQuery] int seasonId)
         {
             await _matchService.DeleteAllAsync(seasonId);
             await _matchService.GenerateAsync(seasonId);
             return Ok();
+        }
+
+        [HttpPost]
+        [Authorize(Policies.RequiredAdminRole)]
+        public async Task<IActionResult> CreateMatch([FromBody] MatchCreateDto matchCreateDto)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var matchToCreate = _mapper.Map<Match>(matchCreateDto);
+            await _matchService.CreateAsync(matchToCreate);
+
+            var match = await _matchService.GetByIdAsync(matchToCreate.Id);
+            var returnMatch = _mapper.Map<MatchDetailDto>(match);
+
+            return Ok(returnMatch);
         }
 
         [HttpPut("{id}")]

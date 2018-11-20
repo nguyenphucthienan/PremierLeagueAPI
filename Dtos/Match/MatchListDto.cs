@@ -7,6 +7,7 @@ namespace PremierLeagueAPI.Dtos.Match
     public class MatchListDto
     {
         public int Id { get; set; }
+        public int SeasonId { get; set; }
         public int Round { get; set; }
         public StadiumBriefListDto Stadium { get; set; }
         public ClubListDto HomeClub { get; set; }
