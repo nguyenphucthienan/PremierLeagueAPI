@@ -104,6 +104,14 @@ namespace PremierLeagueAPI.Services
             await _unitOfWork.CompleteAsync();
         }
 
+        public async Task DeleteAllAsync(int seasonId)
+        {
+            var matches = await _matchRepository.GetAllBySeasonIdAsync(seasonId);
+            _matchRepository.RemoveRange(matches);
+
+            await _unitOfWork.CompleteAsync();
+        }
+
         public async Task UpdateAsync(Match match)
         {
             if (match.IsPlayed == false)

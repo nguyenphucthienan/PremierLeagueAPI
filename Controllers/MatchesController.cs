@@ -51,6 +51,7 @@ namespace PremierLeagueAPI.Controllers
         [Authorize(Policies.RequiredAdminRole)]
         public async Task<IActionResult> GenerateMatches([FromQuery] int seasonId)
         {
+            await _matchService.DeleteAllAsync(seasonId);
             await _matchService.GenerateAsync(seasonId);
             return Ok();
         }

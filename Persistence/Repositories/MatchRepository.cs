@@ -62,6 +62,13 @@ namespace PremierLeagueAPI.Persistence.Repositories
                 .SingleOrDefaultAsync(m => m.Id == id);
         }
 
+        public async Task<IEnumerable<Match>> GetAllBySeasonIdAsync(int seasonId)
+        {
+            return await Context.Matches
+                .Where(m => m.SeasonId == seasonId)
+                .ToListAsync();
+        }
+
         public async Task<IEnumerable<int>> GetListRounds(int seasonId)
         {
             return await Context.Matches

@@ -10,6 +10,7 @@ namespace PremierLeagueAPI.Core.Repositories
     {
         Task<PaginatedList<Match>> GetAsync(MatchQuery matchQuery);
         Task<Match> GetDetailByIdAsync(int id);
+        Task<IEnumerable<Match>> GetAllBySeasonIdAsync(int seasonId);
         Task<IEnumerable<int>> GetListRounds(int seasonId);
     }
 }

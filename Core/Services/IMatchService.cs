@@ -12,6 +12,7 @@ namespace PremierLeagueAPI.Core.Services
         Task<Match> GetByIdAsync(int id);
         Task<Match> GetDetailByIdAsync(int id);
         Task GenerateAsync(int seasonId);
+        Task DeleteAllAsync(int seasonId);
         Task UpdateAsync(Match match);
         Task DeleteAsync(Match match);
         Task<IEnumerable<int>> GetListRounds(int seasonId);
