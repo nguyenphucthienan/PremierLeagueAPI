@@ -89,5 +89,13 @@ namespace PremierLeagueAPI.Controllers
 
             return Ok(id);
         }
+
+        [HttpGet("round-list")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetListRounds([FromQuery] int seasonId)
+        {
+            var rounds = await _matchService.GetListRounds(seasonId);
+            return Ok(rounds);
+        }
     }
 }

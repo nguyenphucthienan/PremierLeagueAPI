@@ -23,5 +23,6 @@
         public bool IsSortAscending { get; set; }
         public int? Round { get; set; }
         public bool? IsPlayed { get; set; }
+        public int? SeasonId { get; set; }
     }
 }

@@ -32,11 +32,18 @@ namespace PremierLeagueAPI.Persistence.Repositories
             if (matchQuery.IsPlayed.HasValue)
                 query = query.Where(m => m.IsPlayed == matchQuery.IsPlayed);
 
+            if (matchQuery.SeasonId.HasValue)
+                query = query.Where(m => m.SeasonId == matchQuery.SeasonId);
+
             var columnsMap = new Dictionary<string, Expression<Func<Match, object>>>()
             {
                 ["id"] = m => m.Id,
                 ["round"] = m => m.Round,
-                ["matchTime"] = m => m.MatchTime
+                ["homeClub"] = m => m.HomeClub.Name,
+                ["awayClub"] = m => m.AwayClub.Name,
+                ["matchTime"] = m => m.MatchTime,
+                ["isPlayed"] = m => m.IsPlayed,
+                ["stadium"] = m => m.Stadium.Name
             };
 
             query = query.Sort(matchQuery, columnsMap);
@@ -53,6 +60,15 @@ namespace PremierLeagueAPI.Persistence.Repositories
                 .Include(m => m.Goals)
                 .ThenInclude(g => g.Player)
                 .SingleOrDefaultAsync(m => m.Id == id);
+        }
+
+        public async Task<IEnumerable<int>> GetListRounds(int seasonId)
+        {
+            return await Context.Matches
+                .Where(m => m.SeasonId == seasonId)
+                .Select(m => m.Round)
+                .Distinct()
+                .ToListAsync();
         }
     }
 }

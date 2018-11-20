@@ -119,5 +119,10 @@ namespace PremierLeagueAPI.Services
             _matchRepository.Remove(match);
             await _unitOfWork.CompleteAsync();
         }
+
+        public async Task<IEnumerable<int>> GetListRounds(int seasonId)
+        {
+            return await _matchRepository.GetListRounds(seasonId);
+        }
     }
 }

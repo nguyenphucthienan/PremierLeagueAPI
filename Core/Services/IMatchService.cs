@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using PremierLeagueAPI.Core.Models;
 using PremierLeagueAPI.Core.Queries;
 using PremierLeagueAPI.Helpers;
@@ -13,5 +14,6 @@ namespace PremierLeagueAPI.Core.Services
         Task GenerateAsync(int seasonId);
         Task UpdateAsync(Match match);
         Task DeleteAsync(Match match);
+        Task<IEnumerable<int>> GetListRounds(int seasonId);
     }
 }
