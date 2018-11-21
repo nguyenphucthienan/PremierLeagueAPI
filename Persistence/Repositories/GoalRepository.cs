@@ -31,6 +31,8 @@ namespace PremierLeagueAPI.Persistence.Repositories
             var columnsMap = new Dictionary<string, Expression<Func<Goal, object>>>()
             {
                 ["id"] = g => g.Id,
+                ["club"] = g => g.Club.Name,
+                ["player"] = g => g.Player.Name,
                 ["goalType"] = g => g.GoalType,
                 ["goalTime"] = g => g.GoalTime,
             };

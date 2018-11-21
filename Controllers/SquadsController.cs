@@ -105,16 +105,16 @@ namespace PremierLeagueAPI.Controllers
             return Ok(id);
         }
 
-        [HttpPost("{id}/players/{playerId}")]
+        [HttpPost("{id}/players")]
         [Authorize(Policies.RequiredAdminRole)]
-        public async Task<IActionResult> AddPlayerToSquad(int id, int playerId)
+        public async Task<IActionResult> AddPlayerToSquad(int id, [FromBody] SquadAddPlayerDto squadAddPlayerDto)
         {
             var squad = await _squadService.GetByIdAsync(id);
 
             if (squad == null)
                 return NotFound();
 
-            var player = await _playerService.GetByIdAsync(playerId);
+            var player = await _playerService.GetByIdAsync(squadAddPlayerDto.PlayerId);
 
             if (player == null)
                 return NotFound();
@@ -123,6 +123,7 @@ namespace PremierLeagueAPI.Controllers
             {
                 Squad = squad,
                 Player = player,
+                Number = squadAddPlayerDto.Number,
                 StartDate = DateTime.Now
             });
 

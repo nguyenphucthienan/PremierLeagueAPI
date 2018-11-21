@@ -26,6 +26,7 @@ namespace PremierLeagueAPI.Persistence.Repositories
                 .Include(m => m.AwayClub)
                 .Include(m => m.HomeClubKit)
                 .Include(m => m.AwayClubKit)
+                .Include(m => m.Goals)
                 .AsQueryable();
 
             if (matchQuery.Round.HasValue)
