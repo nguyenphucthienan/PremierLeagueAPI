@@ -24,6 +24,8 @@ namespace PremierLeagueAPI.Persistence.Repositories
                 .Include(m => m.Stadium)
                 .Include(m => m.HomeClub)
                 .Include(m => m.AwayClub)
+                .Include(m => m.HomeClubKit)
+                .Include(m => m.AwayClubKit)
                 .AsQueryable();
 
             if (matchQuery.Round.HasValue)
@@ -57,6 +59,8 @@ namespace PremierLeagueAPI.Persistence.Repositories
                 .Include(m => m.Stadium)
                 .Include(m => m.HomeClub)
                 .Include(m => m.AwayClub)
+                .Include(m => m.HomeClubKit)
+                .Include(m => m.AwayClubKit)
                 .Include(m => m.Goals)
                 .ThenInclude(g => g.Player)
                 .SingleOrDefaultAsync(m => m.Id == id);
