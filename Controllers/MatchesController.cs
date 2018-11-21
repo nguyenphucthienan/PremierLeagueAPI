@@ -67,7 +67,7 @@ namespace PremierLeagueAPI.Controllers
             var matchToCreate = _mapper.Map<Match>(matchCreateDto);
             await _matchService.CreateAsync(matchToCreate);
 
-            var match = await _matchService.GetByIdAsync(matchToCreate.Id);
+            var match = await _matchService.GetDetailByIdAsync(matchToCreate.Id);
             var returnMatch = _mapper.Map<MatchDetailDto>(match);
 
             return Ok(returnMatch);

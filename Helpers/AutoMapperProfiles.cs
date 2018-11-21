@@ -61,6 +61,7 @@ namespace PremierLeagueAPI.Helpers
             CreateMap<PaginatedList<Player>, PaginatedList<PlayerListDto>>();
             CreateMap<PaginatedList<Player>, PaginatedList<PlayerSquadListDto>>();
             CreateMap<Player, PlayerListDto>();
+            CreateMap<Player, PlayerBriefListDto>();
 
             CreateMap<Player, PlayerDetailDto>()
                 .ForMember(pdd => pdd.Club, opt => opt
@@ -97,6 +98,8 @@ namespace PremierLeagueAPI.Helpers
             CreateMap<PlayerUpdateDto, Player>();
 
             CreateMap<PaginatedList<Match>, PaginatedList<MatchListDto>>();
+            CreateMap<Match, MatchListDto>();
+            CreateMap<Match, MatchBriefListDto>();
             CreateMap<Match, MatchDetailDto>();
             CreateMap<MatchCreateDto, Match>();
             CreateMap<MatchUpdateDto, Match>();

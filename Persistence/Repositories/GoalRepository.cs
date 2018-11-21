@@ -43,8 +43,10 @@ namespace PremierLeagueAPI.Persistence.Repositories
         public async Task<Goal> GetDetailByIdAsync(int id)
         {
             return await Context.Goals
+                .Include(g => g.Match).ThenInclude(m => m.HomeClub)
+                .Include(g => g.Match).ThenInclude(m => m.AwayClub)
+                .Include(g => g.Match).ThenInclude(m => m.Stadium)
                 .Include(g => g.Club)
-                .Include(g => g.Match)
                 .Include(g => g.Player)
                 .SingleOrDefaultAsync(g => g.Id == id);
         }
