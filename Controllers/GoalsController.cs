@@ -1,12 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PremierLeagueAPI.Constants;
 using PremierLeagueAPI.Core.Models;
+using PremierLeagueAPI.Core.Queries;
 using PremierLeagueAPI.Core.Services;
 using PremierLeagueAPI.Dtos.Goal;
+using PremierLeagueAPI.Helpers;
 
 namespace PremierLeagueAPI.Controllers
 {
@@ -32,10 +33,10 @@ namespace PremierLeagueAPI.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> GetGoals(int matchId)
+        public async Task<IActionResult> GetGoals([FromQuery] GoalQuery goalQuery)
         {
-            var goals = await _goalService.GetByMatchIdAsync(matchId);
-            var returnGoals = _mapper.Map<IEnumerable<GoalListDto>>(goals);
+            var goals = await _goalService.GetAsync(goalQuery);
+            var returnGoals = _mapper.Map<PaginatedList<GoalListDto>>(goals);
 
             return Ok(returnGoals);
         }

@@ -1,9 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using PremierLeagueAPI.Core.Models;
+using PremierLeagueAPI.Core.Queries;
 using PremierLeagueAPI.Core.Repositories;
+using PremierLeagueAPI.Extensions;
+using PremierLeagueAPI.Helpers;
 
 namespace PremierLeagueAPI.Persistence.Repositories
 {
@@ -13,13 +18,26 @@ namespace PremierLeagueAPI.Persistence.Repositories
         {
         }
 
-        public async Task<IEnumerable<Goal>> GetByMatchIdAsync(int matchId)
+        public async Task<PaginatedList<Goal>> GetAsync(GoalQuery goalQuery)
         {
-            return await Context.Goals
+            var query = Context.Goals
                 .Include(g => g.Club)
                 .Include(g => g.Player)
-                .Where(g => g.MatchId == matchId)
-                .ToListAsync();
+                .AsQueryable();
+
+            if (goalQuery.MatchId.HasValue)
+                query = query.Where(g => g.MatchId == goalQuery.MatchId);
+
+            var columnsMap = new Dictionary<string, Expression<Func<Goal, object>>>()
+            {
+                ["id"] = g => g.Id,
+                ["goalType"] = g => g.GoalType,
+                ["goalTime"] = g => g.GoalTime,
+            };
+
+            query = query.Sort(goalQuery, columnsMap);
+
+            return await PaginatedList<Goal>.CreateAsync(query, goalQuery.PageNumber, goalQuery.PageSize);
         }
 
         public async Task<Goal> GetDetailByIdAsync(int id)

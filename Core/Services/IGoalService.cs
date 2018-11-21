@@ -1,12 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using PremierLeagueAPI.Core.Models;
+using PremierLeagueAPI.Core.Queries;
+using PremierLeagueAPI.Helpers;
 
 namespace PremierLeagueAPI.Core.Services
 {
     public interface IGoalService
     {
-        Task<IEnumerable<Goal>> GetByMatchIdAsync(int matchId);
+        Task<PaginatedList<Goal>> GetAsync(GoalQuery goalQuery);
         Task<Goal> GetByIdAsync(int id);
         Task<Goal> GetDetailByIdAsync(int id);
         Task CreateAsync(Goal goal);
