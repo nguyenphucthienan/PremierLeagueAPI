@@ -35,6 +35,11 @@ namespace PremierLeagueAPI.Services
             return await _squadRepository.GetDetailAsync(id);
         }
 
+        public async Task<Squad> GetDetailBySeasonIdAndClubIdAsync(int seasonId, int clubId)
+        {
+            return await _squadRepository.GetDetailAsync(seasonId, clubId);
+        }
+
         public async Task CreateAsync(Squad squad)
         {
             _squadRepository.Add(squad);

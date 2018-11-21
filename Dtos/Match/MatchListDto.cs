@@ -1,5 +1,6 @@
 ﻿using System;
 using PremierLeagueAPI.Dtos.Club;
+using PremierLeagueAPI.Dtos.Kit;
 using PremierLeagueAPI.Dtos.Stadium;
 
 namespace PremierLeagueAPI.Dtos.Match
@@ -12,6 +13,8 @@ namespace PremierLeagueAPI.Dtos.Match
         public StadiumBriefListDto Stadium { get; set; }
         public ClubListDto HomeClub { get; set; }
         public ClubListDto AwayClub { get; set; }
+        public KitListDto HomeClubKit { get; set; }
+        public KitListDto AwayClubKit { get; set; }
         public int HomeScore { get; set; }
         public int AwayScore { get; set; }
         public DateTime MatchTime { get; set; }

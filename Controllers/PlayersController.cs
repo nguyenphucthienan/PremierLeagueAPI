@@ -32,10 +32,8 @@ namespace PremierLeagueAPI.Controllers
             var players = await _playerService.GetAsync(playerQuery);
             if (playerQuery.SquadId.HasValue)
             {
-                var returnPlayers = _mapper.Map<PaginatedList<PlayerSquadListDto>>(players, opt =>
-                {
-                        opt.Items["squadId"] = playerQuery.SquadId;
-                });
+                var returnPlayers = _mapper.Map<PaginatedList<PlayerSquadListDto>>(players,
+                    opt => { opt.Items["squadId"] = playerQuery.SquadId; });
 
                 return Ok(returnPlayers);
             }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -8,6 +9,7 @@ using PremierLeagueAPI.Constants;
 using PremierLeagueAPI.Core.Models;
 using PremierLeagueAPI.Core.Queries;
 using PremierLeagueAPI.Core.Services;
+using PremierLeagueAPI.Dtos.Player;
 using PremierLeagueAPI.Dtos.Squad;
 using PremierLeagueAPI.Helpers;
 
@@ -103,6 +105,24 @@ namespace PremierLeagueAPI.Controllers
             await _squadService.DeleteAsync(squad);
 
             return Ok(id);
+        }
+
+        [HttpGet("{id}/players")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetPlayersInSquad(int id,
+            int? seasonId, int? clubId)
+        {
+            var squadId = id;
+            if (seasonId.HasValue && clubId.HasValue)
+            {
+                var squad = await _squadService.GetDetailBySeasonIdAndClubIdAsync(seasonId.Value, clubId.Value);
+                squadId = squad.Id;
+            }
+
+            var players = await _playerService.GetBriefListAsync(squadId);
+            var returnPlayers = _mapper.Map<IEnumerable<PlayerBriefListDto>>(players);
+
+            return Ok(returnPlayers);
         }
 
         [HttpPost("{id}/players")]

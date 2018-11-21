@@ -59,6 +59,14 @@ namespace PremierLeagueAPI.Persistence.Repositories
             return await PaginatedList<Player>.CreateAsync(query, playerQuery.PageNumber, playerQuery.PageSize);
         }
 
+        public async Task<IEnumerable<Player>> GetBriefListAsync(int squadId)
+        {
+            return await Context.Players
+                .Where(p => p.SquadPlayers
+                    .Any(sp => sp.SquadId == squadId))
+                .ToListAsync();
+        }
+
         public async Task<Player> GetDetailAsync(int id)
         {
             return await Context.Players

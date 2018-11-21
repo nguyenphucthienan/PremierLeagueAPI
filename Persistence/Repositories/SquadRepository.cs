@@ -50,5 +50,15 @@ namespace PremierLeagueAPI.Persistence.Repositories
                 .Include(s => s.Kits)
                 .SingleOrDefaultAsync(s => s.Id == id);
         }
+
+        public async Task<Squad> GetDetailAsync(int seasonId, int clubId)
+        {
+            return await Context.Squads
+                .Include(s => s.SquadPlayers)
+                .Include(s => s.Season)
+                .Include(s => s.Club)
+                .Include(s => s.Kits)
+                .SingleOrDefaultAsync(s => s.SeasonId == seasonId && s.ClubId == clubId);
+        }
     }
 }

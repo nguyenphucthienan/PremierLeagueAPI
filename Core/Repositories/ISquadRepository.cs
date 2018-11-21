@@ -9,5 +9,6 @@ namespace PremierLeagueAPI.Core.Repositories
     {
         Task<PaginatedList<Squad>> GetAsync(SquadQuery squadQuery);
         Task<Squad> GetDetailAsync(int id);
+        Task<Squad> GetDetailAsync(int seasonId, int squadId);
     }
 }
