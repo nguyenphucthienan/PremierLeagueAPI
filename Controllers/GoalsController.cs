@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -17,16 +18,19 @@ namespace PremierLeagueAPI.Controllers
     {
         private readonly IMapper _mapper;
         private readonly IPlayerService _playerService;
+        private readonly ISquadService _squadService;
         private readonly IMatchService _matchService;
         private readonly IGoalService _goalService;
 
         public GoalsController(IMapper mapper,
             IPlayerService playerService,
+            ISquadService squadService,
             IMatchService matchService,
             IGoalService goalService)
         {
             _mapper = mapper;
             _playerService = playerService;
+            _squadService = squadService;
             _matchService = matchService;
             _goalService = goalService;
         }
@@ -74,7 +78,25 @@ namespace PremierLeagueAPI.Controllers
 
             var goalToCreate = _mapper.Map<Goal>(goalCreateDto);
             goalToCreate.MatchId = matchId;
-            // goalToCreate.IsOwnGoal = player.ClubId != goalCreateDto.ClubId;
+
+            var homeClubSquad = await _squadService
+                .GetDetailBySeasonIdAndClubIdAsync(match.SeasonId, match.HomeClubId);
+            var awayClubSquad = await _squadService
+                .GetDetailBySeasonIdAndClubIdAsync(match.SeasonId, match.AwayClubId);
+
+            bool isHomePlayer;
+            if (player.SquadPlayers.Any(sp => sp.SquadId == homeClubSquad.Id))
+                isHomePlayer = true;
+            else if (player.SquadPlayers.Any(sp => sp.SquadId == awayClubSquad.Id))
+                isHomePlayer = false;
+            else
+                return BadRequest();
+
+            if ((isHomePlayer && goalCreateDto.ClubId != match.HomeClubId) 
+                || (!isHomePlayer && goalCreateDto.ClubId != match.AwayClubId))
+                goalToCreate.IsOwnGoal = true;
+            else
+                goalToCreate.IsOwnGoal = false;
 
             await _goalService.CreateAsync(goalToCreate);
 
