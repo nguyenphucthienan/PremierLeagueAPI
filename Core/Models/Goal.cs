@@ -16,9 +16,9 @@
 
     public enum GoalType
     {
+        Other,
         LeftFoot,
         RightFoot,
-        Head,
-        Other
+        Head
     }
 }

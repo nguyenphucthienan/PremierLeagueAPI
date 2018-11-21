@@ -107,7 +107,8 @@ namespace PremierLeagueAPI.Controllers
 
         [HttpPost("{id}/players")]
         [Authorize(Policies.RequiredAdminRole)]
-        public async Task<IActionResult> AddPlayerToSquad(int id, [FromBody] SquadAddPlayerDto squadAddPlayerDto)
+        public async Task<IActionResult> AddPlayerToSquad(int id,
+            [FromBody] SquadAddPlayerDto squadAddPlayerDto)
         {
             var squad = await _squadService.GetByIdAsync(id);
 
@@ -131,9 +132,39 @@ namespace PremierLeagueAPI.Controllers
             return Ok();
         }
 
+        [HttpPut("{id}/players/{playerId}")]
+        [Authorize(Policies.RequiredAdminRole)]
+        public async Task<IActionResult> UpdatePlayerInSquad(int id, int playerId,
+            [FromBody] SquadUpdatePlayerDto squadUpdatePlayerDto)
+        {
+            var squad = await _squadService.GetDetailByIdAsync(id);
+
+            if (squad == null)
+                return NotFound();
+
+            var player = await _playerService.GetByIdAsync(squadUpdatePlayerDto.PlayerId);
+
+            if (player == null)
+                return NotFound();
+
+            var squadPlayer = squad.SquadPlayers.SingleOrDefault(sp => sp.PlayerId == playerId);
+            var existSquadPlayer = squad.SquadPlayers.SingleOrDefault(sp => sp.Number == squadUpdatePlayerDto.Number);
+
+            if (squadPlayer == null)
+                return BadRequest();
+
+            if (existSquadPlayer != null && (existSquadPlayer.PlayerId != squadPlayer.PlayerId))
+                return BadRequest();
+
+            _mapper.Map(squadUpdatePlayerDto, squadPlayer);
+
+            await _squadService.UpdateAsync(squad);
+            return Ok();
+        }
+
         [HttpDelete("{id}/players/{playerId}")]
         [Authorize(Policies.RequiredAdminRole)]
-        public async Task<IActionResult> DeletePlayerFromSquad(int id, int playerId)
+        public async Task<IActionResult> RemovePlayerFromSquad(int id, int playerId)
         {
             var squad = await _squadService.GetDetailByIdAsync(id);
 
