@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using AutoMapper;
 using PremierLeagueAPI.Core.Models;
+using PremierLeagueAPI.Dtos.Card;
 using PremierLeagueAPI.Dtos.Club;
 using PremierLeagueAPI.Dtos.Goal;
 using PremierLeagueAPI.Dtos.Kit;
@@ -106,10 +107,16 @@ namespace PremierLeagueAPI.Helpers
             CreateMap<MatchUpdateDto, Match>();
 
             CreateMap<PaginatedList<Goal>, PaginatedList<GoalListDto>>();
-            CreateMap<GoalCreateDto, Goal>();
-            CreateMap<GoalUpdateDto, Goal>();
             CreateMap<Goal, GoalListDto>();
             CreateMap<Goal, GoalDetailDto>();
+            CreateMap<GoalCreateDto, Goal>();
+            CreateMap<GoalUpdateDto, Goal>();
+
+            CreateMap<PaginatedList<Card>, PaginatedList<CardListDto>>();
+            CreateMap<Card, CardListDto>();
+            CreateMap<Card, GoalDetailDto>();
+            CreateMap<CardCreateDto, Card>();
+            CreateMap<CardUpdateDto, Card>();
         }
     }
 }

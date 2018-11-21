@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using PremierLeagueAPI.Dtos.Card;
 using PremierLeagueAPI.Dtos.Club;
 using PremierLeagueAPI.Dtos.Goal;
 using PremierLeagueAPI.Dtos.Kit;
@@ -23,5 +24,6 @@ namespace PremierLeagueAPI.Dtos.Match
         public DateTime MatchTime { get; set; }
         public bool IsPlayed { get; set; }
         public ICollection<GoalListDto> Goals { get; set; }
+        public ICollection<CardListDto> Cards { get; set; }
     }
 }
