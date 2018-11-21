@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using PremierLeagueAPI.Core;
 using PremierLeagueAPI.Core.Models;
 using PremierLeagueAPI.Core.Queries;

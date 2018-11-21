@@ -7,77 +7,77 @@ using PremierLeagueAPI.Constants;
 using PremierLeagueAPI.Core.Models;
 using PremierLeagueAPI.Core.Queries;
 using PremierLeagueAPI.Core.Services;
-using PremierLeagueAPI.Dtos.Goal;
+using PremierLeagueAPI.Dtos.Card;
 using PremierLeagueAPI.Helpers;
 
 namespace PremierLeagueAPI.Controllers
 {
     [Route("api/matches/{matchId}/[controller]")]
     [ApiController]
-    public class GoalsController : ControllerBase
+    public class CardsController : ControllerBase
     {
         private readonly IMapper _mapper;
         private readonly IPlayerService _playerService;
         private readonly ISquadService _squadService;
         private readonly IMatchService _matchService;
-        private readonly IGoalService _goalService;
+        private readonly ICardService _cardService;
 
-        public GoalsController(IMapper mapper,
+        public CardsController(IMapper mapper,
             IPlayerService playerService,
             ISquadService squadService,
             IMatchService matchService,
-            IGoalService goalService)
+            ICardService cardService)
         {
             _mapper = mapper;
             _playerService = playerService;
             _squadService = squadService;
             _matchService = matchService;
-            _goalService = goalService;
+            _cardService = cardService;
         }
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> GetGoals(int matchId, [FromQuery] GoalQuery goalQuery)
+        public async Task<IActionResult> GetCards(int matchId, [FromQuery] CardQuery cardQuery)
         {
-            goalQuery.MatchId = matchId;
+            cardQuery.MatchId = matchId;
 
-            var goals = await _goalService.GetAsync(goalQuery);
-            var returnGoals = _mapper.Map<PaginatedList<GoalListDto>>(goals);
+            var cards = await _cardService.GetAsync(cardQuery);
+            var returnCards = _mapper.Map<PaginatedList<CardListDto>>(cards);
 
-            return Ok(returnGoals);
+            return Ok(returnCards);
         }
 
         [HttpGet("{id}")]
         [AllowAnonymous]
-        public async Task<IActionResult> GetGoal(int matchId, int id)
+        public async Task<IActionResult> GetCard(int matchId, int id)
         {
-            var goal = await _goalService.GetDetailByIdAsync(id);
+            var card = await _cardService.GetDetailByIdAsync(id);
 
-            if (goal == null || goal.MatchId != matchId)
+            if (card == null || card.MatchId != matchId)
                 return NotFound();
 
-            var returnGoal = _mapper.Map<GoalDetailDto>(goal);
-            return Ok(returnGoal);
+            var returnCard = _mapper.Map<CardDetailDto>(card);
+            return Ok(returnCard);
         }
 
         [HttpPost]
         [Authorize(Policies.RequiredAdminRole)]
-        public async Task<IActionResult> CreateGoal(int matchId, [FromBody] GoalCreateDto goalCreateDto)
+        public async Task<IActionResult> CreateCard(int matchId, [FromBody] CardCreateDto cardCreateDto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
             var match = await _matchService.GetByIdAsync(matchId);
-            var player = await _playerService.GetByIdAsync(goalCreateDto.PlayerId);
+            var player = await _playerService.GetByIdAsync(cardCreateDto.PlayerId);
 
             if (match == null || player == null)
                 return BadRequest();
 
-            if (goalCreateDto.ClubId != match.HomeClubId && goalCreateDto.ClubId != match.AwayClubId)
+            if (cardCreateDto.ClubId != match.HomeClubId && cardCreateDto.ClubId != match.AwayClubId)
                 return BadRequest();
 
-            var goalToCreate = _mapper.Map<Goal>(goalCreateDto);
-            goalToCreate.MatchId = matchId;
+            var cardToCreate = _mapper.Map<Card>(cardCreateDto);
+            cardToCreate.MatchId = matchId;
 
             var homeClubSquad = await _squadService
                 .GetDetailBySeasonIdAndClubIdAsync(match.SeasonId, match.HomeClubId);
@@ -92,42 +92,40 @@ namespace PremierLeagueAPI.Controllers
             else
                 return BadRequest();
 
-            if ((isHomePlayer && goalCreateDto.ClubId != match.HomeClubId)
-                || (!isHomePlayer && goalCreateDto.ClubId != match.AwayClubId))
-                goalToCreate.IsOwnGoal = true;
-            else
-                goalToCreate.IsOwnGoal = false;
+            if ((isHomePlayer && cardCreateDto.ClubId != match.HomeClubId)
+                || (!isHomePlayer && cardCreateDto.ClubId != match.AwayClubId))
+                return BadRequest();
 
-            await _goalService.CreateAsync(goalToCreate);
+            await _cardService.CreateAsync(cardToCreate);
 
-            var goal = await _goalService.GetDetailByIdAsync(goalToCreate.Id);
-            var returnGoal = _mapper.Map<GoalDetailDto>(goal);
+            var card = await _cardService.GetDetailByIdAsync(cardToCreate.Id);
+            var returnCard = _mapper.Map<CardDetailDto>(card);
 
-            return Ok(returnGoal);
+            return Ok(returnCard);
         }
 
         [HttpPut("{id}")]
         [Authorize(Policies.RequiredAdminRole)]
-        public async Task<IActionResult> UpdateGoal(int matchId, int id, [FromBody] GoalUpdateDto goalUpdateDto)
+        public async Task<IActionResult> UpdateCard(int matchId, int id, [FromBody] CardUpdateDto cardUpdateDto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
             var match = await _matchService.GetByIdAsync(matchId);
-            var player = await _playerService.GetByIdAsync(goalUpdateDto.PlayerId);
+            var player = await _playerService.GetByIdAsync(cardUpdateDto.PlayerId);
 
             if (match == null || player == null)
                 return BadRequest();
 
-            var goal = await _goalService.GetByIdAsync(id);
+            var card = await _cardService.GetByIdAsync(id);
 
-            if (goal == null)
+            if (card == null)
                 return NotFound();
 
-            if (goal.MatchId != matchId)
+            if (card.MatchId != matchId)
                 return BadRequest();
 
-            _mapper.Map(goalUpdateDto, goal);
+            _mapper.Map(cardUpdateDto, card);
 
             var homeClubSquad = await _squadService
                 .GetDetailBySeasonIdAndClubIdAsync(match.SeasonId, match.HomeClubId);
@@ -142,33 +140,31 @@ namespace PremierLeagueAPI.Controllers
             else
                 return BadRequest();
 
-            if ((isHomePlayer && goalUpdateDto.ClubId != match.HomeClubId)
-                || (!isHomePlayer && goalUpdateDto.ClubId != match.AwayClubId))
-                goal.IsOwnGoal = true;
-            else
-                goal.IsOwnGoal = false;
+            if ((isHomePlayer && cardUpdateDto.ClubId != match.HomeClubId)
+                || (!isHomePlayer && cardUpdateDto.ClubId != match.AwayClubId))
+                return BadRequest();
 
-            await _goalService.UpdateAsync(goal);
+            await _cardService.UpdateAsync(card);
 
-            var updatedGoal = await _goalService.GetDetailByIdAsync(id);
-            var returnGoal = _mapper.Map<GoalDetailDto>(updatedGoal);
+            var updatedCard = await _cardService.GetDetailByIdAsync(id);
+            var returnCard = _mapper.Map<CardDetailDto>(updatedCard);
 
-            return Ok(returnGoal);
+            return Ok(returnCard);
         }
 
         [HttpDelete("{id}")]
         [Authorize(Policies.RequiredAdminRole)]
-        public async Task<IActionResult> DeleteGoal(int matchId, int id)
+        public async Task<IActionResult> DeleteCard(int matchId, int id)
         {
-            var goal = await _goalService.GetByIdAsync(id);
+            var card = await _cardService.GetByIdAsync(id);
 
-            if (goal == null)
+            if (card == null)
                 return NotFound();
 
-            if (goal.MatchId != matchId)
+            if (card.MatchId != matchId)
                 return BadRequest();
 
-            await _goalService.DeleteAsync(goal);
+            await _cardService.DeleteAsync(card);
 
             return Ok(id);
         }

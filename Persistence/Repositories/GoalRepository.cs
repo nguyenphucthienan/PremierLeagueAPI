@@ -34,6 +34,7 @@ namespace PremierLeagueAPI.Persistence.Repositories
                 ["club"] = g => g.Club.Name,
                 ["player"] = g => g.Player.Name,
                 ["goalType"] = g => g.GoalType,
+                ["isOwnGoal"] = g => g.IsOwnGoal,
                 ["goalTime"] = g => g.GoalTime,
             };
 

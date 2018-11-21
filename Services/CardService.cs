@@ -2,8 +2,10 @@
 using System.Threading.Tasks;
 using PremierLeagueAPI.Core;
 using PremierLeagueAPI.Core.Models;
+using PremierLeagueAPI.Core.Queries;
 using PremierLeagueAPI.Core.Repositories;
 using PremierLeagueAPI.Core.Services;
+using PremierLeagueAPI.Helpers;
 
 namespace PremierLeagueAPI.Services
 {
@@ -22,9 +24,9 @@ namespace PremierLeagueAPI.Services
             _cardRepository = cardRepository;
         }
 
-        public async Task<IEnumerable<Card>> GetByMatchIdAsync(int matchId)
+        public async Task<PaginatedList<Card>> GetAsync(CardQuery cardQuery)
         {
-            return await _cardRepository.GetByMatchIdAsync(matchId);
+            return await _cardRepository.GetAsync(cardQuery);
         }
 
         public async Task<Card> GetByIdAsync(int id)
