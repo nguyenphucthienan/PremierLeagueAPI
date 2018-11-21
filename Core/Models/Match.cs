@@ -23,10 +23,10 @@ namespace PremierLeagueAPI.Core.Models
         public Club HomeClub { get; set; }
         public int AwayClubId { get; set; }
         public Club AwayClub { get; set; }
-        public int HomeKitId { get; set; }
-        public Kit HomeKit { get; set; }
-        public int AwayKitId { get; set; }
-        public Kit AwayKit { get; set; }
+        public int HomeClubKitId { get; set; }
+        public Kit HomeClubKit { get; set; }
+        public int AwayClubKitId { get; set; }
+        public Kit AwayClubKit { get; set; }
 
         public int HomeScore
         {

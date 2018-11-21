@@ -101,8 +101,8 @@ namespace PremierLeagueAPI.Services
                         StadiumId = homeClub.StadiumId,
                         HomeClubId = clubList[home].Id,
                         AwayClubId = clubList[away].Id,
-                        HomeKitId = homeClubKit.Id,
-                        AwayKitId = awayClubKit.Id,
+                        HomeClubKitId = homeClubKit.Id,
+                        AwayClubKitId = awayClubKit.Id,
                         MatchTime = matchTime,
                         IsPlayed = false
                     });
@@ -114,8 +114,8 @@ namespace PremierLeagueAPI.Services
                         StadiumId = awayClub.StadiumId,
                         HomeClubId = clubList[away].Id,
                         AwayClubId = clubList[home].Id,
-                        HomeKitId = awayClubKit.Id,
-                        AwayKitId = homeClubKit.Id,
+                        HomeClubKitId = awayClubKit.Id,
+                        AwayClubKitId = homeClubKit.Id,
                         MatchTime = matchTime.AddDays(roundCount * 7),
                         IsPlayed = false
                     });
