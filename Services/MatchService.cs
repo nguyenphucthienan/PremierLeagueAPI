@@ -15,17 +15,23 @@ namespace PremierLeagueAPI.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IClubRepository _clubRepository;
+        private readonly ISquadRepository _squadRepository;
+        private readonly IKitRepository _kitRepository;
         private readonly IMatchRepository _matchRepository;
         private readonly IGoalRepository _goalRepository;
 
         public MatchService(IUnitOfWork unitOfWork,
             IClubRepository clubRepository,
+            ISquadRepository squadRepository,
+            IKitRepository kitRepository,
             IMatchRepository matchRepository,
             IGoalRepository goalRepository
         )
         {
             _unitOfWork = unitOfWork;
             _clubRepository = clubRepository;
+            _squadRepository = squadRepository;
+            _kitRepository = kitRepository;
             _matchRepository = matchRepository;
             _goalRepository = goalRepository;
         }
@@ -74,6 +80,20 @@ namespace PremierLeagueAPI.Services
                     var homeClub = await _clubRepository.GetAsync(clubList[home].Id);
                     var awayClub = await _clubRepository.GetAsync(clubList[away].Id);
 
+                    var homeSquad = await _squadRepository
+                        .SingleOrDefaultAsync(s => s.SeasonId == seasonId
+                                                   && s.ClubId == homeClub.Id);
+                    var awaySquad = await _squadRepository
+                        .SingleOrDefaultAsync(s => s.SeasonId == seasonId 
+                                                   && s.ClubId == awayClub.Id);
+
+                    var homeClubKit = await _kitRepository
+                        .SingleOrDefaultAsync(k => k.SquadId == homeSquad.Id 
+                                                   && k.KitType == KitType.HomeKit);
+                    var awayClubKit = await _kitRepository
+                        .SingleOrDefaultAsync(k => k.SquadId == awaySquad.Id 
+                                                   && k.KitType == KitType.AwayKit);
+
                     matches.Add(new Match
                     {
                         SeasonId = seasonId,
@@ -81,6 +101,8 @@ namespace PremierLeagueAPI.Services
                         StadiumId = homeClub.StadiumId,
                         HomeClubId = clubList[home].Id,
                         AwayClubId = clubList[away].Id,
+                        HomeKitId = homeClubKit.Id,
+                        AwayKitId = awayClubKit.Id,
                         MatchTime = matchTime,
                         IsPlayed = false
                     });
@@ -92,6 +114,8 @@ namespace PremierLeagueAPI.Services
                         StadiumId = awayClub.StadiumId,
                         HomeClubId = clubList[away].Id,
                         AwayClubId = clubList[home].Id,
+                        HomeKitId = awayClubKit.Id,
+                        AwayKitId = homeClubKit.Id,
                         MatchTime = matchTime.AddDays(roundCount * 7),
                         IsPlayed = false
                     });
