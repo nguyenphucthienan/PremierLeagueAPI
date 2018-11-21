@@ -33,8 +33,10 @@ namespace PremierLeagueAPI.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> GetGoals([FromQuery] GoalQuery goalQuery)
+        public async Task<IActionResult> GetGoals(int matchId, [FromQuery] GoalQuery goalQuery)
         {
+            goalQuery.MatchId = matchId;
+
             var goals = await _goalService.GetAsync(goalQuery);
             var returnGoals = _mapper.Map<PaginatedList<GoalListDto>>(goals);
 
