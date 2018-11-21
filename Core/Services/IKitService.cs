@@ -10,6 +10,7 @@ namespace PremierLeagueAPI.Core.Services
     {
         Task<PaginatedList<Kit>> GetAsync(KitQuery kitQuery);
         Task<IEnumerable<Kit>> GetBySquadIdAsync(int squadId);
+        Task<IEnumerable<Kit>> GetBySeasonIdAndClubIdAsync(int seasonId, int clubId);
         Task<Kit> GetByIdAsync(int id);
         Task<Kit> GetDetailByIdAsync(int id);
         Task CreateAsync(Kit kit);

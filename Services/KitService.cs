@@ -30,6 +30,11 @@ namespace PremierLeagueAPI.Services
             return await _kitRepository.GetBySquadIdAsync(squadId);
         }
 
+        public async Task<IEnumerable<Kit>> GetBySeasonIdAndClubIdAsync(int seasonId, int clubId)
+        {
+            return await _kitRepository.GetBySeasonIdAndClubIdAsync(seasonId, clubId);
+        }
+
         public async Task<Kit> GetByIdAsync(int id)
         {
             return await _kitRepository.GetAsync(id);

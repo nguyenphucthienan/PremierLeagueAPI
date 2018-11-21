@@ -32,7 +32,7 @@ namespace PremierLeagueAPI.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> GetPlayers([FromQuery] KitQuery kitQuery)
+        public async Task<IActionResult> GetKits([FromQuery] KitQuery kitQuery)
         {
             var kits = await _kitService.GetAsync(kitQuery);
             var returnKits = _mapper.Map<PaginatedList<KitListDto>>(kits, opt =>
@@ -46,11 +46,19 @@ namespace PremierLeagueAPI.Controllers
 
         [HttpGet("list")]
         [AllowAnonymous]
-        public async Task<IActionResult> GetKitsBySquadId(int squadId)
+        public async Task<IActionResult> GetKitsBySquadId(int squadId, int? seasonId, int? clubId)
         {
-            var kits = await _kitService.GetBySquadIdAsync(squadId);
-            var returnKits = _mapper.Map<IEnumerable<KitListDto>>(kits);
+            IEnumerable<Kit> kits;
+            if (seasonId.HasValue && clubId.HasValue)
+            {
+                kits = await _kitService.GetBySeasonIdAndClubIdAsync(seasonId.Value, clubId.Value);
+            }
+            else
+            {
+                kits = await _kitService.GetBySquadIdAsync(squadId);
+            }
 
+            var returnKits = _mapper.Map<IEnumerable<KitListDto>>(kits);
             return Ok(returnKits);
         }
 

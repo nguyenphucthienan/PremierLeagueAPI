@@ -51,6 +51,14 @@ namespace PremierLeagueAPI.Persistence.Repositories
                 .ToListAsync();
         }
 
+        public async Task<IEnumerable<Kit>> GetBySeasonIdAndClubIdAsync(int seasonId, int clubId)
+        {
+            return await Context.Kits
+                .Where(k => k.Squad.SeasonId == seasonId
+                            && k.Squad.ClubId == clubId)
+                .ToListAsync();
+        }
+
         public async Task<Kit> GetDetailAsync(int id)
         {
             return await Context.Kits
