@@ -20,6 +20,16 @@ namespace PremierLeagueAPI.Persistence.EntityConfigurations
                 .HasForeignKey(m => m.AwayClubId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
 
+            builder.HasOne(m => m.HomeKit)
+                .WithMany(k => k.HomeMatches)
+                .HasForeignKey(m => m.HomeKitId)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+
+            builder.HasOne(m => m.AwayKit)
+                .WithMany(k => k.AwayMatches)
+                .HasForeignKey(m => m.AwayKitId)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+
             builder.Ignore(m => m.HomeScore);
             builder.Ignore(m => m.AwayScore);
         }
