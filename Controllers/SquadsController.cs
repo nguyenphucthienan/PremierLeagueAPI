@@ -130,15 +130,21 @@ namespace PremierLeagueAPI.Controllers
         public async Task<IActionResult> AddPlayerToSquad(int id,
             [FromBody] SquadAddPlayerDto squadAddPlayerDto)
         {
-            var squad = await _squadService.GetByIdAsync(id);
+            var squad = await _squadService.GetDetailByIdAsync(id);
 
             if (squad == null)
                 return NotFound();
 
-            var player = await _playerService.GetByIdAsync(squadAddPlayerDto.PlayerId);
+            var player = await _playerService.GetDetailByIdAsync(squadAddPlayerDto.PlayerId);
 
             if (player == null)
                 return NotFound();
+
+            if (player.SquadPlayers.Any(sp => sp.Squad.SeasonId == squad.SeasonId))
+                return BadRequest();
+
+            if (squad.SquadPlayers.Any(sp => sp.Number == squadAddPlayerDto.Number))
+                return BadRequest();
 
             squad.SquadPlayers.Add(new SquadPlayer
             {
