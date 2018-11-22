@@ -107,6 +107,7 @@ namespace PremierLeagueAPI
             services.AddTransient<IMatchService, MatchService>();
             services.AddTransient<IGoalService, GoalService>();
             services.AddTransient<ICardService, CardService>();
+            services.AddTransient<ITableService, TableService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

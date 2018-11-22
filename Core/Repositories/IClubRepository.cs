@@ -11,5 +11,6 @@ namespace PremierLeagueAPI.Core.Repositories
         Task<PaginatedList<Club>> GetAsync(ClubQuery clubQuery);
         Task<IEnumerable<Club>> GetBriefListAsync(int? seasonId);
         Task<Club> GetDetailByIdAsync(int id);
+        Task<Club> GetDetailIncludeMatchesAsync(int id, int seasonId);
     }
 }

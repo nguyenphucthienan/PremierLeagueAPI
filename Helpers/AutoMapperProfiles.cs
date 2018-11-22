@@ -11,6 +11,7 @@ using PremierLeagueAPI.Dtos.Season;
 using PremierLeagueAPI.Dtos.Squad;
 using PremierLeagueAPI.Dtos.SquadPlayer;
 using PremierLeagueAPI.Dtos.Stadium;
+using PremierLeagueAPI.Dtos.Table;
 using PremierLeagueAPI.Dtos.User;
 
 namespace PremierLeagueAPI.Helpers
@@ -117,6 +118,8 @@ namespace PremierLeagueAPI.Helpers
             CreateMap<Card, GoalDetailDto>();
             CreateMap<CardCreateDto, Card>();
             CreateMap<CardUpdateDto, Card>();
+
+            CreateMap<TableItem, TableItemDto>();
         }
     }
 }
