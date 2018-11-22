@@ -67,7 +67,7 @@ namespace PremierLeagueAPI.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var match = await _matchService.GetByIdAsync(matchId);
+            var match = await _matchService.GetDetailByIdAsync(matchId);
             var player = await _playerService.GetByIdAsync(cardCreateDto.PlayerId);
 
             if (match == null || player == null)
@@ -96,7 +96,32 @@ namespace PremierLeagueAPI.Controllers
                 || (!isHomePlayer && cardCreateDto.ClubId != match.AwayClubId))
                 return BadRequest();
 
+            var existRedCard = match.Cards
+                .SingleOrDefault(c => c.CardType == CardType.Red && c.PlayerId == player.Id);
+
+            if (existRedCard != null)
+                return BadRequest();
+
+            var existYellowCard = match.Cards
+                .SingleOrDefault(c => c.CardType == CardType.Yellow && c.PlayerId == player.Id);
+
+            Card redCardToCreate = null;
+            if (existYellowCard != null && cardToCreate.CardType == CardType.Yellow)
+            {
+                redCardToCreate = new Card
+                {
+                    MatchId = matchId,
+                    ClubId = cardToCreate.ClubId,
+                    PlayerId = cardToCreate.PlayerId,
+                    CardType = CardType.Red,
+                    CardTime = cardToCreate.CardTime
+                };
+            }
+
             await _cardService.CreateAsync(cardToCreate);
+
+            if (redCardToCreate != null)
+                await _cardService.CreateAsync(redCardToCreate);
 
             var card = await _cardService.GetDetailByIdAsync(cardToCreate.Id);
             var returnCard = _mapper.Map<CardDetailDto>(card);
