@@ -64,6 +64,12 @@ namespace PremierLeagueAPI.Controllers
 
             var squadToCreate = _mapper.Map<Squad>(squadCreateDto);
 
+            var existSquad = await _squadService
+                .GetDetailBySeasonIdAndClubIdAsync(squadCreateDto.SeasonId, squadCreateDto.ClubId);
+
+            if (existSquad != null)
+                return BadRequest();
+
             await _squadService.CreateAsync(squadToCreate);
 
             var squad = await _squadService.GetDetailByIdAsync(squadToCreate.Id);

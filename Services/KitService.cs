@@ -20,6 +20,7 @@ namespace PremierLeagueAPI.Services
             _unitOfWork = unitOfWork;
             _kitRepository = kitRepository;
         }
+
         public async Task<PaginatedList<Kit>> GetAsync(KitQuery kitQuery)
         {
             return await _kitRepository.GetAsync(kitQuery);
@@ -43,6 +44,11 @@ namespace PremierLeagueAPI.Services
         public async Task<Kit> GetDetailByIdAsync(int id)
         {
             return await _kitRepository.GetDetailAsync(id);
+        }
+
+        public async Task<Kit> GetBySquadIdAndKitTypeAsync(int squadId, KitType kitType)
+        {
+            return await _kitRepository.GetBySquadIdAndKitTypeAsync(squadId, kitType);
         }
 
         public async Task CreateAsync(Kit kit)

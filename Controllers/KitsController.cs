@@ -92,6 +92,17 @@ namespace PremierLeagueAPI.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
+            var squad = await _squadService.GetDetailByIdAsync(squadId);
+
+            if (squad == null)
+                return NotFound();
+
+            var existKit = await _kitService
+                .GetBySquadIdAndKitTypeAsync(kitCreateDto.SquadId, kitCreateDto.KitType);
+
+            if (existKit != null)
+                return BadRequest();
+
             var kitToCreate = _mapper.Map<Kit>(kitCreateDto);
 
             await _kitService.CreateAsync(kitToCreate);
@@ -120,6 +131,10 @@ namespace PremierLeagueAPI.Controllers
                 return NotFound();
 
             if (squad.Kits.All(k => k.Id != id))
+                return BadRequest();
+
+            if (squad.Kits.Any(k => k.KitType == kitUpdateDto.KitType 
+                                    && kit.KitType != kitUpdateDto.KitType))
                 return BadRequest();
 
             _mapper.Map(kitUpdateDto, kit);

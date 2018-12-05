@@ -12,5 +12,6 @@ namespace PremierLeagueAPI.Core.Repositories
         Task<IEnumerable<Kit>> GetBySquadIdAsync(int squadId);
         Task<IEnumerable<Kit>> GetBySeasonIdAndClubIdAsync(int seasonId, int clubId);
         Task<Kit> GetDetailAsync(int id);
+        Task<Kit> GetBySquadIdAndKitTypeAsync(int squadId, KitType kitType);
     }
 }
