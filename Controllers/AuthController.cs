@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -65,6 +66,26 @@ namespace PremierLeagueAPI.Controllers
                 return Unauthorized();
 
             return Ok(new {token = await GenerateJwtToken(user)});
+        }
+
+        [HttpGet("me")]
+        [Authorize]
+        public async Task<IActionResult> GetMyUserInfo()
+        {
+            var userId = HttpContext.User?.Claims?
+                .FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+
+            if (userId == null)
+                return BadRequest();
+
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (user == null)
+                return Unauthorized();
+
+            var returnUser = _mapper.Map<UserDetailDto>(user);
+
+            return Ok(returnUser);
         }
 
         private async Task<string> GenerateJwtToken(User user)
