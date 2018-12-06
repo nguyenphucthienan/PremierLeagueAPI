@@ -9,6 +9,7 @@ namespace PremierLeagueAPI.Core.Models
         {
             Kits = new Collection<Kit>();
             SquadPlayers = new Collection<SquadPlayer>();
+            SquadManagers = new Collection<SquadManager>();
         }
 
         public int Id { get; set; }
@@ -18,5 +19,6 @@ namespace PremierLeagueAPI.Core.Models
         public Season Season { get; set; }
         public ICollection<Kit> Kits { get; set; }
         public ICollection<SquadPlayer> SquadPlayers { get; set; }
+        public ICollection<SquadManager> SquadManagers { get; set; }
     }
 }
