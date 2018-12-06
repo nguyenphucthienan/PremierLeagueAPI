@@ -210,7 +210,7 @@ namespace PremierLeagueAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Manager");
+                    b.ToTable("Managers");
                 });
 
             modelBuilder.Entity("PremierLeagueAPI.Core.Models.Match", b =>

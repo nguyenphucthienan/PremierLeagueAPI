@@ -10,7 +10,7 @@ using PremierLeagueAPI.Persistence;
 namespace PremierLeagueAPI.Migrations
 {
     [DbContext(typeof(PremierLeagueDbContext))]
-    [Migration("20181206042322_AddManagerEntity")]
+    [Migration("20181206101844_AddManagerEntity")]
     partial class AddManagerEntity
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -212,7 +212,7 @@ namespace PremierLeagueAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Manager");
+                    b.ToTable("Managers");
                 });
 
             modelBuilder.Entity("PremierLeagueAPI.Core.Models.Match", b =>

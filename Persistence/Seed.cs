@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using Microsoft.AspNetCore.Identity;
@@ -21,6 +22,7 @@ namespace PremierLeagueAPI.Persistence
         private readonly IClubRepository _clubRepository;
         private readonly ISquadRepository _squadRepository;
         private readonly IKitRepository _kitRepository;
+        private readonly IManagerRepository _managerRepository;
         private readonly IPlayerRepository _playerRepository;
 
         public Seed(UserManager<User> userManager,
@@ -31,6 +33,7 @@ namespace PremierLeagueAPI.Persistence
             IClubRepository clubRepository,
             ISquadRepository squadRepository,
             IKitRepository kitRepository,
+            IManagerRepository managerRepository,
             IPlayerRepository playerRepository)
         {
             _userManager = userManager;
@@ -41,6 +44,7 @@ namespace PremierLeagueAPI.Persistence
             _clubRepository = clubRepository;
             _squadRepository = squadRepository;
             _kitRepository = kitRepository;
+            _managerRepository = managerRepository;
             _playerRepository = playerRepository;
         }
 
@@ -53,6 +57,7 @@ namespace PremierLeagueAPI.Persistence
             SeedSeasonClubs();
             SeedSquads();
             SeedKits();
+            SeedManagers();
             SeedPlayers();
         }
 
@@ -220,6 +225,57 @@ namespace PremierLeagueAPI.Persistence
                 kit.Squad = squad;
 
                 _kitRepository.Add(kit);
+            }
+
+            _unitOfWork.CompleteAsync().Wait();
+        }
+
+        private void SeedManagers()
+        {
+            var settings = new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+                MissingMemberHandling = MissingMemberHandling.Ignore
+            };
+
+            var managersData = File.ReadAllText("Persistence/Data/Managers.json");
+            var managers = JsonConvert.DeserializeObject<JArray>(managersData);
+
+            var seasonTask = _seasonRepository.SingleOrDefaultAsync(s => s.Name == "2018/2019");
+            seasonTask.Wait();
+            var season = seasonTask.Result;
+
+            foreach (var managerToken in managers)
+            {
+                var clubName = managerToken["clubName"].ToString();
+                var birthdateString = managerToken["birthdateString"].ToString();
+
+                var clubsTask = _clubRepository.SingleOrDefaultAsync(c => c.Name == clubName);
+                clubsTask.Wait();
+
+                var club = clubsTask.Result;
+                if (club == null)
+                    continue;
+
+                var manager = JsonConvert.DeserializeObject<Manager>(managerToken.ToString(), settings);
+                manager.Birthdate = DateTime.ParseExact(birthdateString, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+
+                _managerRepository.Add(manager);
+
+                var squadTask = _squadRepository
+                    .SingleOrDefaultAsync(s => s.SeasonId == season.Id && s.ClubId == club.Id);
+                squadTask.Wait();
+
+                var squad = squadTask.Result;
+                if (squad == null)
+                    continue;
+
+                manager.SquadManagers.Add(new SquadManager
+                {
+                    Squad = squad,
+                    Manager = manager,
+                    StartDate = DateTime.Now
+                });
             }
 
             _unitOfWork.CompleteAsync().Wait();

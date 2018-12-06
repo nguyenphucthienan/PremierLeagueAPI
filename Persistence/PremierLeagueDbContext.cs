@@ -15,6 +15,7 @@ namespace PremierLeagueAPI.Persistence
         public DbSet<Club> Clubs { get; set; }
         public DbSet<Squad> Squads { get; set; }
         public DbSet<Kit> Kits { get; set; }
+        public DbSet<Manager> Managers { get; set; }
         public DbSet<Player> Players { get; set; }
         public DbSet<Match> Matches { get; set; }
         public DbSet<Goal> Goals { get; set; }

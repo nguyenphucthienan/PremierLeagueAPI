@@ -9,7 +9,7 @@ namespace PremierLeagueAPI.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Manager",
+                name: "Managers",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -21,7 +21,7 @@ namespace PremierLeagueAPI.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Manager", x => x.Id);
+                    table.PrimaryKey("PK_Managers", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -37,9 +37,9 @@ namespace PremierLeagueAPI.Migrations
                 {
                     table.PrimaryKey("PK_SquadManagers", x => new { x.SquadId, x.ManagerId });
                     table.ForeignKey(
-                        name: "FK_SquadManagers_Manager_ManagerId",
+                        name: "FK_SquadManagers_Managers_ManagerId",
                         column: x => x.ManagerId,
-                        principalTable: "Manager",
+                        principalTable: "Managers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -62,7 +62,7 @@ namespace PremierLeagueAPI.Migrations
                 name: "SquadManagers");
 
             migrationBuilder.DropTable(
-                name: "Manager");
+                name: "Managers");
         }
     }
 }
