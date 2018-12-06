@@ -93,8 +93,8 @@ namespace PremierLeagueAPI
             services.AddScoped<IClubRepository, ClubRepository>();
             services.AddScoped<ISquadRepository, SquadRepository>();
             services.AddScoped<IKitRepository, KitRepository>();
-            services.AddScoped<IPlayerRepository, PlayerRepository>();
             services.AddScoped<IManagerRepository, ManagerRepository>();
+            services.AddScoped<IPlayerRepository, PlayerRepository>();
             services.AddScoped<IMatchRepository, MatchRepository>();
             services.AddScoped<IGoalRepository, GoalRepository>();
             services.AddScoped<ICardRepository, CardRepository>();
@@ -104,6 +104,7 @@ namespace PremierLeagueAPI
             services.AddTransient<IClubService, ClubService>();
             services.AddTransient<ISquadService, SquadService>();
             services.AddTransient<IKitService, KitService>();
+            services.AddTransient<IManagerService, ManagerService>();
             services.AddTransient<IPlayerService, PlayerService>();
             services.AddTransient<IMatchService, MatchService>();
             services.AddTransient<IGoalService, GoalService>();
