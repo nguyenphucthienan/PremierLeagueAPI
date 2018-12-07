@@ -5,6 +5,7 @@ using PremierLeagueAPI.Dtos.Card;
 using PremierLeagueAPI.Dtos.Club;
 using PremierLeagueAPI.Dtos.Goal;
 using PremierLeagueAPI.Dtos.Kit;
+using PremierLeagueAPI.Dtos.Manager;
 using PremierLeagueAPI.Dtos.Match;
 using PremierLeagueAPI.Dtos.Player;
 using PremierLeagueAPI.Dtos.Season;
@@ -60,6 +61,11 @@ namespace PremierLeagueAPI.Helpers
             CreateMap<Kit, KitDetailDto>();
             CreateMap<KitCreateDto, Kit>();
             CreateMap<KitUpdateDto, Kit>();
+
+            CreateMap<PaginatedList<Manager>, PaginatedList<ManagerListDto>>();
+            CreateMap<Manager, ManagerListDto>();
+            CreateMap<ManagerCreateDto, Manager>();
+            CreateMap<ManagerUpdateDto, Manager>();
 
             CreateMap<PaginatedList<Player>, PaginatedList<PlayerListDto>>();
             CreateMap<PaginatedList<Player>, PaginatedList<PlayerSquadListDto>>();
