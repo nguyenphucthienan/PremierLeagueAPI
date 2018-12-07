@@ -44,6 +44,7 @@ namespace PremierLeagueAPI.Persistence.Repositories
         public async Task<Squad> GetDetailAsync(int id)
         {
             return await Context.Squads
+                .Include(s => s.SquadManagers)
                 .Include(s => s.SquadPlayers)
                 .Include(s => s.Season)
                 .Include(s => s.Club)
@@ -54,6 +55,7 @@ namespace PremierLeagueAPI.Persistence.Repositories
         public async Task<Squad> GetDetailAsync(int seasonId, int clubId)
         {
             return await Context.Squads
+                .Include(s => s.SquadManagers)
                 .Include(s => s.SquadPlayers)
                 .Include(s => s.Season)
                 .Include(s => s.Club)
