@@ -12,6 +12,7 @@ using PremierLeagueAPI.Core.Services;
 using PremierLeagueAPI.Dtos.Player;
 using PremierLeagueAPI.Dtos.Squad;
 using PremierLeagueAPI.Dtos.SquadManager;
+using PremierLeagueAPI.Dtos.SquadPlayer;
 using PremierLeagueAPI.Helpers;
 
 namespace PremierLeagueAPI.Controllers
@@ -214,14 +215,14 @@ namespace PremierLeagueAPI.Controllers
         [HttpPost("{id}/players")]
         [Authorize(Policies.RequiredAdminRole)]
         public async Task<IActionResult> AddPlayerToSquad(int id,
-            [FromBody] SquadAddPlayerDto squadAddPlayerDto)
+            [FromBody] SquadPlayerAddDto squadPlayerAddDto)
         {
             var squad = await _squadService.GetDetailByIdAsync(id);
 
             if (squad == null)
                 return NotFound();
 
-            var player = await _playerService.GetDetailByIdAsync(squadAddPlayerDto.PlayerId);
+            var player = await _playerService.GetDetailByIdAsync(squadPlayerAddDto.PlayerId);
 
             if (player == null)
                 return NotFound();
@@ -229,14 +230,14 @@ namespace PremierLeagueAPI.Controllers
             if (player.SquadPlayers.Any(sp => sp.Squad.SeasonId == squad.SeasonId))
                 return BadRequest();
 
-            if (squad.SquadPlayers.Any(sp => sp.Number == squadAddPlayerDto.Number))
+            if (squad.SquadPlayers.Any(sp => sp.Number == squadPlayerAddDto.Number))
                 return BadRequest();
 
             squad.SquadPlayers.Add(new SquadPlayer
             {
                 Squad = squad,
                 Player = player,
-                Number = squadAddPlayerDto.Number,
+                Number = squadPlayerAddDto.Number,
                 StartDate = DateTime.Now
             });
 
@@ -247,20 +248,20 @@ namespace PremierLeagueAPI.Controllers
         [HttpPut("{id}/players/{playerId}")]
         [Authorize(Policies.RequiredAdminRole)]
         public async Task<IActionResult> UpdatePlayerInSquad(int id, int playerId,
-            [FromBody] SquadUpdatePlayerDto squadUpdatePlayerDto)
+            [FromBody] SquadPlayerUpdateDto squadPlayerUpdateDto)
         {
             var squad = await _squadService.GetDetailByIdAsync(id);
 
             if (squad == null)
                 return NotFound();
 
-            var player = await _playerService.GetByIdAsync(squadUpdatePlayerDto.PlayerId);
+            var player = await _playerService.GetByIdAsync(squadPlayerUpdateDto.PlayerId);
 
             if (player == null)
                 return NotFound();
 
-            var squadPlayer = squad.SquadPlayers.SingleOrDefault(sp => sp.PlayerId == playerId);
-            var existSquadPlayer = squad.SquadPlayers.SingleOrDefault(sp => sp.Number == squadUpdatePlayerDto.Number);
+            var squadPlayer = squad.SquadPlayers.SingleOrDefault(sp => sp.PlayerId == squadPlayerUpdateDto.PlayerId);
+            var existSquadPlayer = squad.SquadPlayers.SingleOrDefault(sp => sp.Number == squadPlayerUpdateDto.Number);
 
             if (squadPlayer == null)
                 return BadRequest();
@@ -268,7 +269,7 @@ namespace PremierLeagueAPI.Controllers
             if (existSquadPlayer != null && (existSquadPlayer.PlayerId != squadPlayer.PlayerId))
                 return BadRequest();
 
-            _mapper.Map(squadUpdatePlayerDto, squadPlayer);
+            _mapper.Map(squadPlayerUpdateDto, squadPlayer);
 
             await _squadService.UpdateAsync(squad);
             return Ok();

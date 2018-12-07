@@ -1,6 +1,6 @@
-﻿namespace PremierLeagueAPI.Dtos.Squad
+﻿namespace PremierLeagueAPI.Dtos.SquadPlayer
 {
-    public class SquadUpdatePlayerDto
+    public class SquadPlayerUpdateDto
     {
         public int PlayerId { get; set; }
         public int Number { get; set; }
