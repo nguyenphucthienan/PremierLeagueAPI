@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using PremierLeagueAPI.Dtos.SquadManager;
 
 namespace PremierLeagueAPI.Dtos.Manager
 {
@@ -10,5 +12,6 @@ namespace PremierLeagueAPI.Dtos.Manager
         public DateTime Birthdate { get; set; }
         public string Description { get; set; }
         public string PhotoUrl { get; set; }
+        public IEnumerable<SquadManagerListDto> SquadManagers { get; set; }
     }
 }

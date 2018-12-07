@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -42,6 +43,16 @@ namespace PremierLeagueAPI.Controllers
                 var returnManagers = _mapper.Map<PaginatedList<ManagerListDto>>(managers);
                 return Ok(returnManagers);
             }
+        }
+
+        [HttpGet("brief-list")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetBriefListManagers()
+        {
+            var managers = await _managerService.GetBriefListAsync();
+            var returnManagers = _mapper.Map<IEnumerable<ManagerBriefListDto>>(managers);
+
+            return Ok(returnManagers);
         }
 
         [HttpGet("{id}")]
