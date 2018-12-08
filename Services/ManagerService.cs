@@ -13,12 +13,15 @@ namespace PremierLeagueAPI.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IManagerRepository _managerRepository;
+        private readonly ISquadManagerRepository _squadManagerRepository;
 
         public ManagerService(IUnitOfWork unitOfWork,
-            IManagerRepository managerRepository)
+            IManagerRepository managerRepository,
+            ISquadManagerRepository squadManagerRepository)
         {
             _unitOfWork = unitOfWork;
             _managerRepository = managerRepository;
+            _squadManagerRepository = squadManagerRepository;
         }
 
         public async Task<PaginatedList<Manager>> GetAsync(ManagerQuery managerQuery)
@@ -56,6 +59,11 @@ namespace PremierLeagueAPI.Services
         {
             _managerRepository.Remove(manager);
             await _unitOfWork.CompleteAsync();
+        }
+
+        public async Task<PaginatedList<SquadManager>> GetManagersInSquadAsync(SquadManagerQuery squadManagerQuery)
+        {
+            return await _squadManagerRepository.GetAsync(squadManagerQuery);
         }
     }
 }

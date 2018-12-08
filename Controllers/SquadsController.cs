@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -9,7 +7,6 @@ using PremierLeagueAPI.Core.Models;
 using PremierLeagueAPI.Core.Queries;
 using PremierLeagueAPI.Core.Services;
 using PremierLeagueAPI.Dtos.Squad;
-using PremierLeagueAPI.Dtos.SquadManager;
 using PremierLeagueAPI.Helpers;
 
 namespace PremierLeagueAPI.Controllers
@@ -113,82 +110,6 @@ namespace PremierLeagueAPI.Controllers
             await _squadService.DeleteAsync(squad);
 
             return Ok(id);
-        }
-
-        [HttpPost("{id}/managers")]
-        [Authorize(Policies.RequiredAdminRole)]
-        public async Task<IActionResult> AddManagerToSquad(int id,
-            [FromBody] SquadManagerAddDto squadManagerAddDto)
-        {
-            var squad = await _squadService.GetDetailByIdAsync(id);
-
-            if (squad == null)
-                return NotFound();
-
-            var manager = await _managerService.GetDetailByIdAsync(squadManagerAddDto.ManagerId);
-
-            if (manager == null)
-                return NotFound();
-
-            if (manager.SquadManagers.Any(sp => sp.Squad.SeasonId == squad.SeasonId))
-                return BadRequest();
-
-            squad.SquadManagers.Add(new SquadManager
-            {
-                Squad = squad,
-                Manager = manager,
-                StartDate = DateTime.Now
-            });
-
-            await _squadService.UpdateAsync(squad);
-            return Ok();
-        }
-
-        [HttpPut("{id}/managers/{managerId}")]
-        [Authorize(Policies.RequiredAdminRole)]
-        public async Task<IActionResult> UpdateManagerInSquad(int id, int managerId,
-            [FromBody] SquadManagerUpdateDto squadManagerUpdateDto)
-        {
-            var squad = await _squadService.GetDetailByIdAsync(id);
-
-            if (squad == null)
-                return NotFound();
-
-            var manager = await _playerService.GetByIdAsync(squadManagerUpdateDto.ManagerId);
-
-            if (manager == null)
-                return NotFound();
-
-            var squadManager = squad.SquadManagers.SingleOrDefault(sm => sm.ManagerId == managerId);
-
-            if (squadManager == null)
-                return BadRequest();
-
-            _mapper.Map(squadManagerUpdateDto, squadManager);
-
-            await _squadService.UpdateAsync(squad);
-            return Ok();
-        }
-
-        [HttpDelete("{id}/managers/{managerId}")]
-        [Authorize(Policies.RequiredAdminRole)]
-        public async Task<IActionResult> RemoveManagerFromSquad(int id, int managerId)
-        {
-            var squad = await _squadService.GetDetailByIdAsync(id);
-
-            if (squad == null)
-                return NotFound();
-
-            var manager = squad.SquadManagers
-                .SingleOrDefault(sp => sp.ManagerId == managerId);
-
-            if (manager == null)
-                return NotFound();
-
-            squad.SquadManagers.Remove(manager);
-            await _squadService.UpdateAsync(squad);
-
-            return Ok();
         }
     }
 }
