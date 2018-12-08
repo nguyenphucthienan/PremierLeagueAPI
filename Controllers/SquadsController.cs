@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -9,10 +8,8 @@ using PremierLeagueAPI.Constants;
 using PremierLeagueAPI.Core.Models;
 using PremierLeagueAPI.Core.Queries;
 using PremierLeagueAPI.Core.Services;
-using PremierLeagueAPI.Dtos.Player;
 using PremierLeagueAPI.Dtos.Squad;
 using PremierLeagueAPI.Dtos.SquadManager;
-using PremierLeagueAPI.Dtos.SquadPlayer;
 using PremierLeagueAPI.Helpers;
 
 namespace PremierLeagueAPI.Controllers
@@ -189,108 +186,6 @@ namespace PremierLeagueAPI.Controllers
                 return NotFound();
 
             squad.SquadManagers.Remove(manager);
-            await _squadService.UpdateAsync(squad);
-
-            return Ok();
-        }
-
-        [HttpGet("{id}/players")]
-        [AllowAnonymous]
-        public async Task<IActionResult> GetPlayersInSquad(int id,
-            int? seasonId, int? clubId)
-        {
-            var squadId = id;
-            if (seasonId.HasValue && clubId.HasValue)
-            {
-                var squad = await _squadService.GetDetailBySeasonIdAndClubIdAsync(seasonId.Value, clubId.Value);
-                squadId = squad.Id;
-            }
-
-            var players = await _playerService.GetBriefListAsync(squadId);
-            var returnPlayers = _mapper.Map<IEnumerable<PlayerBriefListDto>>(players);
-
-            return Ok(returnPlayers);
-        }
-
-        [HttpPost("{id}/players")]
-        [Authorize(Policies.RequiredAdminRole)]
-        public async Task<IActionResult> AddPlayerToSquad(int id,
-            [FromBody] SquadPlayerAddDto squadPlayerAddDto)
-        {
-            var squad = await _squadService.GetDetailByIdAsync(id);
-
-            if (squad == null)
-                return NotFound();
-
-            var player = await _playerService.GetDetailByIdAsync(squadPlayerAddDto.PlayerId);
-
-            if (player == null)
-                return NotFound();
-
-            if (player.SquadPlayers.Any(sp => sp.Squad.SeasonId == squad.SeasonId))
-                return BadRequest();
-
-            if (squad.SquadPlayers.Any(sp => sp.Number == squadPlayerAddDto.Number))
-                return BadRequest();
-
-            squad.SquadPlayers.Add(new SquadPlayer
-            {
-                Squad = squad,
-                Player = player,
-                Number = squadPlayerAddDto.Number,
-                StartDate = DateTime.Now
-            });
-
-            await _squadService.UpdateAsync(squad);
-            return Ok();
-        }
-
-        [HttpPut("{id}/players/{playerId}")]
-        [Authorize(Policies.RequiredAdminRole)]
-        public async Task<IActionResult> UpdatePlayerInSquad(int id, int playerId,
-            [FromBody] SquadPlayerUpdateDto squadPlayerUpdateDto)
-        {
-            var squad = await _squadService.GetDetailByIdAsync(id);
-
-            if (squad == null)
-                return NotFound();
-
-            var player = await _playerService.GetByIdAsync(squadPlayerUpdateDto.PlayerId);
-
-            if (player == null)
-                return NotFound();
-
-            var squadPlayer = squad.SquadPlayers.SingleOrDefault(sp => sp.PlayerId == squadPlayerUpdateDto.PlayerId);
-            var existSquadPlayer = squad.SquadPlayers.SingleOrDefault(sp => sp.Number == squadPlayerUpdateDto.Number);
-
-            if (squadPlayer == null)
-                return BadRequest();
-
-            if (existSquadPlayer != null && (existSquadPlayer.PlayerId != squadPlayer.PlayerId))
-                return BadRequest();
-
-            _mapper.Map(squadPlayerUpdateDto, squadPlayer);
-
-            await _squadService.UpdateAsync(squad);
-            return Ok();
-        }
-
-        [HttpDelete("{id}/players/{playerId}")]
-        [Authorize(Policies.RequiredAdminRole)]
-        public async Task<IActionResult> RemovePlayerFromSquad(int id, int playerId)
-        {
-            var squad = await _squadService.GetDetailByIdAsync(id);
-
-            if (squad == null)
-                return NotFound();
-
-            var player = squad.SquadPlayers
-                .SingleOrDefault(sp => sp.PlayerId == playerId);
-
-            if (player == null)
-                return NotFound();
-
-            squad.SquadPlayers.Remove(player);
             await _squadService.UpdateAsync(squad);
 
             return Ok();

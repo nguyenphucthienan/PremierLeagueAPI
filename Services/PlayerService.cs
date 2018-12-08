@@ -13,22 +13,25 @@ namespace PremierLeagueAPI.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IPlayerRepository _playerRepository;
+        private readonly ISquadPlayerRepository _squadPlayerRepository;
 
         public PlayerService(IUnitOfWork unitOfWork,
-            IPlayerRepository playerRepository)
+            IPlayerRepository playerRepository,
+            ISquadPlayerRepository squadPlayerRepository)
         {
             _unitOfWork = unitOfWork;
             _playerRepository = playerRepository;
-        }
-
-        public async Task<PaginatedList<Player>> GetAsync(PlayerQuery playerQuery)
-        {
-            return await _playerRepository.GetAsync(playerQuery);
+            _squadPlayerRepository = squadPlayerRepository;
         }
 
         public async Task<IEnumerable<Player>> GetBriefListAsync(int squadId)
         {
             return await _playerRepository.GetBriefListAsync(squadId);
+        }
+
+        public async Task<PaginatedList<Player>> GetAsync(PlayerQuery playerQuery)
+        {
+            return await _playerRepository.GetAsync(playerQuery);
         }
 
         public async Task<Player> GetByIdAsync(int id)
@@ -56,6 +59,11 @@ namespace PremierLeagueAPI.Services
         {
             _playerRepository.Remove(player);
             await _unitOfWork.CompleteAsync();
+        }
+
+        public async Task<PaginatedList<SquadPlayer>> GetPlayersInSquadAsync(SquadPlayerQuery squadPlayerQuery)
+        {
+            return await _squadPlayerRepository.GetAsync(squadPlayerQuery);
         }
     }
 }
