@@ -84,7 +84,6 @@ namespace PremierLeagueAPI.Helpers
             CreateMap<ManagerUpdateDto, Manager>();
 
             CreateMap<PaginatedList<Player>, PaginatedList<PlayerListDto>>();
-            CreateMap<PaginatedList<Player>, PaginatedList<PlayerSquadListDto>>();
             CreateMap<Player, PlayerListDto>();
             CreateMap<Player, PlayerBriefListDto>();
 
@@ -104,41 +103,6 @@ namespace PremierLeagueAPI.Helpers
                             .SingleOrDefault(sp => sp.StartDate == src.SquadPlayers.Max(sps => sps.StartDate));
 
                         return squad?.Number;
-                    }));
-
-            CreateMap<Player, PlayerSquadListDto>()
-                .ForMember(pld => pld.Number, opt => opt
-                    .ResolveUsing((src, dest, destMember, context) =>
-                    {
-                        if (!context.Items.ContainsKey("squadId"))
-                            return null;
-
-                        var squadId = (int) context.Items["squadId"];
-                        var squadPlayer = src.SquadPlayers.SingleOrDefault(sp => sp.SquadId == squadId);
-
-                        return squadPlayer?.Number;
-                    }))
-                .ForMember(pld => pld.StartDate, opt => opt
-                    .ResolveUsing((src, dest, destMember, context) =>
-                    {
-                        if (!context.Items.ContainsKey("squadId"))
-                            return null;
-
-                        var squadId = (int)context.Items["squadId"];
-                        var squadPlayer = src.SquadPlayers.SingleOrDefault(sp => sp.SquadId == squadId);
-
-                        return squadPlayer?.StartDate;
-                    }))
-                .ForMember(pld => pld.EndDate, opt => opt
-                    .ResolveUsing((src, dest, destMember, context) =>
-                    {
-                        if (!context.Items.ContainsKey("squadId"))
-                            return null;
-
-                        var squadId = (int)context.Items["squadId"];
-                        var squadPlayer = src.SquadPlayers.SingleOrDefault(sp => sp.SquadId == squadId);
-
-                        return squadPlayer?.EndDate;
                     }));
 
             CreateMap<PlayerCreateDto, Player>();
