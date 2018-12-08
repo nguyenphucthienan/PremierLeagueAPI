@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -94,7 +93,8 @@ namespace PremierLeagueAPI.Controllers
                 Squad = squad,
                 Player = player,
                 Number = squadPlayerAddDto.Number,
-                StartDate = DateTime.Now
+                StartDate = squadPlayerAddDto.StartDate,
+                EndDate = squadPlayerAddDto.EndDate
             });
 
             await _squadService.UpdateAsync(squad);

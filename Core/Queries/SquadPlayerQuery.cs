@@ -26,6 +26,7 @@ namespace PremierLeagueAPI.Core.Queries
         public int SquadId { get; set; }
         public int? SeasonId { get; set; }
         public int? ClubId { get; set; }
+        public bool IsActive { get; set; }
         public string Name { get; set; }
         public PositionType? PositionType { get; set; }
     }

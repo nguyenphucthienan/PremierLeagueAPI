@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using AutoMapper;
 using PremierLeagueAPI.Core.Models;
 using PremierLeagueAPI.Dtos.Card;
@@ -75,7 +76,8 @@ namespace PremierLeagueAPI.Helpers
                     .ResolveUsing((src, dest, destMember, context) =>
                     {
                         var squad = src.SquadManagers
-                            .SingleOrDefault(sp => sp.StartDate == src.SquadManagers.Max(sms => sms.StartDate));
+                            .SingleOrDefault(sp => sp.StartDate == src.SquadManagers.Max(sms => sms.StartDate)
+                                                   && (sp.EndDate == null || sp.EndDate > DateTime.Now));
 
                         return squad?.Squad.Club;
                     }));
@@ -92,7 +94,8 @@ namespace PremierLeagueAPI.Helpers
                     .ResolveUsing((src, dest, destMember, context) =>
                     {
                         var squad = src.SquadPlayers
-                            .SingleOrDefault(sp => sp.StartDate == src.SquadPlayers.Max(sps => sps.StartDate));
+                            .SingleOrDefault(sp => sp.StartDate == src.SquadPlayers.Max(sps => sps.StartDate)
+                                                   && (sp.EndDate == null || sp.EndDate > DateTime.Now));
 
                         return squad?.Squad.Club;
                     }))
@@ -100,7 +103,8 @@ namespace PremierLeagueAPI.Helpers
                     .ResolveUsing((src, dest, destMember, context) =>
                     {
                         var squad = src.SquadPlayers
-                            .SingleOrDefault(sp => sp.StartDate == src.SquadPlayers.Max(sps => sps.StartDate));
+                            .SingleOrDefault(sp => sp.StartDate == src.SquadPlayers.Max(sps => sps.StartDate)
+                                                   && (sp.EndDate == null || sp.EndDate > DateTime.Now));
 
                         return squad?.Number;
                     }));
