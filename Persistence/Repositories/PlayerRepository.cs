@@ -51,7 +51,7 @@ namespace PremierLeagueAPI.Persistence.Repositories
                 ["nationality"] = p => p.Nationality,
                 ["birthdate"] = p => p.Birthdate,
                 ["height"] = p => p.Height,
-                ["weight"] = p => p.Weight,
+                ["weight"] = p => p.Weight
             };
 
             query = query.Sort(playerQuery, columnsMap);

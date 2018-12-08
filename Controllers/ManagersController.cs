@@ -64,7 +64,7 @@ namespace PremierLeagueAPI.Controllers
             if (manager == null)
                 return NotFound();
 
-            var returnManager = _mapper.Map<ManagerDetail>(manager);
+            var returnManager = _mapper.Map<ManagerDetailDto>(manager);
             return Ok(returnManager);
         }
 
@@ -80,7 +80,7 @@ namespace PremierLeagueAPI.Controllers
             await _managerService.CreateAsync(managerToCreate);
 
             var manager = await _managerService.GetDetailByIdAsync(managerToCreate.Id);
-            var returnManager = _mapper.Map<ManagerDetail>(manager);
+            var returnManager = _mapper.Map<ManagerDetailDto>(manager);
 
             return Ok(returnManager);
         }
@@ -101,7 +101,7 @@ namespace PremierLeagueAPI.Controllers
             await _managerService.UpdateAsync(manager);
 
             var updatedManager = await _managerService.GetDetailByIdAsync(id);
-            var returnManager = _mapper.Map<ManagerDetail>(updatedManager);
+            var returnManager = _mapper.Map<ManagerDetailDto>(updatedManager);
 
             return Ok(returnManager);
         }
