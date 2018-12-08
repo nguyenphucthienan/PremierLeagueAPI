@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -72,7 +71,8 @@ namespace PremierLeagueAPI.Controllers
             {
                 Squad = squad,
                 Manager = manager,
-                StartDate = DateTime.Now
+                StartDate = squadManagerAddDto.StartDate,
+                EndDate = squadManagerAddDto.EndDate
             });
 
             await _squadService.UpdateAsync(squad);
