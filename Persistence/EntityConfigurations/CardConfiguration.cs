@@ -11,7 +11,7 @@ namespace PremierLeagueAPI.Persistence.EntityConfigurations
             builder.HasOne(c => c.Match)
                 .WithMany(m => m.Cards)
                 .HasForeignKey(c => c.MatchId)
-                .OnDelete(DeleteBehavior.ClientSetNull);
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasOne(c => c.Club)
                 .WithMany(c => c.Cards)

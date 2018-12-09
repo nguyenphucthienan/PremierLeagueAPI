@@ -10,6 +10,8 @@ namespace PremierLeagueAPI.Persistence.EntityConfigurations
         {
             builder.Property(p => p.Name)
                 .IsRequired();
+
+            builder.HasIndex(c => c.Name);
         }
     }
 }
