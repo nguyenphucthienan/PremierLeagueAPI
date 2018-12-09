@@ -19,7 +19,7 @@
             set => _pageSize = (value < MaxPageSize) ? value : MaxPageSize;
         }
 
-        public string SortBy { get; set; } = "name";
+        public string SortBy { get; set; } = "startDate";
         public bool IsSortAscending { get; set; }
     }
 }

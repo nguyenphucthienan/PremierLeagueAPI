@@ -97,7 +97,11 @@ namespace PremierLeagueAPI.Persistence
 
         private void SeedSeasons()
         {
-            var season = new Season {Name = "2018/2019"};
+            var season = new Season
+            {
+                Name = "2018/2019",
+                StartDate = DateTime.Now
+            };
 
             _seasonRepository.Add(season);
             _unitOfWork.CompleteAsync().Wait();

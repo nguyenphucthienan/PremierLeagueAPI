@@ -14,6 +14,7 @@ namespace PremierLeagueAPI.Services
     public class MatchService : IMatchService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly ISeasonRepository _seasonRepository;
         private readonly IClubRepository _clubRepository;
         private readonly ISquadRepository _squadRepository;
         private readonly IKitRepository _kitRepository;
@@ -21,6 +22,7 @@ namespace PremierLeagueAPI.Services
         private readonly IGoalRepository _goalRepository;
 
         public MatchService(IUnitOfWork unitOfWork,
+            ISeasonRepository seasonRepository,
             IClubRepository clubRepository,
             ISquadRepository squadRepository,
             IKitRepository kitRepository,
@@ -29,6 +31,7 @@ namespace PremierLeagueAPI.Services
         )
         {
             _unitOfWork = unitOfWork;
+            _seasonRepository = seasonRepository;
             _clubRepository = clubRepository;
             _squadRepository = squadRepository;
             _kitRepository = kitRepository;
@@ -53,6 +56,7 @@ namespace PremierLeagueAPI.Services
 
         public async Task GenerateAsync(int seasonId)
         {
+            var season = await _seasonRepository.GetAsync(seasonId);
             var clubs = await _clubRepository.GetBriefListAsync(seasonId);
             var clubList = clubs.ToList();
             var clubCount = clubList.Count;
@@ -60,9 +64,9 @@ namespace PremierLeagueAPI.Services
             var matchesPerRound = clubCount / 2;
 
             var matchTime = new DateTime(
-                DateTime.Now.Year,
-                DateTime.Now.Month,
-                DateTime.Now.Day,
+                season.StartDate.Year,
+                season.StartDate.Month,
+                season.StartDate.Day,
                 17, 00, 00);
 
             var matches = new List<Match>();
@@ -121,10 +125,14 @@ namespace PremierLeagueAPI.Services
                     });
                 }
 
-                matchTime = matchTime.AddDays(7);
+                if (round < roundCount - 1)
+                    matchTime = matchTime.AddDays(7);
             }
 
             _matchRepository.AddRange(matches);
+
+            season.EndDate = matchTime;
+
             await _unitOfWork.CompleteAsync();
         }
 

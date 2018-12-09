@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 namespace PremierLeagueAPI.Core.Models
@@ -12,6 +13,8 @@ namespace PremierLeagueAPI.Core.Models
 
         public int Id { get; set; }
         public string Name { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
         public ICollection<SeasonClub> SeasonClubs { get; set; }
     }
 }
