@@ -12,20 +12,16 @@ namespace PremierLeagueAPI.Services
         private const int WinPoint = 3;
         private const int DrawPoint = 1;
 
-        private readonly ISeasonRepository _seasonRepository;
         private readonly IClubRepository _clubRepository;
 
-        public TableService(ISeasonRepository seasonRepository,
-            IClubRepository clubRepository)
+        public TableService(IClubRepository clubRepository)
         {
-            _seasonRepository = seasonRepository;
             _clubRepository = clubRepository;
         }
 
         public async Task<IEnumerable<TableItem>> GetAsync(int seasonId)
         {
-            var season = await _seasonRepository.GetDetailAsync(seasonId);
-            var clubsInSeason = season.SeasonClubs.Select(sc => sc.Club);
+            var clubsInSeason = await _clubRepository.GetBriefListAsync(seasonId);
 
             var tableItems = new List<TableItem>();
             foreach (var club in clubsInSeason.ToList())
@@ -55,7 +51,7 @@ namespace PremierLeagueAPI.Services
 
                 tableItems.Add(new TableItem
                 {
-                    Club = club,
+                    Club = clubDetail,
                     Played = played,
                     Won = won,
                     Drawn = drawn,

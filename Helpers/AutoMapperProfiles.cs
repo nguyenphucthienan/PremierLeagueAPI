@@ -29,12 +29,7 @@ namespace PremierLeagueAPI.Helpers
 
             CreateMap<PaginatedList<Season>, PaginatedList<SeasonListDto>>();
             CreateMap<Season, SeasonBriefListDto>();
-
-            CreateMap<Season, SeasonDetailDto>()
-                .ForMember(sdd => sdd.Clubs, opt => opt
-                    .MapFrom(s => s.SeasonClubs
-                        .Select(sc => sc.Club).ToList()));
-
+            CreateMap<Season, SeasonDetailDto>();
             CreateMap<SeasonCreateDto, Season>();
             CreateMap<SeasonUpdateDto, Season>();
 

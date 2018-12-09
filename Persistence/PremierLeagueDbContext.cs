@@ -36,7 +36,6 @@ namespace PremierLeagueAPI.Persistence
             modelBuilder.ApplyConfiguration(new StadiumConfiguration());
             modelBuilder.ApplyConfiguration(new ClubConfiguration());
             modelBuilder.ApplyConfiguration(new KitConfiguration());
-            modelBuilder.ApplyConfiguration(new SeasonClubConfiguration());
             modelBuilder.ApplyConfiguration(new PlayerConfiguration());
             modelBuilder.ApplyConfiguration(new ManagerConfiguration());
             modelBuilder.ApplyConfiguration(new SquadConfiguration());

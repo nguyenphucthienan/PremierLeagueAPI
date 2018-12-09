@@ -26,8 +26,8 @@ namespace PremierLeagueAPI.Persistence.Repositories
 
             if (clubQuery.SeasonId.HasValue)
             {
-                query = query.Where(c => c.SeasonClubs
-                    .Any(sc => sc.SeasonId == clubQuery.SeasonId));
+                query = query.Where(c => c.Squads
+                    .Any(s => s.SeasonId == clubQuery.SeasonId));
             }
 
             var columnsMap = new Dictionary<string, Expression<Func<Club, object>>>()
@@ -50,8 +50,8 @@ namespace PremierLeagueAPI.Persistence.Repositories
 
             if (seasonId.HasValue)
             {
-                query = query.Where(c => c.SeasonClubs
-                    .Any(sc => sc.SeasonId == seasonId));
+                query = query.Where(c => c.Squads
+                    .Any(s => s.SeasonId == seasonId));
             }
 
             return await query

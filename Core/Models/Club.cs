@@ -7,7 +7,6 @@ namespace PremierLeagueAPI.Core.Models
     {
         public Club()
         {
-            SeasonClubs = new Collection<SeasonClub>();
             Squads = new Collection<Squad>();
             HomeMatches = new Collection<Match>();
             AwayMatches = new Collection<Match>();
@@ -22,7 +21,6 @@ namespace PremierLeagueAPI.Core.Models
         public string PhotoUrl { get; set; }
         public int StadiumId { get; set; }
         public Stadium Stadium { get; set; }
-        public ICollection<SeasonClub> SeasonClubs { get; set; }
         public ICollection<Squad> Squads { get; set; }
         public ICollection<Match> HomeMatches { get; set; }
         public ICollection<Match> AwayMatches { get; set; }

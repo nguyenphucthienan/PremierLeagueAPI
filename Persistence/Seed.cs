@@ -54,7 +54,6 @@ namespace PremierLeagueAPI.Persistence
             SeedSeasons();
             SeedStadiums();
             SeedClubs();
-            SeedSeasonClubs();
             SeedSquads();
             SeedKits();
             SeedManagers();
@@ -142,27 +141,6 @@ namespace PremierLeagueAPI.Persistence
                 club.Stadium = stadium;
 
                 _clubRepository.Add(club);
-            }
-
-            _unitOfWork.CompleteAsync().Wait();
-        }
-
-        private void SeedSeasonClubs()
-        {
-            var seasonTask = _seasonRepository.SingleOrDefaultAsync(s => s.Name == "2018/2019");
-            seasonTask.Wait();
-            var season = seasonTask.Result;
-
-            var clubsTask = _clubRepository.GetAllAsync();
-            clubsTask.Wait();
-
-            foreach (var club in clubsTask.Result)
-            {
-                season.SeasonClubs.Add(new SeasonClub
-                {
-                    Season = season,
-                    Club = club
-                });
             }
 
             _unitOfWork.CompleteAsync().Wait();
