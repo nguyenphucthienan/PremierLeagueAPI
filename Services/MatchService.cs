@@ -131,7 +131,7 @@ namespace PremierLeagueAPI.Services
 
             _matchRepository.AddRange(matches);
 
-            season.EndDate = matchTime;
+            season.EndDate = matchTime.AddDays(roundCount * 7);
 
             await _unitOfWork.CompleteAsync();
         }

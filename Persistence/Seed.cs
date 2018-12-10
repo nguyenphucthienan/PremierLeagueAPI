@@ -24,6 +24,7 @@ namespace PremierLeagueAPI.Persistence
         private readonly IKitRepository _kitRepository;
         private readonly IManagerRepository _managerRepository;
         private readonly IPlayerRepository _playerRepository;
+        private readonly JsonSerializerSettings _jsonSerializerSettings;
 
         public Seed(UserManager<User> userManager,
             RoleManager<Role> roleManager,
@@ -46,6 +47,12 @@ namespace PremierLeagueAPI.Persistence
             _kitRepository = kitRepository;
             _managerRepository = managerRepository;
             _playerRepository = playerRepository;
+
+            _jsonSerializerSettings = new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+                MissingMemberHandling = MissingMemberHandling.Ignore
+            };
         }
 
         public void SeedData()
@@ -117,12 +124,6 @@ namespace PremierLeagueAPI.Persistence
 
         private void SeedClubs()
         {
-            var settings = new JsonSerializerSettings
-            {
-                NullValueHandling = NullValueHandling.Ignore,
-                MissingMemberHandling = MissingMemberHandling.Ignore
-            };
-
             var clubsData = File.ReadAllText("Persistence/Data/Clubs.json");
             var clubs = JsonConvert.DeserializeObject<JArray>(clubsData);
 
@@ -137,7 +138,7 @@ namespace PremierLeagueAPI.Persistence
                 if (stadium == null)
                     continue;
 
-                var club = JsonConvert.DeserializeObject<Club>(clubToken.ToString(), settings);
+                var club = JsonConvert.DeserializeObject<Club>(clubToken.ToString(), _jsonSerializerSettings);
                 club.Stadium = stadium;
 
                 _clubRepository.Add(club);
@@ -171,12 +172,6 @@ namespace PremierLeagueAPI.Persistence
 
         private void SeedKits()
         {
-            var settings = new JsonSerializerSettings
-            {
-                NullValueHandling = NullValueHandling.Ignore,
-                MissingMemberHandling = MissingMemberHandling.Ignore
-            };
-
             var seasonTask = _seasonRepository.SingleOrDefaultAsync(s => s.Name == "2018/2019");
             seasonTask.Wait();
             var season = seasonTask.Result;
@@ -203,7 +198,7 @@ namespace PremierLeagueAPI.Persistence
                 if (squad == null)
                     continue;
 
-                var kit = JsonConvert.DeserializeObject<Kit>(kitToken.ToString(), settings);
+                var kit = JsonConvert.DeserializeObject<Kit>(kitToken.ToString(), _jsonSerializerSettings);
                 kit.Squad = squad;
 
                 _kitRepository.Add(kit);
@@ -214,12 +209,6 @@ namespace PremierLeagueAPI.Persistence
 
         private void SeedManagers()
         {
-            var settings = new JsonSerializerSettings
-            {
-                NullValueHandling = NullValueHandling.Ignore,
-                MissingMemberHandling = MissingMemberHandling.Ignore
-            };
-
             var managersData = File.ReadAllText("Persistence/Data/Managers.json");
             var managers = JsonConvert.DeserializeObject<JArray>(managersData);
 
@@ -239,7 +228,7 @@ namespace PremierLeagueAPI.Persistence
                 if (club == null)
                     continue;
 
-                var manager = JsonConvert.DeserializeObject<Manager>(managerToken.ToString(), settings);
+                var manager = JsonConvert.DeserializeObject<Manager>(managerToken.ToString(), _jsonSerializerSettings);
                 manager.Birthdate = DateTime.ParseExact(birthdateString, "dd/MM/yyyy", CultureInfo.InvariantCulture);
 
                 _managerRepository.Add(manager);
@@ -265,12 +254,6 @@ namespace PremierLeagueAPI.Persistence
 
         private void SeedPlayers()
         {
-            var settings = new JsonSerializerSettings
-            {
-                NullValueHandling = NullValueHandling.Ignore,
-                MissingMemberHandling = MissingMemberHandling.Ignore
-            };
-
             var playersData = File.ReadAllText("Persistence/Data/Players.json");
             var players = JsonConvert.DeserializeObject<JArray>(playersData);
 
@@ -309,7 +292,7 @@ namespace PremierLeagueAPI.Persistence
                 if (club == null)
                     continue;
 
-                var player = JsonConvert.DeserializeObject<Player>(playerToken.ToString(), settings);
+                var player = JsonConvert.DeserializeObject<Player>(playerToken.ToString(), _jsonSerializerSettings);
                 player.Birthdate = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
                     .AddSeconds(birthdate);
                 player.PositionType = positionType;
