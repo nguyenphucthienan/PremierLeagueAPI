@@ -17,18 +17,12 @@ namespace PremierLeagueAPI.Controllers
     {
         private readonly IMapper _mapper;
         private readonly ISquadService _squadService;
-        private readonly IManagerService _managerService;
-        private readonly IPlayerService _playerService;
 
         public SquadsController(IMapper mapper,
-            ISquadService squadService,
-            IManagerService managerService,
-            IPlayerService playerService)
+            ISquadService squadService)
         {
             _mapper = mapper;
             _squadService = squadService;
-            _managerService = managerService;
-            _playerService = playerService;
         }
 
         [HttpGet]
@@ -88,6 +82,12 @@ namespace PremierLeagueAPI.Controllers
 
             if (squad == null)
                 return NotFound();
+
+            var existSquad = await _squadService
+                .GetDetailBySeasonIdAndClubIdAsync(squadUpdateDto.SeasonId, squadUpdateDto.ClubId);
+
+            if (existSquad != null && (existSquad.Id != squad.Id))
+                return BadRequest();
 
             _mapper.Map(squadUpdateDto, squad);
             await _squadService.UpdateAsync(squad);
