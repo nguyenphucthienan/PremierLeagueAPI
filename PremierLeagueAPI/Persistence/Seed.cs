@@ -57,6 +57,9 @@ namespace PremierLeagueAPI.Persistence
 
         public void SeedData()
         {
+            if (_userManager.Users.Any())
+                return;
+
             SeedRolesAndAdminUser();
             SeedSeasons();
             SeedStadiums();
@@ -69,9 +72,6 @@ namespace PremierLeagueAPI.Persistence
 
         private void SeedRolesAndAdminUser()
         {
-            if (_userManager.Users.Any())
-                return;
-
             var roles = new List<Role>
             {
                 new Role {Name = "Admin"},
