@@ -148,7 +148,7 @@ namespace PremierLeagueAPI.Tests.Controllers
             var okObjectResult = result as OkObjectResult;
             var okObjectResultValue = okObjectResult.Value as ClubDetailDto;
 
-            _clubService.Verify(s => s.CreateAsync(It.IsAny<Club>()), Times.Once);
+            _clubService.Verify(c => c.CreateAsync(It.IsAny<Club>()), Times.Once);
 
             Assert.That(result, Is.TypeOf<OkObjectResult>());
             Assert.That(okObjectResultValue.Name, Is.EqualTo(name));
@@ -235,7 +235,7 @@ namespace PremierLeagueAPI.Tests.Controllers
         public async Task DeleteClub_WhenCalled_ReturnNotFound()
         {
             const int id = 1;
-            _clubService.Setup(s => s.GetByIdAsync(id)).ReturnsAsync((Club) null);
+            _clubService.Setup(c => c.GetByIdAsync(id)).ReturnsAsync((Club) null);
 
             var result = await _clubsController.DeleteClub(id);
 
