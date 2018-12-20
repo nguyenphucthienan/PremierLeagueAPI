@@ -98,7 +98,7 @@ namespace PremierLeagueAPI.Tests.Services
         }
 
         [Test]
-        public async Task GetDetailByIdAsync_WhenCalled_GetSeasonDetailFromDb()
+        public async Task GetDetailByIdAsync_WhenCalled_GetPlayerDetailFromDb()
         {
             const int id = 1;
             var expectedPlayer = new Player
