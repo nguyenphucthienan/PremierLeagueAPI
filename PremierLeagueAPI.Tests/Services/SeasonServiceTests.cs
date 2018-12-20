@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Moq;
 using NUnit.Framework;
@@ -58,8 +57,8 @@ namespace PremierLeagueAPI.Tests.Services
 
             var result = await _seasonService.GetAsync(seasonQuery);
 
-            Assert.IsNotNull(result);
-            Assert.AreEqual(expectedSeasons, result);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.EqualTo(expectedSeasons));
         }
 
         [Test]
@@ -76,8 +75,8 @@ namespace PremierLeagueAPI.Tests.Services
 
             var result = await _seasonService.GetBriefListAsync();
 
-            Assert.IsNotNull(result);
-            Assert.AreEqual(expectedSeasons, result);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.EqualTo(expectedSeasons));
         }
 
         [Test]
@@ -93,8 +92,8 @@ namespace PremierLeagueAPI.Tests.Services
 
             var result = await _seasonService.GetByIdAsync(id);
 
-            Assert.IsNotNull(result);
-            Assert.AreEqual(expectedSeason, result);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.EqualTo(expectedSeason));
         }
 
         [Test]
@@ -110,8 +109,8 @@ namespace PremierLeagueAPI.Tests.Services
 
             var result = await _seasonService.GetDetailByIdAsync(id);
 
-            Assert.IsNotNull(result);
-            Assert.AreEqual(expectedSeason, result);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.EqualTo(expectedSeason));
         }
 
         [Test]

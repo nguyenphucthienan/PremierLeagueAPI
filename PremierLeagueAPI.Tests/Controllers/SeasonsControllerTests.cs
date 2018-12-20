@@ -62,13 +62,12 @@ namespace PremierLeagueAPI.Tests.Controllers
             var okObjectResult = result as OkObjectResult;
             var okObjectResultValue = okObjectResult.Value as PaginatedList<SeasonListDto>;
 
-            Assert.IsNotNull(okObjectResult);
-            Assert.AreEqual(200, okObjectResult.StatusCode);
+            Assert.That(result, Is.TypeOf<OkObjectResult>());
 
-            Assert.IsNotNull(okObjectResultValue);
-            Assert.AreEqual(1, okObjectResultValue.Pagination.PageNumber);
-            Assert.AreEqual(10, okObjectResultValue.Pagination.PageSize);
-            Assert.AreEqual(3, okObjectResultValue.Items.Count());
+            Assert.That(okObjectResultValue, Is.Not.Null);
+            Assert.That(okObjectResultValue.Pagination.PageNumber, Is.EqualTo(1));
+            Assert.That(okObjectResultValue.Pagination.PageSize, Is.EqualTo(10));
+            Assert.That(okObjectResultValue.Items.Count(), Is.EqualTo(3));
         }
 
         [Test]
@@ -87,11 +86,10 @@ namespace PremierLeagueAPI.Tests.Controllers
             var okObjectResult = result as OkObjectResult;
             var okObjectResultValue = okObjectResult.Value as IEnumerable<SeasonBriefListDto>;
 
-            Assert.IsNotNull(okObjectResult);
-            Assert.AreEqual(200, okObjectResult.StatusCode);
+            Assert.That(result, Is.TypeOf<OkObjectResult>());
 
-            Assert.IsNotNull(okObjectResultValue);
-            Assert.AreEqual(3, okObjectResultValue.Count());
+            Assert.That(okObjectResultValue, Is.Not.Null);
+            Assert.That(okObjectResultValue.Count(), Is.EqualTo(3));
         }
 
         [Test]
@@ -109,24 +107,21 @@ namespace PremierLeagueAPI.Tests.Controllers
             var okObjectResult = result as OkObjectResult;
             var okObjectResultValue = okObjectResult.Value as SeasonDetailDto;
 
-            Assert.IsNotNull(okObjectResult);
-            Assert.AreEqual(200, okObjectResult.StatusCode);
+            Assert.That(result, Is.TypeOf<OkObjectResult>());
 
-            Assert.IsNotNull(okObjectResultValue);
-            Assert.AreEqual(id, okObjectResultValue.Id);
+            Assert.That(okObjectResultValue, Is.Not.Null);
+            Assert.That(okObjectResultValue.Id, Is.EqualTo(id));
         }
 
         [Test]
         public async Task GetSeason_WhenCalled_ReturnNotFound()
         {
             const int id = 1;
-            _seasonService.Setup(s => s.GetDetailByIdAsync(id)).ReturnsAsync((Season)null);
+            _seasonService.Setup(s => s.GetDetailByIdAsync(id)).ReturnsAsync((Season) null);
 
             var result = await _seasonsController.GetSeason(id);
-            var notFoundResult = result as NotFoundResult;
 
-            Assert.IsNotNull(notFoundResult);
-            Assert.AreEqual(404, notFoundResult.StatusCode);
+            Assert.That(result, Is.TypeOf<NotFoundResult>());
         }
 
         [Test]
@@ -154,9 +149,8 @@ namespace PremierLeagueAPI.Tests.Controllers
 
             _seasonService.Verify(s => s.CreateAsync(It.IsAny<Season>()), Times.Once);
 
-            Assert.IsNotNull(okObjectResult);
-            Assert.AreEqual(200, okObjectResult.StatusCode);
-            Assert.AreEqual(name, okObjectResultValue.Name);
+            Assert.That(result, Is.TypeOf<OkObjectResult>());
+            Assert.That(okObjectResultValue.Name, Is.EqualTo(name));
         }
 
         [Test]
@@ -193,9 +187,8 @@ namespace PremierLeagueAPI.Tests.Controllers
             _seasonService.Verify(s => s.GetByIdAsync(id), Times.Exactly(2));
             _seasonService.Verify(s => s.UpdateAsync(It.IsAny<Season>()), Times.Once);
 
-            Assert.IsNotNull(okObjectResult);
-            Assert.AreEqual(200, okObjectResult.StatusCode);
-            Assert.AreEqual(updateName, okObjectResultValue.Name);
+            Assert.That(result, Is.TypeOf<OkObjectResult>());
+            Assert.That(okObjectResultValue.Name, Is.EqualTo(updateName));
         }
 
         [Test]
@@ -212,13 +205,11 @@ namespace PremierLeagueAPI.Tests.Controllers
             _seasonService.Setup(s => s.GetByIdAsync(id)).ReturnsAsync((Season) null);
 
             var result = await _seasonsController.UpdateSeason(id, seasonUpdateDto);
-            var notFoundResult = result as NotFoundResult;
 
             _seasonService.Verify(s => s.GetByIdAsync(id), Times.Once);
             _seasonService.Verify(s => s.UpdateAsync(It.IsAny<Season>()), Times.Never);
 
-            Assert.IsNotNull(notFoundResult);
-            Assert.AreEqual(404, notFoundResult.StatusCode);
+            Assert.That(result, Is.TypeOf<NotFoundResult>());
         }
 
         [Test]
@@ -237,24 +228,21 @@ namespace PremierLeagueAPI.Tests.Controllers
 
             _seasonService.Verify(s => s.DeleteAsync(It.IsAny<Season>()), Times.Once);
 
-            Assert.IsNotNull(okObjectResult);
-            Assert.AreEqual(200, okObjectResult.StatusCode);
-            Assert.AreEqual(1, okObjectResult.Value);
+            Assert.That(result, Is.TypeOf<OkObjectResult>());
+            Assert.That(okObjectResult.Value, Is.EqualTo(id));
         }
 
         [Test]
         public async Task DeleteSeason_WhenCalled_ReturnNotFound()
         {
             const int id = 1;
-            _seasonService.Setup(s => s.GetByIdAsync(id)).ReturnsAsync((Season)null);
+            _seasonService.Setup(s => s.GetByIdAsync(id)).ReturnsAsync((Season) null);
 
             var result = await _seasonsController.DeleteSeason(id);
-            var notFoundResult = result as NotFoundResult;
 
             _seasonService.Verify(s => s.DeleteAsync(It.IsAny<Season>()), Times.Never);
 
-            Assert.IsNotNull(notFoundResult);
-            Assert.AreEqual(404, notFoundResult.StatusCode);
+            Assert.That(result, Is.TypeOf<NotFoundResult>());
         }
     }
 }
