@@ -15,6 +15,5 @@ namespace PremierLeagueAPI.Core.Services
         Task CreateAsync(Manager manager);
         Task UpdateAsync(Manager manager);
         Task DeleteAsync(Manager manager);
-        Task<PaginatedList<SquadManager>> GetManagersInSquadAsync(SquadManagerQuery squadManagerQuery);
     }
 }

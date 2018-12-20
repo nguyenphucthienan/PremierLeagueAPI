@@ -44,7 +44,7 @@ namespace PremierLeagueAPI.Controllers
                 squadPlayerQuery.SquadId = squad.Id;
             }
 
-            var players = await _playerService.GetPlayersInSquadAsync(squadPlayerQuery);
+            var players = await _squadService.GetPlayersInSquadAsync(squadPlayerQuery);
             var returnPlayers = _mapper.Map<PaginatedList<SquadPlayerListDto>>(players);
 
             return Ok(returnPlayers);
