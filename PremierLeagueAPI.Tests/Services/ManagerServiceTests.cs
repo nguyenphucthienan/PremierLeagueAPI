@@ -80,7 +80,7 @@ namespace PremierLeagueAPI.Tests.Services
         }
 
         [Test]
-        public async Task GetAsync_WhenCalled_GetManagerFromDb()
+        public async Task GetByIdAsync_WhenCalled_GetManagerFromDb()
         {
             const int id = 1;
             var expectedManager = new Manager

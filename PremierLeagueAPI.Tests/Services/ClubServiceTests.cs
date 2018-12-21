@@ -81,7 +81,7 @@ namespace PremierLeagueAPI.Tests.Services
         }
 
         [Test]
-        public async Task GetAsync_WhenCalled_GetClubFromDb()
+        public async Task GetByIdAsync_WhenCalled_GetClubFromDb()
         {
             const int id = 1;
             var expectedClub = new Club

@@ -109,7 +109,7 @@ namespace PremierLeagueAPI.Controllers
             var match = await _matchService.GetByIdAsync(id);
 
             if (match == null)
-                return BadRequest();
+                return NotFound();
 
             await _matchService.DeleteAsync(match);
 
