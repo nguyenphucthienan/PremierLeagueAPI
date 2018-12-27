@@ -67,6 +67,12 @@ namespace PremierLeagueAPI.Controllers
             if (manager.SquadManagers.Any(sp => sp.Squad.SeasonId == squad.SeasonId))
                 return BadRequest();
 
+            if (squadManagerAddDto.StartDate < manager.Birthdate)
+                return BadRequest();
+
+            if (squadManagerAddDto.EndDate.HasValue && squadManagerAddDto.EndDate.Value < squadManagerAddDto.StartDate)
+                return BadRequest();
+
             squad.SquadManagers.Add(new SquadManager
             {
                 Squad = squad,
@@ -97,6 +103,13 @@ namespace PremierLeagueAPI.Controllers
             var squadManager = squad.SquadManagers.SingleOrDefault(sm => sm.ManagerId == id);
 
             if (squadManager == null)
+                return BadRequest();
+
+            if (squadManagerUpdateDto.StartDate < manager.Birthdate)
+                return BadRequest();
+
+            if (squadManagerUpdateDto.EndDate.HasValue &&
+                squadManagerUpdateDto.EndDate.Value < squadManagerUpdateDto.StartDate)
                 return BadRequest();
 
             _mapper.Map(squadManagerUpdateDto, squadManager);
